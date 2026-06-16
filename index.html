@@ -2,39 +2,33 @@
 <html lang="tr" data-theme="ocean">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#050814">
-  <meta name="description" content="EB Digital Studio — Efecan Berber tarafından geliştirilen premium web siteleri, üyelik sistemleri, admin panelleri ve dijital deneyimler.">
-  <meta name="author" content="Efecan Berber">
-  <meta name="robots" content="index, follow">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="EB Digital Studio — Dijital İmzanızı Tasarlıyorum">
-  <meta property="og:description" content="Sıradan web siteleri değil; hızlı, güvenilir ve akılda kalan dijital deneyimler.">
-  <meta property="og:image" content="assets/og-image.jpg">
-  <meta name="twitter:card" content="summary_large_image">
   <title>EB Digital Studio — Efecan Berber</title>
+  <meta name="description" content="Efecan Berber tarafından kurulan EB Digital Studio; premium web tasarımı, üyelik sistemleri, admin panelleri ve markalara özel dijital deneyimler geliştirir.">
+  <meta property="og:title" content="EB Digital Studio — Efecan Berber">
+  <meta property="og:description" content="Sıradan siteler değil, markanız için dijital imzalar tasarlıyorum.">
+  <meta property="og:image" content="assets/og-image.jpg">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="css/style.css?v=2.0">
+  <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
-  <a class="skip-link" href="#main">İçeriğe geç</a>
-  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+  <a class="skip-link" href="#content">İçeriğe geç</a>
   <div class="noise" aria-hidden="true"></div>
   <canvas id="particleCanvas" aria-hidden="true"></canvas>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
 
   <div class="intro" id="intro" aria-hidden="true">
+    <div class="intro-grid"></div>
     <div class="intro-core">
-      <svg class="intro-logo" viewBox="0 0 520 520" aria-hidden="true">
-        <defs><linearGradient id="introG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="logo-stop-a"/><stop offset=".48" class="logo-stop-b"/><stop offset="1" class="logo-stop-c"/></linearGradient></defs>
-        <path fill="url(#introG)" d="M82 74h268l-42 56H149v86h164l-40 53H149v120h158l-46 59H82z"/>
-        <path fill="url(#introG)" opacity=".96" d="M228 74h105c80 0 124 38 124 100 0 43-21 73-59 88 46 15 73 48 73 98 0 70-51 108-141 108H190l52-61h88c43 0 65-16 65-46 0-29-22-44-65-44h-87l48-58h38c39 0 59-14 59-43 0-28-20-43-60-43h-54z"/>
-        <path d="M370 54 166 466" class="intro-cut"/>
-      </svg>
+      <img src="assets/logo.svg" alt="" class="intro-logo">
       <p>EB DIGITAL STUDIO</p>
       <div class="intro-line"><span></span></div>
       <small>CRAFTING DIGITAL SIGNATURES</small>
@@ -47,236 +41,186 @@
   <header class="site-header" id="top">
     <div class="container nav-shell">
       <a class="brand magnetic" href="#top" aria-label="EB Digital Studio ana sayfa">
-        <svg class="brand-mark" viewBox="0 0 520 520" aria-hidden="true">
-          <defs><linearGradient id="navG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="logo-stop-a"/><stop offset=".48" class="logo-stop-b"/><stop offset="1" class="logo-stop-c"/></linearGradient></defs>
-          <path fill="url(#navG)" d="M82 74h268l-42 56H149v86h164l-40 53H149v120h158l-46 59H82z"/>
-          <path fill="url(#navG)" opacity=".96" d="M228 74h105c80 0 124 38 124 100 0 43-21 73-59 88 46 15 73 48 73 98 0 70-51 108-141 108H190l52-61h88c43 0 65-16 65-46 0-29-22-44-65-44h-87l48-58h38c39 0 59-14 59-43 0-28-20-43-60-43h-54z"/>
-          <path d="M370 54 166 466" class="brand-cut"/>
-        </svg>
-        <span><strong>EB DIGITAL STUDIO</strong><small>by Efecan Berber</small></span>
+        <img class="brand-mark" src="assets/logo.svg" alt="">
+        <span><strong>EB DIGITAL STUDIO</strong><small>BY EFECAN BERBER</small></span>
       </a>
-
       <nav class="desktop-nav" aria-label="Ana menü">
-        <a href="#projeler">Proje</a>
-        <a href="#hizmetler">Hizmetler</a>
-        <a href="#hikayem">Hikâyem</a>
-        <a href="#surec">Süreç</a>
-        <a href="#teklif">Teklif</a>
+        <a href="#work">Projeler</a><a href="#services">Hizmetler</a><a href="#about">Hikâyem</a><a href="#process">Süreç</a><a href="#contact">İletişim</a>
       </nav>
-
       <div class="nav-actions">
-        <button class="theme-trigger magnetic" type="button" data-theme-open aria-expanded="false" aria-label="Renk temasını değiştir">
-          <span class="theme-orb"></span><span>Tema</span>
-        </button>
-        <a class="button button-primary nav-cta magnetic" href="#teklif">Proje Başlat <span>↗</span></a>
-        <button class="menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
+        <button class="theme-trigger magnetic" type="button" data-theme-open aria-expanded="false"><span class="theme-orb"></span><span>TEMA</span></button>
+        <a class="button button-primary nav-cta magnetic" href="#contact">PROJE BAŞLAT <span>↗</span></a>
+        <button class="menu-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false"><span></span><span></span></button>
       </div>
     </div>
   </header>
 
-  <aside class="theme-panel" aria-hidden="true" aria-label="Renk teması paneli">
-    <div class="theme-panel-head">
-      <div><span class="eyebrow">SIGNATURE THEMES</span><h2>Atmosferini seç.</h2></div>
-      <button class="icon-button" data-theme-close type="button" aria-label="Paneli kapat">×</button>
-    </div>
-    <p>Seçtiğin tema; ışıklar, logo, butonlar, imleç ve arka plan atmosferini birlikte değiştirir.</p>
+  <nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="#work">Projeler</a><a href="#services">Hizmetler</a><a href="#about">Hikâyem</a><a href="#process">Süreç</a><a href="#contact">İletişim</a>
+    <button type="button" data-theme-open><span class="theme-orb"></span> Temayı değiştir</button>
+  </nav>
+
+  <aside class="theme-panel" aria-hidden="true" aria-label="Renk teması seçimi">
+    <div class="theme-panel-head"><div><span class="eyebrow">SIGNATURE THEMES</span><h2>Atmosferini seç.</h2></div><button class="icon-button" type="button" data-theme-close aria-label="Tema panelini kapat">×</button></div>
+    <p>Renk seçimi; ışıkları, logoyu, butonları, imleci ve arka plan atmosferini birlikte değiştirir.</p>
     <div class="theme-grid">
-      <button class="theme-option is-active" data-theme-value="ocean"><span class="swatches ocean"><i></i><i></i><i></i></span><span><strong>Ocean Blue</strong><small>Güven · Teknoloji</small></span><b>01</b></button>
-      <button class="theme-option" data-theme-value="nebula"><span class="swatches nebula"><i></i><i></i><i></i></span><span><strong>Purple Nebula</strong><small>Yaratıcılık · Cesaret</small></span><b>02</b></button>
-      <button class="theme-option" data-theme-value="emerald"><span class="swatches emerald"><i></i><i></i><i></i></span><span><strong>Emerald Tech</strong><small>Denge · Modernlik</small></span><b>03</b></button>
-      <button class="theme-option" data-theme-value="sunset"><span class="swatches sunset"><i></i><i></i><i></i></span><span><strong>Sunset Fire</strong><small>Enerji · Etki</small></span><b>04</b></button>
-      <button class="theme-option" data-theme-value="gold"><span class="swatches gold"><i></i><i></i><i></i></span><span><strong>Gold Elegance</strong><small>Prestij · Lüks</small></span><b>05</b></button>
-      <button class="theme-option" data-theme-value="silver"><span class="swatches silver"><i></i><i></i><i></i></span><span><strong>Silver Minimal</strong><small>Sadelik · Netlik</small></span><b>06</b></button>
+      <button class="theme-option" type="button" data-theme-value="ocean"><span class="swatches ocean"><i></i><i></i><i></i></span><span><strong>Ocean Blue</strong><small>Güven · Teknoloji</small></span><b>01</b></button>
+      <button class="theme-option" type="button" data-theme-value="nebula"><span class="swatches nebula"><i></i><i></i><i></i></span><span><strong>Purple Nebula</strong><small>Yaratıcılık · Cesaret</small></span><b>02</b></button>
+      <button class="theme-option" type="button" data-theme-value="emerald"><span class="swatches emerald"><i></i><i></i><i></i></span><span><strong>Emerald Tech</strong><small>Denge · Modernlik</small></span><b>03</b></button>
+      <button class="theme-option" type="button" data-theme-value="sunset"><span class="swatches sunset"><i></i><i></i><i></i></span><span><strong>Sunset Fire</strong><small>Enerji · Etki</small></span><b>04</b></button>
+      <button class="theme-option" type="button" data-theme-value="gold"><span class="swatches gold"><i></i><i></i><i></i></span><span><strong>Gold Elegance</strong><small>Prestij · Lüks</small></span><b>05</b></button>
+      <button class="theme-option" type="button" data-theme-value="silver"><span class="swatches silver"><i></i><i></i><i></i></span><span><strong>Silver Minimal</strong><small>Sadelik · Netlik</small></span><b>06</b></button>
     </div>
     <button class="button button-secondary theme-reset" type="button">Varsayılan temaya dön</button>
   </aside>
-  <div class="panel-backdrop" data-theme-close aria-hidden="true"></div>
+  <div class="panel-backdrop" data-theme-close></div>
 
-  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-    <a href="#projeler">Proje</a><a href="#hizmetler">Hizmetler</a><a href="#hikayem">Hikâyem</a><a href="#surec">Süreç</a><a href="#teklif">Teklif</a>
-    <button type="button" data-theme-open><span class="theme-orb"></span>Tema değiştir</button>
-  </div>
-
-  <main id="main">
+  <main id="content">
     <section class="hero section-pad">
-      <div class="hero-grid container">
+      <div class="container hero-grid">
         <div class="hero-copy reveal">
-          <div class="availability"><span></span> ÖZEL WEB TASARIMI · GELİŞTİRME · DİJİTAL SİSTEMLER</div>
+          <div class="status-pill"><i></i> Yeni projeler için müsait</div>
+          <span class="eyebrow">ÖZEL WEB TASARIMI · GELİŞTİRME · DİJİTAL SİSTEMLER</span>
           <h1>Sıradan siteler değil,<br><span class="gradient-text">dijital imzalar</span><br>tasarlıyorum.</h1>
-          <p>Markanız için yalnızca güzel görünen değil; hız, güven, karakter ve sonuç üreten premium dijital deneyimler geliştiriyorum.</p>
+          <p>Markanız için yalnızca güzel görünen değil; hızlı, güvenilir, güçlü karaktere sahip ve kullanıcıyı harekete geçiren premium dijital deneyimler geliştiriyorum.</p>
           <div class="rotating-line">Her projede <strong data-rotate-word>kusursuz detay</strong> hedefliyorum.</div>
-          <div class="hero-actions">
-            <a class="button button-primary magnetic" href="#projeler">Projeyi İncele <span>↗</span></a>
-            <a class="button button-secondary magnetic" href="#teklif">Birlikte Çalışalım</a>
-          </div>
-          <div class="hero-values">
-            <span><b>01</b><small>Özel tasarım</small></span>
-            <span><b>02</b><small>Uçtan uca geliştirme</small></span>
-            <span><b>03</b><small>Mobil öncelikli</small></span>
-          </div>
+          <div class="hero-actions"><a class="button button-primary magnetic" href="#work">PROJELERİMİ GÖR <span>↗</span></a><a class="button button-secondary magnetic" href="#contact">BİRLİKTE ÇALIŞALIM</a></div>
+          <div class="hero-proof"><span><b>01</b> Özel tasarım</span><span><b>02</b> Uçtan uca geliştirme</span><span><b>03</b> Mobil öncelikli</span></div>
         </div>
 
-        <div class="hero-visual reveal" data-delay="120">
-          <div class="portrait-stage tilt-card" data-tilt>
-            <div class="portrait-glow"></div>
-            <picture><img src="assets/portrait-hero.webp" alt="Efecan Berber, EB Digital Studio kurucusu" width="1122" height="1402" fetchpriority="high"></picture>
-            <div class="portrait-shade"></div>
-            <div class="portrait-caption"><span>EFECAN BERBER</span><small>WEB DESIGNER & DEVELOPER</small></div>
+        <div class="hero-stage reveal" data-delay="110">
+          <div class="beam beam-one"></div><div class="beam beam-two"></div><div class="beam beam-three"></div>
+          <div class="signature-mark" data-tilt>
+            <div class="signature-glow"></div>
+            <img src="assets/logo.svg" alt="EB Digital Studio monogramı">
+            <span>EB</span>
           </div>
-          <div class="floating-chip chip-one"><span>UI</span> Premium arayüz</div>
-          <div class="floating-chip chip-two"><span>DB</span> Güvenli sistem</div>
-          <div class="floating-chip chip-three"><span>01</span> Signature Edition</div>
-          <svg class="hero-orbit" viewBox="0 0 700 700" aria-hidden="true"><circle cx="350" cy="350" r="278"/><circle cx="350" cy="350" r="220"/></svg>
+          <div class="portrait-shell" data-tilt>
+            <div class="portrait-frame"><img src="assets/portrait-hero.webp" alt="Efecan Berber, EB Digital Studio kurucusu" width="1122" height="1402" fetchpriority="high"></div>
+            <div class="portrait-label"><strong>EFECAN BERBER</strong><small>WEB DESIGNER & DEVELOPER</small></div>
+          </div>
+          <div class="float-chip chip-a"><b>UI</b><span>Premium arayüz</span></div>
+          <div class="float-chip chip-b"><b>DB</b><span>Güvenli sistem</span></div>
+          <div class="edition-badge">SIGNATURE<br><strong>02</strong></div>
         </div>
       </div>
-      <div class="hero-marquee" aria-hidden="true"><div><span>WEB DESIGN</span><i>✦</i><span>WEB DEVELOPMENT</span><i>✦</i><span>DASHBOARD SYSTEMS</span><i>✦</i><span>BRAND EXPERIENCE</span><i>✦</i><span>WEB DESIGN</span><i>✦</i><span>WEB DEVELOPMENT</span><i>✦</i><span>DASHBOARD SYSTEMS</span><i>✦</i><span>BRAND EXPERIENCE</span></div></div>
+      <div class="container scroll-cue"><span></span> SCROLL TO EXPLORE</div>
     </section>
 
-    <section class="featured section-pad" id="projeler">
-      <div class="container">
-        <div class="split-heading reveal">
-          <div><span class="eyebrow">01 — ÖNE ÇIKAN PROJE</span><h2>Bir markayı dijital<br><span class="gradient-text">deneyime dönüştürmek.</span></h2></div>
-          <p>Ber Can’t projesi, tasarımdan sunuma kadar tarafımdan geliştirilen uçtan uca bir online koçluk deneyimi.</p>
-        </div>
+    <div class="marquee" aria-hidden="true"><div>WEB DESIGN ✦ WEB DEVELOPMENT ✦ DASHBOARD SYSTEMS ✦ BRAND EXPERIENCE ✦ WEB DESIGN ✦ WEB DEVELOPMENT ✦ DASHBOARD SYSTEMS ✦ BRAND EXPERIENCE ✦</div></div>
 
-        <article class="project-case tilt-card reveal" data-tilt>
+    <section class="section-pad project-section" id="work">
+      <div class="container">
+        <div class="section-heading reveal"><div><span class="section-no">01</span><span class="eyebrow">ÖNE ÇIKAN PROJE</span><h2>Bir markayı dijital<br><span class="gradient-text">deneyime dönüştürmek.</span></h2></div><p>Ber Can’t; tasarımdan yayına kadar tarafımdan geliştirilen uçtan uca bir online koçluk deneyimi.</p></div>
+        <article class="featured-project tilt-card reveal" data-tilt>
           <div class="project-copy">
-            <span class="project-badge">FEATURED CASE</span>
-            <h3>Ber Can’t Premium<br><span>Online Coaching</span></h3>
-            <p>Güçlü marka kimliği, premium kullanıcı deneyimi ve yönetilebilir dijital sistemleri tek bir yapıda buluşturan kapsamlı bir proje.</p>
-            <div class="project-tags"><span>Web Design</span><span>Membership</span><span>Dashboard</span><span>Supabase</span><span>Mobile UX</span></div>
-            <div class="project-actions">
-              <a class="button button-primary magnetic" href="https://bercant.com.tr" target="_blank" rel="noopener noreferrer">Canlı Projeyi Gör <span>↗</span></a>
-              <button class="button button-secondary magnetic" type="button" data-case-open>Vaka Çalışması</button>
-            </div>
+            <span class="project-kicker">FEATURED CASE / 001</span>
+            <h3>Ber Can’t Premium<br><span class="gradient-text">Online Coaching</span></h3>
+            <p>Güçlü marka kimliği, premium kullanıcı deneyimi ve yönetilebilir dijital sistemleri tek yapıda buluşturan kapsamlı proje.</p>
+            <div class="tag-list"><span>Web Design</span><span>Membership</span><span>Dashboard</span><span>Supabase</span><span>Mobile UX</span></div>
+            <ul class="project-points"><li>Şifreli öğrenci deneyimi</li><li>Koç ve yönetim paneli</li><li>Günlük takip ve veri altyapısı</li><li>Mobil odaklı premium arayüz</li></ul>
+            <div class="project-actions"><a class="button button-primary magnetic" href="https://bercant.com.tr" target="_blank" rel="noopener">CANLI PROJE <span>↗</span></a><button class="button button-secondary" type="button" data-case-open>VAKA ÇALIŞMASI</button></div>
           </div>
-          <div class="project-visual">
-            <img src="assets/bercant-project.webp" alt="Ber Can’t online koçluk sitesi ve yönetim paneli ön izlemesi" width="1536" height="1024" loading="lazy">
-            <div class="project-screen-glow"></div>
-            <div class="project-label"><span>LIVE EXPERIENCE</span><b>bercant.com.tr</b></div>
+          <div class="device-scene">
+            <div class="device-glow"></div>
+            <div class="laptop"><div class="laptop-screen"><img src="assets/bercant-project.webp" alt="Ber Can’t proje ön izlemesi" width="1536" height="1024"></div><div class="laptop-base"></div></div>
+            <div class="phone"><div class="phone-notch"></div><img src="assets/bercant-project.webp" alt="Ber Can’t mobil görünüm ön izlemesi"></div>
+            <span class="live-badge"><i></i> LIVE EXPERIENCE</span>
           </div>
         </article>
-
-        <div class="project-note reveal"><span>SONRAKİ PROJE</span><p>Her yeni çalışma, EB Digital Studio portföyünde gerçek bir vaka çalışması olarak yerini alacak.</p><b>02 / SOON</b></div>
+        <div class="project-strip reveal">
+          <div><span>02 / NEXT</span><strong>Yeni proje yakında</strong><small>Her yeni çalışma gerçek bir vaka çalışması olarak eklenecek.</small></div>
+          <div><span>LAB / 01</span><strong>Özel sistem konseptleri</strong><small>Admin paneli, üyelik ve takip deneyimleri.</small></div>
+          <div class="project-arrow">→</div>
+        </div>
       </div>
     </section>
 
-    <section class="services section-pad" id="hizmetler">
+    <section class="section-pad services-section" id="services">
       <div class="container">
-        <div class="split-heading reveal">
-          <div><span class="eyebrow">02 — HİZMETLER</span><h2>Fikirden yayına,<br><span class="gradient-text">tek bir yaratıcı süreç.</span></h2></div>
-          <p>İhtiyacınıza göre görsel kimliği güçlü bir tanıtım sitesi ya da üyelik ve yönetim altyapısı olan işlevsel bir sistem geliştiriyorum.</p>
-        </div>
+        <div class="section-heading reveal"><div><span class="section-no">02</span><span class="eyebrow">HİZMETLER</span><h2>Fikirden yayına,<br><span class="gradient-text">tek yaratıcı süreç.</span></h2></div><p>Marka kimliğini yansıtan tanıtım sitelerinden üyelik ve yönetim altyapısı olan işlevsel sistemlere kadar.</p></div>
         <div class="service-grid">
-          <article class="service-card reveal"><span>01</span><div class="service-icon">◩</div><h3>Kurumsal Web Sitesi</h3><p>Markanın güvenini ve kalitesini ilk bakışta yansıtan özgün, modern ve mobil uyumlu web siteleri.</p></article>
-          <article class="service-card reveal" data-delay="70"><span>02</span><div class="service-icon">◇</div><h3>Kişisel Portföy Sitesi</h3><p>Kişisel markanızı, çalışmalarınızı ve uzmanlığınızı premium bir dijital vitrine dönüştüren portföyler.</p></article>
-          <article class="service-card reveal" data-delay="140"><span>03</span><div class="service-icon">⌁</div><h3>Üyelik ve Giriş Sistemleri</h3><p>Güvenli kullanıcı kaydı, oturum yönetimi ve kullanıcıya özel içerik akışları.</p></article>
-          <article class="service-card reveal"><span>04</span><div class="service-icon">▦</div><h3>Takip Panelleri</h3><p>Öğrenci veya müşterilerin günlük verilerini, hedeflerini ve ilerlemesini yöneten özel paneller.</p></article>
-          <article class="service-card reveal" data-delay="70"><span>05</span><div class="service-icon">⌘</div><h3>Admin Paneli</h3><p>Verilerinizi tek merkezden yönetebileceğiniz sade, güçlü ve yetkilendirilmiş kontrol ekranları.</p></article>
-          <article class="service-card reveal" data-delay="140"><span>06</span><div class="service-icon">↻</div><h3>Bakım ve Güncelleme</h3><p>Mevcut sitelerin içerik, tasarım, güvenlik ve performans bakımının düzenli şekilde sürdürülmesi.</p></article>
-          <article class="service-card reveal"><span>07</span><div class="service-icon">◎</div><h3>Alan Adı & GitHub Pages</h3><p>Alan adı yönlendirmesi, DNS, HTTPS ve GitHub Pages yayın sürecinin baştan sona kurulumu.</p></article>
-          <article class="service-card reveal" data-delay="70"><span>08</span><div class="service-icon">⬡</div><h3>Supabase Entegrasyonu</h3><p>Kimlik doğrulama, veritabanı ve güvenli veri erişimi gerektiren projelere modern backend altyapısı.</p></article>
-          <article class="service-card reveal" data-delay="140"><span>09</span><div class="service-icon">◫</div><h3>Mobil Uyumlu Tasarım</h3><p>Telefon, tablet ve masaüstünde aynı premium hissi koruyan duyarlı kullanıcı deneyimleri.</p></article>
+          <article class="service-card reveal" data-tilt><span class="service-no">01</span><i>◩</i><h3>Kurumsal Web Sitesi</h3><p>Markanızın güvenini ve kalitesini ilk bakışta yansıtan özgün, modern ve mobil uyumlu web siteleri.</p><b>BRAND EXPERIENCE →</b></article>
+          <article class="service-card reveal" data-delay="60" data-tilt><span class="service-no">02</span><i>◇</i><h3>Kişisel Portföy</h3><p>Uzmanlığınızı ve çalışmalarınızı premium bir dijital vitrine dönüştüren kişisel marka siteleri.</p><b>PERSONAL BRAND →</b></article>
+          <article class="service-card reveal" data-delay="120" data-tilt><span class="service-no">03</span><i>⌁</i><h3>Üyelik Sistemleri</h3><p>Güvenli kullanıcı kaydı, giriş, oturum yönetimi ve kişiye özel içerik akışları.</p><b>AUTHENTICATION →</b></article>
+          <article class="service-card reveal" data-tilt><span class="service-no">04</span><i>▦</i><h3>Takip Panelleri</h3><p>Öğrenci veya müşterilerin verilerini, hedeflerini ve ilerlemesini yöneten özel paneller.</p><b>DASHBOARD UX →</b></article>
+          <article class="service-card reveal" data-delay="60" data-tilt><span class="service-no">05</span><i>⌘</i><h3>Admin Paneli</h3><p>İçeriklerinizi ve kullanıcılarınızı tek merkezden yönetebileceğiniz yetkilendirilmiş kontrol ekranları.</p><b>CONTROL SYSTEM →</b></article>
+          <article class="service-card reveal" data-delay="120" data-tilt><span class="service-no">06</span><i>⬡</i><h3>Supabase Entegrasyonu</h3><p>Kimlik doğrulama, veritabanı ve güvenli veri erişimi gerektiren modern backend altyapısı.</p><b>SECURE BACKEND →</b></article>
+          <article class="service-card reveal" data-tilt><span class="service-no">07</span><i>◎</i><h3>Alan Adı & Yayın</h3><p>DNS, HTTPS, GitHub Pages ve alan adı yönlendirmelerinin baştan sona kurulumu.</p><b>GO LIVE →</b></article>
+          <article class="service-card reveal" data-delay="60" data-tilt><span class="service-no">08</span><i>↻</i><h3>Bakım & Güncelleme</h3><p>Mevcut sitelerin tasarım, içerik, performans ve teknik bakımının düzenli sürdürülmesi.</p><b>CONTINUOUS CARE →</b></article>
+          <article class="service-card reveal" data-delay="120" data-tilt><span class="service-no">09</span><i>◫</i><h3>Mobil Uyum</h3><p>Telefon, tablet ve masaüstünde aynı premium hissi koruyan duyarlı kullanıcı deneyimleri.</p><b>RESPONSIVE UI →</b></article>
         </div>
       </div>
     </section>
 
-    <section class="story section-pad" id="hikayem">
-      <div class="container story-grid">
-        <div class="story-collage reveal">
-          <figure class="story-main tilt-card" data-tilt><img src="assets/portrait-story.webp" alt="Efecan Berber masa başında" width="998" height="1500" loading="lazy"></figure>
+    <section class="section-pad about-section" id="about">
+      <div class="container about-grid">
+        <div class="about-gallery reveal">
+          <figure class="story-main" data-tilt><img src="assets/portrait-story.webp" alt="Efecan Berber masa başında" width="998" height="1500" loading="lazy"></figure>
           <figure class="story-secondary"><img src="assets/portrait-lifestyle.webp" alt="Efecan Berber yaşam tarzı portresi" width="998" height="1500" loading="lazy"></figure>
-          <div class="story-stamp"><strong>20</strong><span>YAŞINDA<br>BAĞIMSIZ<br>ÜRETİCİ</span></div>
+          <div class="about-badges"><span>20 YAŞINDA</span><span>BAĞIMSIZ</span><span>ÜRETİCİ</span></div>
         </div>
-        <div class="story-copy reveal" data-delay="100">
-          <span class="eyebrow">03 — BEN KİMİM?</span>
-          <h2>Kendi yolunu<br><span class="gradient-text">üreterek çizen</span> biri.</h2>
-          <p class="lead">Ben Efecan Berber. Bilgisayar programcılığı eğitimine başladım; ancak kısa sürede teknolojide ilerlemenin yalnızca sınıfla sınırlı olmadığını gördüm.</p>
-          <p>Araştırarak, deneyerek ve gerçek projeler geliştirerek kendi yolumu çizmeye karar verdim. Eğitimime ara verip doğrudan iş dünyasına adım attım. Bir dostum için tasarladığım ilk web sitesi, hem bu alandaki yeteneğimi fark etmemi hem de tasarım ve yazılımın benim için bir meslekten daha fazlası olduğunu anlamamı sağladı.</p>
+        <div class="about-copy reveal" data-delay="90">
+          <span class="section-no">03</span><span class="eyebrow">BEN KİMİM?</span>
+          <h2>Kendi yolunu<br><span class="gradient-text">üreterek çizen biri.</span></h2>
+          <p>Ben Efecan Berber. Bilgisayar programcılığı eğitimine başladım; ancak kısa sürede teknolojide ilerlemenin yalnızca sınıfla sınırlı olmadığını gördüm.</p>
+          <p>Araştırarak, deneyerek ve gerçek projeler geliştirerek kendi yolumu çizmeye karar verdim. Eğitimime ara verip doğrudan iş dünyasına adım attım. Bir dostum için tasarladığım ilk web sitesi, bu alandaki yeteneğimi fark etmemi sağladı.</p>
           <p>Bugün markalara özel web deneyimleri ve çalışan dijital sistemler geliştiriyorum. Uzun vadeli hedefim, EB Digital Studio’yu yaratıcı fikirlerin güçlü ürünlere dönüştüğü profesyonel bir dijital ajansa taşımak.</p>
-          <blockquote>“Her proje, yalnızca teslim edilen bir site değil; markanın dijital dünyadaki karakteridir.”</blockquote>
-          <div class="story-signature">Efecan Berber</div>
+          <blockquote>“Her proje yalnızca teslim edilen bir site değil; markanın dijital dünyadaki karakteridir.”</blockquote>
+          <div class="signature">Efecan Berber</div>
         </div>
       </div>
     </section>
 
-    <section class="tech section-pad">
+    <section class="section-pad tech-section">
       <div class="container tech-grid">
-        <div class="tech-copy reveal">
-          <span class="eyebrow">04 — TEKNOLOJİ</span>
-          <h2>Tasarım kadar<br><span class="gradient-text">altyapı da güçlü.</span></h2>
-          <p>Her araç bir amaç için kullanılır: daha hızlı yüklenmek, daha kolay yönetilmek ve daha güvenli çalışmak.</p>
-          <div class="tech-list"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Supabase</span><span>GitHub</span><span>Responsive UI</span><span>Authentication</span><span>Database</span></div>
-        </div>
-        <div class="tech-orbit reveal" data-delay="100" aria-label="Kullanılan teknolojiler">
-          <div class="orbit-core"><img src="assets/logo.svg" alt="EB Digital Studio logo"></div>
-          <div class="orbit-ring ring-one"><span style="--i:0">HTML</span><span style="--i:1">CSS</span><span style="--i:2">JS</span><span style="--i:3">UI</span></div>
-          <div class="orbit-ring ring-two"><span style="--i:0">DB</span><span style="--i:1">AUTH</span><span style="--i:2">GIT</span><span style="--i:3">API</span><span style="--i:4">UX</span></div>
-        </div>
+        <div class="tech-copy reveal"><span class="section-no">04</span><span class="eyebrow">TEKNOLOJİ</span><h2>Tasarım kadar<br><span class="gradient-text">altyapı da güçlü.</span></h2><p>Her araç bir amaç için kullanılır: daha hızlı yüklenmek, daha kolay yönetilmek ve daha güvenli çalışmak.</p><div class="tech-list"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Supabase</span><span>GitHub</span><span>Responsive UI</span><span>Authentication</span><span>Database</span></div></div>
+        <div class="orbit reveal" data-delay="100" aria-label="Teknoloji yörüngesi"><div class="orbit-ring ring-a"></div><div class="orbit-ring ring-b"></div><div class="orbit-ring ring-c"></div><div class="orbit-core"><img src="assets/logo.svg" alt="EB Digital Studio logo"></div><span class="node n1">HTML</span><span class="node n2">CSS</span><span class="node n3">JS</span><span class="node n4">UI</span><span class="node n5">DB</span><span class="node n6">AUTH</span><span class="node n7">GIT</span><span class="node n8">UX</span></div>
       </div>
     </section>
 
-    <section class="process section-pad" id="surec">
+    <section class="section-pad process-section" id="process">
       <div class="container">
-        <div class="split-heading reveal"><div><span class="eyebrow">05 — ÇALIŞMA SÜRECİ</span><h2>Belirsizliği azaltan,<br><span class="gradient-text">net bir yol haritası.</span></h2></div><p>Her proje; amacı, kullanıcıyı ve teknik gereksinimleri anlayarak başlar. Sonuç tesadüfe bırakılmaz.</p></div>
+        <div class="section-heading reveal"><div><span class="section-no">05</span><span class="eyebrow">ÇALIŞMA SÜRECİ</span><h2>Belirsizliği azaltan,<br><span class="gradient-text">net bir yol haritası.</span></h2></div><p>Her proje amacı, kullanıcıyı ve teknik ihtiyaçları anlayarak başlar. Sonuç tesadüfe bırakılmaz.</p></div>
         <div class="process-track">
-          <article class="process-step reveal"><b>01</b><div><span>KEŞİF</span><h3>İhtiyacı anlama</h3><p>Hedef, kullanıcı, rakipler ve ihtiyaç duyulan özellikler netleştirilir.</p></div></article>
-          <article class="process-step reveal"><b>02</b><div><span>STRATEJİ</span><h3>Doğru yapıyı kurma</h3><p>Sayfa mimarisi, kullanıcı akışı ve teknik altyapı planlanır.</p></div></article>
-          <article class="process-step reveal"><b>03</b><div><span>TASARIM</span><h3>Kimliği deneyime çevirme</h3><p>Markaya özel renk, tipografi, hareket ve arayüz sistemi hazırlanır.</p></div></article>
-          <article class="process-step reveal"><b>04</b><div><span>GELİŞTİRME</span><h3>Tasarıma hayat verme</h3><p>Hızlı, duyarlı ve sürdürülebilir kod altyapısı oluşturulur.</p></div></article>
-          <article class="process-step reveal"><b>05</b><div><span>TEST</span><h3>Her ayrıntıyı doğrulama</h3><p>Mobil görünüm, bağlantılar, formlar, hız ve güvenlik kontrol edilir.</p></div></article>
-          <article class="process-step reveal"><b>06</b><div><span>YAYIN</span><h3>Projeyi dünyaya açma</h3><p>Alan adı, HTTPS, yayın ayarları ve son kontroller tamamlanır.</p></div></article>
+          <article class="process-step reveal"><span>01</span><small>KEŞİF</small><h3>İhtiyacı anlama</h3><p>Hedef, kullanıcı, rakipler ve gereksinimler netleştirilir.</p></article>
+          <article class="process-step reveal" data-delay="45"><span>02</span><small>STRATEJİ</small><h3>Doğru yapıyı kurma</h3><p>Sayfa mimarisi, kullanıcı akışı ve teknik altyapı planlanır.</p></article>
+          <article class="process-step reveal" data-delay="90"><span>03</span><small>TASARIM</small><h3>Kimliği deneyime çevirme</h3><p>Renk, tipografi, hareket ve arayüz sistemi hazırlanır.</p></article>
+          <article class="process-step reveal" data-delay="135"><span>04</span><small>GELİŞTİRME</small><h3>Tasarıma hayat verme</h3><p>Hızlı, duyarlı ve sürdürülebilir kod altyapısı oluşturulur.</p></article>
+          <article class="process-step reveal" data-delay="180"><span>05</span><small>TEST</small><h3>Her ayrıntıyı doğrulama</h3><p>Mobil görünüm, bağlantılar, formlar ve hız kontrol edilir.</p></article>
+          <article class="process-step reveal" data-delay="225"><span>06</span><small>YAYIN</small><h3>Projeyi dünyaya açma</h3><p>Alan adı, HTTPS, yayın ayarları ve son kontroller tamamlanır.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="proposal section-pad" id="teklif">
-      <div class="container proposal-shell reveal">
-        <div class="proposal-intro">
-          <span class="eyebrow">06 — PROJE SİHİRBAZI</span>
-          <h2>Fikrini anlat,<br><span class="gradient-text">birlikte şekillendirelim.</span></h2>
-          <p>Kısa formu doldur. Bilgilerin hazır bir WhatsApp mesajına dönüşsün ve projen için doğrudan iletişime geç.</p>
-          <div class="direct-contact">
-            <a href="tel:+905425866513"><span>TELEFON</span><strong>0542 586 65 13</strong></a>
-            <a href="mailto:efecanberber0@gmail.com"><span>E-POSTA</span><strong>efecanberber0@gmail.com</strong></a>
-          </div>
-        </div>
-        <form class="proposal-form" id="proposalForm">
-          <label><span>Adınız / marka adınız</span><input type="text" name="name" placeholder="Örn. Ahmet / Nova Studio" required></label>
+    <section class="section-pad contact-section" id="contact">
+      <div class="container contact-shell reveal">
+        <div class="contact-head"><div><span class="section-no">06</span><span class="eyebrow">PROJE SİHİRBAZI</span><h2>Fikrini anlat,<br><span class="gradient-text">birlikte şekillendirelim.</span></h2><p>Kısa formu doldur. Bilgilerin hazır WhatsApp mesajına dönüşsün ve projen için doğrudan iletişime geç.</p></div><div class="direct-contact"><a href="tel:+905425866513"><small>TELEFON</small><strong>0542 586 65 13</strong></a><a href="mailto:efecanberber0@gmail.com"><small>E-POSTA</small><strong>efecanberber0@gmail.com</strong></a></div></div>
+        <form id="proposalForm" class="proposal-form">
+          <label><span>Adınız / marka adınız</span><input name="name" autocomplete="name" required placeholder="Örn. ABC Mimarlık"></label>
           <label><span>Proje türü</span><select name="type" required><option value="">Seçiniz</option><option>Kurumsal web sitesi</option><option>Kişisel portföy</option><option>Üyelik ve giriş sistemi</option><option>Öğrenci / müşteri takip paneli</option><option>Admin paneli</option><option>Site bakım ve güncelleme</option><option>Diğer</option></select></label>
-          <div class="form-row"><label><span>Sayfa sayısı</span><select name="pages"><option>1–3 sayfa</option><option>4–7 sayfa</option><option>8+ sayfa</option><option>Henüz belli değil</option></select></label><label><span>Teslim beklentisi</span><select name="deadline"><option>Esnek</option><option>2–4 hafta</option><option>1–2 ay</option><option>Acil</option></select></label></div>
-          <fieldset><legend>Gerekli özellikler</legend><label class="check"><input type="checkbox" name="feature" value="Mobil uyum"><span>Mobil uyum</span></label><label class="check"><input type="checkbox" name="feature" value="Üyelik sistemi"><span>Üyelik sistemi</span></label><label class="check"><input type="checkbox" name="feature" value="Admin paneli"><span>Admin paneli</span></label><label class="check"><input type="checkbox" name="feature" value="Veritabanı"><span>Veritabanı</span></label><label class="check"><input type="checkbox" name="feature" value="Alan adı kurulumu"><span>Alan adı kurulumu</span></label><label class="check"><input type="checkbox" name="feature" value="Bakım desteği"><span>Bakım desteği</span></label></fieldset>
-          <label><span>Projenizi kısaca anlatın</span><textarea name="details" rows="4" placeholder="Amaç, hedef kitle ve aklınızdaki özellikler..."></textarea></label>
-          <button class="button button-primary proposal-submit magnetic" type="submit">WhatsApp’tan Teklif İste <span>↗</span></button>
-          <p class="form-note">Form herhangi bir sunucuya veri göndermez; yalnızca cihazınızda WhatsApp mesajı hazırlar.</p>
+          <label><span>Sayfa sayısı</span><select name="pages"><option>1–3 sayfa</option><option>4–7 sayfa</option><option>8+ sayfa</option><option>Henüz belli değil</option></select></label>
+          <label><span>Teslim beklentisi</span><select name="deadline"><option>Esnek</option><option>2–4 hafta</option><option>1–2 ay</option><option>Acil</option></select></label>
+          <fieldset><legend>Gerekli özellikler</legend><label><input type="checkbox" name="feature" value="Mobil uyum"><span>Mobil uyum</span></label><label><input type="checkbox" name="feature" value="Üyelik sistemi"><span>Üyelik sistemi</span></label><label><input type="checkbox" name="feature" value="Admin paneli"><span>Admin paneli</span></label><label><input type="checkbox" name="feature" value="Veritabanı"><span>Veritabanı</span></label><label><input type="checkbox" name="feature" value="Alan adı kurulumu"><span>Alan adı kurulumu</span></label><label><input type="checkbox" name="feature" value="Bakım desteği"><span>Bakım desteği</span></label></fieldset>
+          <label class="full"><span>Projenizi kısaca anlatın</span><textarea name="details" rows="5" placeholder="Markanız, hedefiniz ve ihtiyaç duyduğunuz özellikler..."></textarea></label>
+          <div class="form-footer"><p>Form herhangi bir sunucuya veri göndermez; yalnızca cihazınızda WhatsApp mesajı hazırlar.</p><button class="button button-primary magnetic" type="submit">WHATSAPP'TAN TEKLİF İSTE <span>↗</span></button></div>
         </form>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-main">
-      <div class="footer-brand"><a class="brand" href="#top"><img src="assets/logo.svg" alt="EB Digital Studio logo"><span><strong>EB DIGITAL STUDIO</strong><small>by Efecan Berber</small></span></a><p>Markalar için dijital karakter, güçlü arayüz ve çalışan sistemler.</p></div>
-      <div class="footer-links"><span>HIZLI MENÜ</span><a href="#projeler">Proje</a><a href="#hizmetler">Hizmetler</a><a href="#hikayem">Hikâyem</a><a href="#teklif">Teklif</a></div>
-      <div class="footer-contact"><span>İLETİŞİM</span><a href="tel:+905425866513">0542 586 65 13</a><a href="mailto:efecanberber0@gmail.com">efecanberber0@gmail.com</a></div>
-      <a class="footer-top-link magnetic" href="#top">YUKARI <span>↑</span></a>
-    </div>
+    <div class="container footer-grid"><div class="footer-brand"><a class="brand" href="#top"><img src="assets/logo.svg" alt=""><span><strong>EB DIGITAL STUDIO</strong><small>BY EFECAN BERBER</small></span></a><p>Markalar için dijital karakter, güçlü arayüz ve çalışan sistemler.</p></div><div><small>HIZLI MENÜ</small><a href="#work">Projeler</a><a href="#services">Hizmetler</a><a href="#about">Hikâyem</a><a href="#contact">Teklif</a></div><div><small>İLETİŞİM</small><a href="tel:+905425866513">0542 586 65 13</a><a href="mailto:efecanberber0@gmail.com">efecanberber0@gmail.com</a></div><a class="to-top" href="#top">YUKARI ↑</a></div>
     <div class="container footer-bottom"><span>© <b id="year"></b> EB Digital Studio. Tüm hakları saklıdır.</span><span>Designed & developed by Efecan Berber.</span></div>
   </footer>
 
   <dialog class="case-modal" id="caseModal">
-    <button class="modal-close" type="button" data-case-close aria-label="Vaka çalışmasını kapat">×</button>
-    <div class="case-modal-head"><span class="eyebrow">CASE STUDY — 001</span><h2>Ber Can’t Premium<br><span class="gradient-text">Online Coaching</span></h2><p>Online koçluk markası için tasarımdan yayına kadar geliştirilen kapsamlı dijital deneyim.</p></div>
-    <div class="case-modal-grid">
-      <article><span>YAKLAŞIM</span><h3>Markayı sistemle birleştirmek</h3><p>Görsel tasarım, kullanıcı yolculuğu ve üyelik altyapısı aynı marka dili altında ele alındı.</p></article>
-      <article><span>KAPSAM</span><h3>Uçtan uca üretim</h3><p>Ana sayfa, öğrenci deneyimi, koç paneli, mobil düzen ve yayın süreci birlikte geliştirildi.</p></article>
-      <article><span>SONUÇ</span><h3>Tek merkezli deneyim</h3><p>Tanıtım, üyelik ve yönetim ihtiyaçları tek bir dijital yapıda buluştu.</p></article>
-    </div>
-    <img src="assets/bercant-project.webp" alt="Ber Can’t projesi vaka çalışması görseli" width="1536" height="1024" loading="lazy">
-    <a class="button button-primary" href="https://bercant.com.tr" target="_blank" rel="noopener noreferrer">Canlı Projeyi Aç <span>↗</span></a>
+    <button class="icon-button modal-close" type="button" data-case-close aria-label="Kapat">×</button>
+    <span class="eyebrow">CASE STUDY — 001</span><h2>Ber Can’t Premium<br><span class="gradient-text">Online Coaching</span></h2><p>Online koçluk markası için tasarımdan yayına kadar geliştirilen kapsamlı dijital deneyim.</p>
+    <div class="case-grid"><article><small>YAKLAŞIM</small><h3>Markayı sistemle birleştirmek</h3><p>Görsel tasarım, kullanıcı yolculuğu ve üyelik altyapısı aynı marka dili altında ele alındı.</p></article><article><small>KAPSAM</small><h3>Uçtan uca üretim</h3><p>Ana sayfa, öğrenci deneyimi, koç paneli, mobil düzen ve yayın süreci birlikte geliştirildi.</p></article><article><small>SONUÇ</small><h3>Tek merkezli deneyim</h3><p>Tanıtım, üyelik ve yönetim ihtiyaçları tek dijital yapıda buluştu.</p></article></div>
+    <img src="assets/bercant-project.webp" alt="Ber Can’t vaka çalışması görseli"><a class="button button-primary" href="https://bercant.com.tr" target="_blank" rel="noopener">CANLI PROJEYİ AÇ ↗</a>
   </dialog>
 
-  <noscript><div class="noscript">Bu sitenin etkileşimli özellikleri için JavaScript’i etkinleştirin.</div></noscript>
-  <script src="js/app.js" defer></script>
+  <script src="js/app.js?v=2.0" defer></script>
 </body>
 </html>
