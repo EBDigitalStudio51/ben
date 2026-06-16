@@ -1,12 +1,22 @@
 (() => {
 'use strict';
 const root=document.documentElement,body=document.body;
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const systemReduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionModes=['full','system','reduced'];
+let motionMode=localStorage.getItem('eb-motion')||'full';
+if(!motionModes.includes(motionMode))motionMode='full';
+root.dataset.motion=motionMode;
+const reduced=motionMode==='reduced'||(motionMode==='system'&&systemReduced);
 const themes=['ocean','nebula','emerald','sunset','gold','silver'];
 const colors={ocean:'#040711',nebula:'#090510',emerald:'#03100d',sunset:'#110604',gold:'#0f0c05',silver:'#080a0f'};
 const metaTheme=document.querySelector('meta[name="theme-color"]');
-function setTheme(theme,persist=true){const safe=themes.includes(theme)?theme:'ocean';root.dataset.theme=safe;document.querySelectorAll('[data-theme-value]').forEach(b=>b.classList.toggle('is-active',b.dataset.themeValue===safe));metaTheme?.setAttribute('content',colors[safe]);if(persist)localStorage.setItem('eb-theme',safe);window.dispatchEvent(new CustomEvent('themechange'))}
+const logoSource=theme=>`assets/logo-${theme}.svg`;
+function syncThemeAssets(theme){const src=logoSource(theme);document.querySelectorAll('[data-theme-logo]').forEach(img=>{if(img.getAttribute('src')!==src)img.setAttribute('src',src)});document.querySelector('link[rel~="icon"]')?.setAttribute('href',src)}
+function setTheme(theme,persist=true){const safe=themes.includes(theme)?theme:'ocean';root.dataset.theme=safe;document.querySelectorAll('[data-theme-value]').forEach(b=>b.classList.toggle('is-active',b.dataset.themeValue===safe));metaTheme?.setAttribute('content',colors[safe]);syncThemeAssets(safe);if(persist)localStorage.setItem('eb-theme',safe);window.dispatchEvent(new CustomEvent('themechange'))}
 setTheme(localStorage.getItem('eb-theme')||'ocean',false);
+function syncMotionUI(){document.querySelectorAll('[data-motion-value]').forEach(b=>b.classList.toggle('is-active',b.dataset.motionValue===motionMode));const status=document.querySelector('[data-motion-status]');if(status)status.textContent=motionMode==='full'?'TAM':motionMode==='system'?'SİSTEM':'AZALTILMIŞ'}
+function setMotion(mode){const safe=motionModes.includes(mode)?mode:'full';if(safe===motionMode){syncMotionUI();return}localStorage.setItem('eb-motion',safe);root.dataset.motion=safe;location.reload()}
+syncMotionUI();
 const intro=document.getElementById('intro');
 if(intro){body.classList.add('no-scroll');setTimeout(()=>{intro.classList.add('is-hidden');body.classList.remove('no-scroll');setTimeout(()=>intro.remove(),800)},reduced?250:1900)}
 const header=document.querySelector('.site-header'),progress=document.querySelector('.scroll-progress span'),navLinks=[...document.querySelectorAll('.desktop-nav a')];
@@ -17,6 +27,7 @@ const panel=document.querySelector('.theme-panel'),backdrop=document.querySelect
 function openTheme(){panel?.classList.add('is-open');backdrop?.classList.add('is-visible');panel?.setAttribute('aria-hidden','false');document.querySelectorAll('[data-theme-open]').forEach(b=>b.setAttribute('aria-expanded','true'));body.classList.add('no-scroll')}
 function closeTheme(){panel?.classList.remove('is-open');backdrop?.classList.remove('is-visible');panel?.setAttribute('aria-hidden','true');document.querySelectorAll('[data-theme-open]').forEach(b=>b.setAttribute('aria-expanded','false'));body.classList.remove('no-scroll')}
 document.querySelectorAll('[data-theme-open]').forEach(b=>b.addEventListener('click',openTheme));document.querySelectorAll('[data-theme-close]').forEach(b=>b.addEventListener('click',closeTheme));document.querySelectorAll('[data-theme-value]').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.themeValue)));document.querySelector('.theme-reset')?.addEventListener('click',()=>setTheme('ocean'));
+document.querySelectorAll('[data-motion-value]').forEach(b=>b.addEventListener('click',()=>setMotion(b.dataset.motionValue)));
 const toggle=document.querySelector('.menu-toggle'),menu=document.getElementById('mobileMenu');
 function toggleMenu(force){if(!toggle||!menu)return;const open=typeof force==='boolean'?force:!menu.classList.contains('is-open');menu.classList.toggle('is-open',open);menu.setAttribute('aria-hidden',String(!open));toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Menüyü kapat':'Menüyü aç')}
 toggle?.addEventListener('click',()=>toggleMenu());menu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));

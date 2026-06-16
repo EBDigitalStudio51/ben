@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tr" data-theme="ocean">
+<html lang="tr" data-theme="ocean" data-motion="full">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -9,13 +9,13 @@
   <meta property="og:title" content="EB Digital Studio — Efecan Berber">
   <meta property="og:description" content="Sıradan siteler değil, markanız için dijital imzalar tasarlıyorum.">
   <meta property="og:image" content="assets/og-image.jpg">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ocean.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=2.0">
-  <script>document.documentElement.classList.add('js')</script>
+  <script>try{document.documentElement.dataset.motion=localStorage.getItem('eb-motion')||'full'}catch(e){document.documentElement.dataset.motion='full'};document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="css/style.css?v=2.1">
 </head>
 <body>
   <a class="skip-link" href="#content">İçeriğe geç</a>
@@ -28,7 +28,7 @@
   <div class="intro" id="intro" aria-hidden="true">
     <div class="intro-grid"></div>
     <div class="intro-core">
-      <img src="assets/logo.svg" alt="" class="intro-logo">
+      <img src="assets/logo-ocean.svg" data-theme-logo alt="" class="intro-logo">
       <p>EB DIGITAL STUDIO</p>
       <div class="intro-line"><span></span></div>
       <small>CRAFTING DIGITAL SIGNATURES</small>
@@ -41,7 +41,7 @@
   <header class="site-header" id="top">
     <div class="container nav-shell">
       <a class="brand magnetic" href="#top" aria-label="EB Digital Studio ana sayfa">
-        <img class="brand-mark" src="assets/logo.svg" alt="">
+        <img class="brand-mark" src="assets/logo-ocean.svg" data-theme-logo alt="">
         <span><strong>EB DIGITAL STUDIO</strong><small>BY EFECAN BERBER</small></span>
       </a>
       <nav class="desktop-nav" aria-label="Ana menü">
@@ -71,6 +71,15 @@
       <button class="theme-option" type="button" data-theme-value="gold"><span class="swatches gold"><i></i><i></i><i></i></span><span><strong>Gold Elegance</strong><small>Prestij · Lüks</small></span><b>05</b></button>
       <button class="theme-option" type="button" data-theme-value="silver"><span class="swatches silver"><i></i><i></i><i></i></span><span><strong>Silver Minimal</strong><small>Sadelik · Netlik</small></span><b>06</b></button>
     </div>
+    <section class="motion-settings" aria-labelledby="motionTitle">
+      <div class="motion-heading"><div><span class="eyebrow">MOTION ENGINE</span><h3 id="motionTitle">Animasyon modu</h3></div><span class="motion-status" data-motion-status>TAM</span></div>
+      <p>Bu cihazda animasyon görünmüyorsa <strong>Tam</strong> modunu seç. Tercihin bu cihazda saklanır.</p>
+      <div class="motion-options" role="group" aria-label="Animasyon modu seçimi">
+        <button type="button" data-motion-value="full"><b>Tam</b><small>Sinematik deneyim</small></button>
+        <button type="button" data-motion-value="system"><b>Sistem</b><small>Cihaz ayarını izle</small></button>
+        <button type="button" data-motion-value="reduced"><b>Azaltılmış</b><small>Daha sakin görünüm</small></button>
+      </div>
+    </section>
     <button class="button button-secondary theme-reset" type="button">Varsayılan temaya dön</button>
   </aside>
   <div class="panel-backdrop" data-theme-close></div>
@@ -92,7 +101,7 @@
           <div class="beam beam-one"></div><div class="beam beam-two"></div><div class="beam beam-three"></div>
           <div class="signature-mark" data-tilt>
             <div class="signature-glow"></div>
-            <img src="assets/logo.svg" alt="EB Digital Studio monogramı">
+            <img src="assets/logo-ocean.svg" data-theme-logo alt="EB Digital Studio monogramı">
             <span>EB</span>
           </div>
           <div class="portrait-shell" data-tilt>
@@ -175,7 +184,7 @@
     <section class="section-pad tech-section">
       <div class="container tech-grid">
         <div class="tech-copy reveal"><span class="section-no">04</span><span class="eyebrow">TEKNOLOJİ</span><h2>Tasarım kadar<br><span class="gradient-text">altyapı da güçlü.</span></h2><p>Her araç bir amaç için kullanılır: daha hızlı yüklenmek, daha kolay yönetilmek ve daha güvenli çalışmak.</p><div class="tech-list"><span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Supabase</span><span>GitHub</span><span>Responsive UI</span><span>Authentication</span><span>Database</span></div></div>
-        <div class="orbit reveal" data-delay="100" aria-label="Teknoloji yörüngesi"><div class="orbit-ring ring-a"></div><div class="orbit-ring ring-b"></div><div class="orbit-ring ring-c"></div><div class="orbit-core"><img src="assets/logo.svg" alt="EB Digital Studio logo"></div><span class="node n1">HTML</span><span class="node n2">CSS</span><span class="node n3">JS</span><span class="node n4">UI</span><span class="node n5">DB</span><span class="node n6">AUTH</span><span class="node n7">GIT</span><span class="node n8">UX</span></div>
+        <div class="orbit reveal" data-delay="100" aria-label="Teknoloji yörüngesi"><div class="orbit-ring ring-a"></div><div class="orbit-ring ring-b"></div><div class="orbit-ring ring-c"></div><div class="orbit-core"><img src="assets/logo-ocean.svg" data-theme-logo alt="EB Digital Studio logo"></div><span class="node n1">HTML</span><span class="node n2">CSS</span><span class="node n3">JS</span><span class="node n4">UI</span><span class="node n5">DB</span><span class="node n6">AUTH</span><span class="node n7">GIT</span><span class="node n8">UX</span></div>
       </div>
     </section>
 
@@ -210,7 +219,7 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-grid"><div class="footer-brand"><a class="brand" href="#top"><img src="assets/logo.svg" alt=""><span><strong>EB DIGITAL STUDIO</strong><small>BY EFECAN BERBER</small></span></a><p>Markalar için dijital karakter, güçlü arayüz ve çalışan sistemler.</p></div><div><small>HIZLI MENÜ</small><a href="#work">Projeler</a><a href="#services">Hizmetler</a><a href="#about">Hikâyem</a><a href="#contact">Teklif</a></div><div><small>İLETİŞİM</small><a href="tel:+905425866513">0542 586 65 13</a><a href="mailto:efecanberber0@gmail.com">efecanberber0@gmail.com</a></div><a class="to-top" href="#top">YUKARI ↑</a></div>
+    <div class="container footer-grid"><div class="footer-brand"><a class="brand" href="#top"><img src="assets/logo-ocean.svg" data-theme-logo alt=""><span><strong>EB DIGITAL STUDIO</strong><small>BY EFECAN BERBER</small></span></a><p>Markalar için dijital karakter, güçlü arayüz ve çalışan sistemler.</p></div><div><small>HIZLI MENÜ</small><a href="#work">Projeler</a><a href="#services">Hizmetler</a><a href="#about">Hikâyem</a><a href="#contact">Teklif</a></div><div><small>İLETİŞİM</small><a href="tel:+905425866513">0542 586 65 13</a><a href="mailto:efecanberber0@gmail.com">efecanberber0@gmail.com</a></div><a class="to-top" href="#top">YUKARI ↑</a></div>
     <div class="container footer-bottom"><span>© <b id="year"></b> EB Digital Studio. Tüm hakları saklıdır.</span><span>Designed & developed by Efecan Berber.</span></div>
   </footer>
 
@@ -221,6 +230,6 @@
     <img src="assets/bercant-project.webp" alt="Ber Can’t vaka çalışması görseli"><a class="button button-primary" href="https://bercant.com.tr" target="_blank" rel="noopener">CANLI PROJEYİ AÇ ↗</a>
   </dialog>
 
-  <script src="js/app.js?v=2.0" defer></script>
+  <script src="js/app.js?v=2.1" defer></script>
 </body>
 </html>
