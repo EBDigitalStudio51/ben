@@ -20,8 +20,8 @@
     }catch(e){}
     document.documentElement.classList.add('js');
   </script>
-  <link rel="stylesheet" href="css/style.css?v=3.0">
-  <link rel="stylesheet" href="css/experience.css?v=3.0">
+  <link rel="stylesheet" href="css/style.css?v=3.2">
+  <link rel="stylesheet" href="css/experience.css?v=3.2">
 </head>
 <body class="case-page">
   <div class="noise" aria-hidden="true"></div>
@@ -29,6 +29,9 @@
   <div class="ambient ambient-a" aria-hidden="true"></div>
   <div class="ambient ambient-b" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"><span></span></div>
 
   <header class="site-header scrolled" id="top">
     <div class="container nav-shell">
@@ -98,7 +101,7 @@
             <span class="compare-label before">ESKİ · İLK SÜRÜM</span>
           </div>
           <div class="compare-handle" aria-hidden="true"><span>↔</span></div>
-          <input class="compare-range" type="range" min="8" max="92" value="50" aria-label="Eski ve yeni görünümü karşılaştır">
+          <input class="compare-range" type="range" data-cursor="SÜRÜKLE" min="8" max="92" value="50" aria-label="Eski ve yeni görünümü karşılaştır">
         </div>
       </div>
     </section>
@@ -171,7 +174,7 @@
     <div class="container footer-bottom"><span>© <b id="year"></b> EB Digital Studio.</span><span>Case study designed & developed by Efecan Berber.</span></div>
   </footer>
 
-  <script src="js/app.js?v=3.0" defer></script>
-  <script src="js/experience.js?v=3.0" defer></script>
+  <script src="js/app.js?v=3.2" defer></script>
+  <script src="js/experience.js?v=3.2" defer></script>
 </body>
 </html>
