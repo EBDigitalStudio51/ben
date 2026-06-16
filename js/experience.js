@@ -185,8 +185,15 @@
   if (compare) {
     const range = $('input[type="range"]', compare);
     const update = value => compare.style.setProperty('--split', `${value}%`);
+    const fitLegacyViewport = () => {
+      const width = compare.getBoundingClientRect().width;
+      compare.style.setProperty('--legacy-scale', String(width / 1440));
+    };
     range?.addEventListener('input',()=>update(range.value));
     update(range?.value || 50);
+    fitLegacyViewport();
+    addEventListener('resize', fitLegacyViewport, {passive:true});
+    if ('ResizeObserver' in window) new ResizeObserver(fitLegacyViewport).observe(compare);
   }
 
   /* small system details */

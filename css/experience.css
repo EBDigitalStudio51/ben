@@ -241,7 +241,7 @@ html[data-theme="silver"] body:after{
 .case-hero h1{margin:14px 0 22px;font:800 clamp(55px,7vw,105px)/.86 "Manrope";letter-spacing:-.075em}
 .case-hero p{max-width:650px;color:var(--soft);font-size:17px}
 .case-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:27px}.case-meta span{padding:8px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:9px}
-.case-visual{position:relative}.case-visual img{border:1px solid rgba(132,204,22,.25);border-radius:27px;box-shadow:0 40px 120px rgba(0,0,0,.55),0 0 80px rgba(132,204,22,.08)}
+.case-visual{position:relative}.case-visual img{width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;object-position:center;border:1px solid rgba(132,204,22,.25);border-radius:27px;background:#050806;box-shadow:0 40px 120px rgba(0,0,0,.55),0 0 80px rgba(132,204,22,.08)}
 .case-visual:after{content:"01 / CASE";position:absolute;right:-10px;top:-18px;padding:12px 15px;border-radius:12px;background:#0a1209;border:1px solid rgba(132,204,22,.28);color:#a3e635;font:700 8px "Space Grotesk";letter-spacing:.16em}
 .case-story{padding:110px 0}
 .case-story-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:70px}
@@ -249,10 +249,10 @@ html[data-theme="silver"] body:after{
 .case-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.case-fact{padding:23px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.02)}.case-fact b{color:#a3e635;font:800 30px "Manrope"}.case-fact small{display:block;margin-top:8px;color:var(--muted)}
 .compare-section{padding:110px 0;background:linear-gradient(180deg,transparent,rgba(132,204,22,.025),transparent)}
 .compare-head{text-align:center;max-width:750px;margin:0 auto 42px}.compare-head h2{margin:12px 0;font:800 clamp(38px,5vw,70px)/.95 "Manrope";letter-spacing:-.065em}
-.compare-shell{--split:50%;position:relative;max-width:1180px;height:min(720px,68vw);min-height:480px;margin:auto;border:1px solid rgba(255,255,255,.13);border-radius:28px;background:#050806;box-shadow:0 45px 130px rgba(0,0,0,.55);overflow:hidden}
-.compare-after,.compare-before{position:absolute;inset:0}.compare-after{background:#071009}.compare-after img{width:100%;height:100%;object-fit:cover;object-position:top}
+.compare-shell{--split:50%;--legacy-scale:.819444;position:relative;width:100%;max-width:1180px;aspect-ratio:3/2;height:auto;min-height:0;margin:auto;border:1px solid rgba(255,255,255,.13);border-radius:28px;background:#050806;box-shadow:0 45px 130px rgba(0,0,0,.55);overflow:hidden;isolation:isolate}
+.compare-after,.compare-before{position:absolute;inset:0}.compare-after{display:grid;place-items:center;background:#071009}.compare-after img{width:100%;height:100%;object-fit:contain;object-position:center;background:#071009}
 .compare-before{width:var(--split);overflow:hidden;border-right:2px solid #a3e635;z-index:2;background:#000}
-.compare-before iframe{width:1180px;height:720px;border:0;background:#000;transform-origin:top left}
+.compare-before iframe{display:block;width:1440px;height:960px;border:0;background:#000;transform:scale(var(--legacy-scale));transform-origin:top left;pointer-events:none}
 .compare-label{position:absolute;top:17px;z-index:4;padding:9px 12px;border-radius:999px;background:rgba(2,5,3,.86);border:1px solid rgba(255,255,255,.14);font:700 8px "Space Grotesk";letter-spacing:.14em}.compare-label.before{left:17px;color:#00e676}.compare-label.after{right:17px;color:#a3e635}
 .compare-handle{position:absolute;left:var(--split);top:0;bottom:0;z-index:5;transform:translateX(-50%);width:44px;display:grid;place-items:center;pointer-events:none}.compare-handle span{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#a3e635;color:#061000;font-weight:900;box-shadow:0 0 30px rgba(163,230,53,.35)}
 .compare-range{position:absolute;inset:0;z-index:6;width:100%;height:100%;opacity:0;cursor:ew-resize}
@@ -278,12 +278,16 @@ html[data-motion=reduced] .command-panel,.lab-browser,.journey-step{transition:n
   .lab-site nav span{display:none}.lab-site footer{grid-template-columns:1fr;gap:5px}.lab-site footer span:nth-child(n+2){display:none}
   .journey-track{grid-template-columns:1fr 1fr}.journey-step{min-height:205px}
   .case-hero{min-height:auto;padding:85px 0 55px}.case-hero h1{font-size:56px}.case-story,.compare-section,.case-chapters,.case-architecture,.case-cta{padding:75px 0}
-  .case-facts,.chapter-grid{grid-template-columns:1fr}.compare-shell{height:560px;min-height:0}.compare-before iframe{width:900px;height:700px}
+  .case-facts,.chapter-grid{grid-template-columns:1fr}.compare-shell{aspect-ratio:3/2;height:auto;min-height:0}.compare-before iframe{width:1440px;height:960px}
   .architecture-map{grid-template-columns:1fr}.architecture-core{min-height:210px;border-radius:28px}.case-cta-shell{align-items:flex-start;flex-direction:column;padding:30px}
 }
 @media(max-width:520px){
   .lab-checks{grid-template-columns:1fr}.lab-color-grid{grid-template-columns:repeat(5,1fr)}
   .journey-track{grid-template-columns:1fr}.journey-step{min-height:auto;padding-bottom:24px}
   .command-center{padding-top:70px}.command-panel{max-height:80vh}.command-panel>footer{display:none}
-  .case-hero h1{font-size:46px}.compare-shell{height:500px}.compare-before iframe{width:800px;height:650px}
+  .case-hero h1{font-size:46px}.compare-shell{aspect-ratio:3/2;height:auto}.compare-before iframe{width:1440px;height:960px}
 }
+
+/* v3.1 — case study cursor + aspect-safe comparison */
+.case-page .compare-range{touch-action:none}
+@media(max-width:560px){.compare-shell{min-height:300px;aspect-ratio:auto}.compare-before iframe{width:1440px;height:960px}.compare-label{top:10px;padding:7px 9px;font-size:6px}.compare-label.before{left:10px}.compare-label.after{right:10px}.compare-handle{width:34px}.compare-handle span{width:34px;height:34px;font-size:11px}}
