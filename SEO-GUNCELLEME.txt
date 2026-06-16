@@ -1,0 +1,13 @@
+EB Digital Studio SEO Güncellemesi
+
+Güncellenenler:
+- Ana sayfa title ve meta description
+- Vaka çalışması title ve meta description
+- Canonical URL'ler
+- Open Graph ve Twitter kartları
+- Organization, Person, WebSite, WebPage ve CreativeWork schema verileri
+- robots.txt ve sitemap.xml alan adı düzeltmeleri
+- 404 sayfasına noindex
+- Manifest start_url ve scope
+
+GitHub reposunun köküne yükleyip mevcut dosyaların üzerine yazın.
