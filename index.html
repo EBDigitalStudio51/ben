@@ -54,14 +54,31 @@
     ]
   }
   </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Bir web projesine nasıl başlanır?","acceptedAnswer":{"@type":"Answer","text":"İlk görüşmede projenin hedefi, sayfa yapısı, tasarım beklentisi ve teknik ihtiyaçları netleştirilir. Yazılı teklif ve kapsam onaylandıktan sonra başlangıç ödemesiyle çalışma başlar."}},
+      {"@type":"Question","name":"Ödeme planı nasıl uygulanır?","acceptedAnswer":{"@type":"Answer","text":"Standart projelerde ödeme planı yüzde 40 başlangıç, yüzde 30 tasarım onayı ve yüzde 30 yayın öncesi şeklindedir. Projeye özel farklı bir plan varsa yazılı teklifte belirtilir."}},
+      {"@type":"Question","name":"Kaç revize dahildir?","acceptedAnswer":{"@type":"Answer","text":"Revize sayısı ve kapsamı proje teklifinde açıkça belirtilir. Kapsam dışı yeni sayfa, özellik veya yön değişiklikleri ayrıca fiyatlandırılır."}},
+      {"@type":"Question","name":"Alan adı, hosting ve üçüncü taraf servis ücretleri fiyata dahil mi?","acceptedAnswer":{"@type":"Answer","text":"Aksi yazılı olarak belirtilmedikçe alan adı, ücretli hosting, lisans, e-posta, ödeme kuruluşu ve üçüncü taraf servis bedelleri müşteriye aittir. GitHub Pages gibi ücretsiz altyapılar uygun projelerde kullanılabilir."}},
+      {"@type":"Question","name":"Ortalama teslim süresi nedir?","acceptedAnswer":{"@type":"Answer","text":"Kurumsal web projeleri çoğunlukla 2–4 hafta içinde tamamlanır. Üyelik, veritabanı, admin paneli ve takip sistemi içeren projelerde süre teknik kapsama göre uzar."}},
+      {"@type":"Question","name":"Site teslim edildikten sonra destek veriliyor mu?","acceptedAnswer":{"@type":"Answer","text":"Teklifte belirtilen yayın sonrası destek süresi boyunca teknik kontroller sağlanır. Devam eden bakım ve içerik güncellemeleri aylık bakım paketiyle sürdürülebilir."}},
+      {"@type":"Question","name":"Sonradan yeni özellik eklenebilir mi?","acceptedAnswer":{"@type":"Answer","text":"Evet. Mevcut altyapı uygun olduğu sürece yeni sayfalar, formlar, üyelik, veritabanı, admin paneli ve diğer özellikler ayrı kapsam olarak eklenebilir."}},
+      {"@type":"Question","name":"Site dosyaları ve erişimler kime ait olur?","acceptedAnswer":{"@type":"Answer","text":"Tam ödeme tamamlandıktan sonra sözleşmede belirtilen proje dosyaları ve müşteri adına açılan alan adı veya servis erişimleri müşteriye teslim edilir. Üçüncü taraf lisans koşulları ayrıca geçerlidir."}}
+    ]
+  }
+  </script>
   <link rel="icon" href="assets/logo-ocean.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <script>try{document.documentElement.dataset.motion=localStorage.getItem('eb-motion')||'full'}catch(e){document.documentElement.dataset.motion='full'};document.documentElement.classList.add('js')</script>
-  <link rel="stylesheet" href="css/style.css?v=5.2">
-  <link rel="stylesheet" href="css/experience.css?v=5.2">
+  <link rel="stylesheet" href="css/style.css?v=5.3">
+  <link rel="stylesheet" href="css/experience.css?v=5.3">
 </head>
 <body>
   <a class="skip-link" href="#content">İçeriğe geç</a>
@@ -91,7 +108,7 @@
         <span><strong>EB DIGITAL STUDIO</strong><small>BY EFECAN BERBER</small></span>
       </a>
       <nav class="desktop-nav" aria-label="Ana menü">
-        <a href="#work">Projeler</a><a href="#lab">Design Lab</a><a href="#services">Hizmetler</a><a href="#reviews">Yorumlar</a><a href="#about">Hikâyem</a><a href="#process">Süreç</a><a href="#contact">İletişim</a>
+        <a href="#work">Projeler</a><a href="#lab">Design Lab</a><a href="#services">Hizmetler</a><a href="#reviews">Yorumlar</a><a href="#faq">SSS</a><a href="#about">Hikâyem</a><a href="#process">Süreç</a><a href="#contact">İletişim</a>
       </nav>
       <div class="nav-actions">
         <button class="theme-trigger magnetic" type="button" data-theme-open aria-expanded="false"><span class="theme-orb"></span><span>TEMA</span></button>
@@ -102,7 +119,7 @@
   </header>
 
   <nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
-    <a href="#work">Projeler</a><a href="#lab">Design Lab</a><a href="#services">Hizmetler</a><a href="#reviews">Yorumlar</a><a href="#about">Hikâyem</a><a href="#process">Süreç</a><a href="#contact">İletişim</a>
+    <a href="#work">Projeler</a><a href="#lab">Design Lab</a><a href="#services">Hizmetler</a><a href="#reviews">Yorumlar</a><a href="#faq">SSS</a><a href="#about">Hikâyem</a><a href="#process">Süreç</a><a href="#contact">İletişim</a>
     <button type="button" data-theme-open><span class="theme-orb"></span> Temayı değiştir</button>
   </nav>
 
@@ -389,6 +406,50 @@
       </div>
     </section>
 
+    <section class="trust-terms-section section-pad" id="working-terms">
+      <div class="container">
+        <div class="trust-terms-shell reveal">
+          <div class="trust-terms-head">
+            <div><span class="eyebrow">ÇALIŞMA & ÖDEME DÜZENİ</span><h2>Şeffaf kapsam,<br><span class="gradient-text">kontrollü proje süreci.</span></h2></div>
+            <p>Her proje başlamadan önce kapsam, teslim planı, revize sınırı ve ödeme adımları yazılı olarak netleştirilir.</p>
+          </div>
+          <div class="trust-terms-grid">
+            <article><span>01</span><i>%40</i><h3>Başlangıç</h3><p>Teklif ve kapsam onayından sonra proje takvimi başlangıç ödemesiyle açılır.</p></article>
+            <article><span>02</span><i>%30</i><h3>Tasarım Onayı</h3><p>Ana arayüz ve görsel yön onaylandığında ikinci ödeme gerçekleştirilir.</p></article>
+            <article><span>03</span><i>%30</i><h3>Yayın Öncesi</h3><p>Son kontroller tamamlanır; kalan ödeme sonrasında canlı yayın ve teslim yapılır.</p></article>
+            <article><span>04</span><i>2–4</i><h3>Hafta Ortalama</h3><p>Kurumsal sitelerde genel teslim aralığıdır; özel sistemlerde kapsam belirleyicidir.</p></article>
+            <article><span>05</span><i>NET</i><h3>Revize Kapsamı</h3><p>Dahil revizeler teklifte belirtilir; yeni özellik ve kapsam değişiklikleri ayrıca planlanır.</p></article>
+            <article><span>06</span><i>+</i><h3>Yayın Sonrası</h3><p>Teknik destek süresi teklifte yazılır; devam eden bakım isteğe bağlıdır.</p></article>
+          </div>
+          <div class="trust-terms-footer">
+            <p>Alan adı, ücretli lisanslar, e-posta, ödeme sağlayıcıları ve üçüncü taraf servis bedelleri aksi belirtilmedikçe proje fiyatına dahil değildir.</p>
+            <a href="hizmet-ve-odeme-kosullari.html">TÜM KOŞULLARI İNCELE <span>↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-section section-pad" id="faq">
+      <div class="container faq-layout">
+        <div class="faq-intro reveal">
+          <span class="eyebrow">SIK SORULAN SORULAR</span>
+          <h2>Karar vermeden önce<br><span class="gradient-text">bilmeniz gerekenler.</span></h2>
+          <p>Proje başlangıcı, ödeme, teslim, revize ve teknik altyapı hakkında en çok sorulan sorular.</p>
+          <a class="button button-secondary" href="#contact">BAŞKA BİR SORUM VAR <span>↗</span></a>
+        </div>
+        <div class="faq-list reveal" data-delay="80">
+          <details open><summary><span>01</span><b>Bir web projesine nasıl başlanır?</b><i></i></summary><p>Ön görüşmede projenin amacı, hedef kitlesi, sayfa yapısı, görsel beklentisi ve teknik ihtiyaçları netleştirilir. Ardından kapsam, süre ve ödeme planını içeren yazılı teklif hazırlanır.</p></details>
+          <details><summary><span>02</span><b>Ödeme planı nasıl uygulanır?</b><i></i></summary><p>Standart akış %40 başlangıç, %30 tasarım onayı ve %30 yayın öncesidir. Projenin yapısı farklı bir ödeme planı gerektiriyorsa bu durum yazılı teklifte açıkça belirtilir.</p></details>
+          <details><summary><span>03</span><b>Kaç revize dahildir?</b><i></i></summary><p>Revize sayısı ve revizenin hangi aşamaları kapsadığı teklifte yer alır. Onaylanan kapsamın dışındaki yeni sayfa, özellik veya tasarım yönü değişiklikleri ek çalışma olarak değerlendirilir.</p></details>
+          <details><summary><span>04</span><b>Alan adı ve hosting fiyata dahil mi?</b><i></i></summary><p>Aksi belirtilmedikçe alan adı, ücretli hosting, kurumsal e-posta, lisans ve üçüncü taraf servis bedelleri müşteriye aittir. Uygun projelerde GitHub Pages ve ücretsiz HTTPS gibi maliyetsiz çözümler kurulabilir.</p></details>
+          <details><summary><span>05</span><b>Projenin teslim süresi ne kadar?</b><i></i></summary><p>Kurumsal web siteleri genellikle 2–4 hafta içinde tamamlanır. Üyelik, veritabanı, admin paneli veya takip sistemi içeren projelerde teslim süresi kapsam ve geri bildirim hızına göre belirlenir.</p></details>
+          <details><summary><span>06</span><b>Site tesliminden sonra destek var mı?</b><i></i></summary><p>Teklifte belirtilen yayın sonrası destek döneminde teknik kontroller sağlanır. Düzenli içerik güncellemeleri, performans kontrolleri ve sistem bakımı ayrıca bakım paketiyle sürdürülebilir.</p></details>
+          <details><summary><span>07</span><b>Daha sonra yeni özellik eklenebilir mi?</b><i></i></summary><p>Evet. Altyapı uygun olduğu sürece yeni sayfalar, blog, randevu, üyelik, admin paneli, veritabanı veya ödeme entegrasyonu ayrı bir geliştirme kapsamıyla eklenebilir.</p></details>
+          <details><summary><span>08</span><b>Proje dosyaları ve erişimler kime ait olur?</b><i></i></summary><p>Tam ödeme tamamlandıktan sonra teklifte belirtilen proje dosyaları ve müşteri adına açılan hesap erişimleri teslim edilir. Üçüncü taraf servislerin kendi lisans ve kullanım koşulları ayrıca geçerlidir.</p></details>
+        </div>
+      </div>
+    </section>
+
     <section class="section-pad reviews-section" id="reviews">
       <div class="container">
         <div class="section-heading reveal">
@@ -495,8 +556,8 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-grid"><div class="footer-brand"><a class="brand" href="#top"><img src="assets/logo-ocean.svg" data-theme-logo alt=""><span><strong>EB DIGITAL STUDIO</strong><small>BY EFECAN BERBER</small></span></a><p>Markalar için dijital karakter, güçlü arayüz ve çalışan sistemler.</p></div><div><small>HIZLI MENÜ</small><a href="#work">Projeler</a><a href="#lab">Design Lab</a><a href="#services">Hizmetler</a><a href="#reviews">Yorumlar</a><a href="#about">Hikâyem</a><a href="#contact">Teklif</a></div><div><small>İLETİŞİM</small><a href="tel:+905425866513">0542 586 65 13</a><a href="mailto:efecanberber0@gmail.com">efecanberber0@gmail.com</a><a href="https://www.instagram.com/ebdigitalstudioffical/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></div><a class="to-top" href="#top">YUKARI ↑</a></div>
-    <div class="container footer-bottom"><span>© <b id="year"></b> EB Digital Studio. Tüm hakları saklıdır.</span><span>Designed & developed by Efecan Berber.</span></div>
+    <div class="container footer-grid"><div class="footer-brand"><a class="brand" href="#top"><img src="assets/logo-ocean.svg" data-theme-logo alt=""><span><strong>EB DIGITAL STUDIO</strong><small>BY EFECAN BERBER</small></span></a><p>Markalar için dijital karakter, güçlü arayüz ve çalışan sistemler.</p></div><div><small>HIZLI MENÜ</small><a href="#work">Projeler</a><a href="#lab">Design Lab</a><a href="#services">Hizmetler</a><a href="#faq">SSS</a><a href="#reviews">Yorumlar</a><a href="#contact">Teklif</a><a href="gizlilik-politikasi.html">Gizlilik</a><a href="hizmet-ve-odeme-kosullari.html">Hizmet Koşulları</a></div><div><small>İLETİŞİM</small><a href="tel:+905425866513">0542 586 65 13</a><a href="mailto:efecanberber0@gmail.com">efecanberber0@gmail.com</a><a href="https://www.instagram.com/ebdigitalstudioffical/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></div><a class="to-top" href="#top">YUKARI ↑</a></div>
+    <div class="container footer-bottom"><span>© <b id="year"></b> EB Digital Studio. Tüm hakları saklıdır.</span><span class="footer-legal-links"><a href="gizlilik-politikasi.html">Gizlilik Politikası</a><a href="hizmet-ve-odeme-kosullari.html">Hizmet ve Ödeme Koşulları</a></span></div>
   </footer>
 
   <button class="command-fab" type="button" data-command-open aria-label="EB Command Center">
@@ -541,16 +602,18 @@
         <button type="button" data-command="theme"><i>04</i><span><b>Atmosferi değiştir</b><small>Altı signature tema</small></span><kbd>T</kbd></button>
         <button type="button" data-command="navigate" data-target="#reviews"><i>05</i><span><b>Müşteri deneyimleri</b><small>Referans ve yorum paneli</small></span><kbd>Y</kbd></button>
         <button type="button" data-command="navigate" data-target="#about"><i>06</i><span><b>Efecan kimdir?</b><small>Hikâyeyi görüntüle</small></span><kbd>H</kbd></button>
-        <button type="button" data-command="navigate" data-target="#contact"><i>07</i><span><b>Proje başlat</b><small>Teklif sihirbazını aç</small></span><kbd>N</kbd></button>
-        <a href="https://wa.me/905425866513" target="_blank" rel="noopener"><i>08</i><span><b>WhatsApp</b><small>Doğrudan iletişime geç</small></span><kbd>W</kbd></a>
-        <a href="mailto:efecanberber0@gmail.com"><i>09</i><span><b>E-posta gönder</b><small>efecanberber0@gmail.com</small></span><kbd>E</kbd></a>
-        <a href="https://www.instagram.com/ebdigitalstudioffical/" target="_blank" rel="noopener noreferrer"><i>10</i><span><b>Instagram</b><small>@ebdigitalstudioffical</small></span><kbd>I</kbd></a>
+        <button type="button" data-command="navigate" data-target="#faq"><i>07</i><span><b>Sık sorulan sorular</b><small>Ödeme, teslim ve revize bilgileri</small></span><kbd>S</kbd></button>
+        <button type="button" data-command="navigate" data-target="#contact"><i>08</i><span><b>Proje başlat</b><small>Teklif sihirbazını aç</small></span><kbd>N</kbd></button>
+        <a href="hizmet-ve-odeme-kosullari.html"><i>09</i><span><b>Hizmet koşulları</b><small>Çalışma ve ödeme düzeni</small></span><kbd>K</kbd></a>
+        <a href="https://wa.me/905425866513" target="_blank" rel="noopener"><i>10</i><span><b>WhatsApp</b><small>Doğrudan iletişime geç</small></span><kbd>W</kbd></a>
+        <a href="mailto:efecanberber0@gmail.com"><i>11</i><span><b>E-posta gönder</b><small>efecanberber0@gmail.com</small></span><kbd>E</kbd></a>
+        <a href="https://www.instagram.com/ebdigitalstudioffical/" target="_blank" rel="noopener noreferrer"><i>12</i><span><b>Instagram</b><small>@ebdigitalstudioffical</small></span><kbd>I</kbd></a>
       </div>
       <footer><span>↑↓ Gez</span><span>ENTER Seç</span><span>CTRL K Aç/Kapat</span></footer>
     </section>
   </div>
 
-  <script src="js/app.js?v=5.2" defer></script>
-  <script src="js/experience.js?v=5.2" defer></script>
+  <script src="js/app.js?v=5.3" defer></script>
+  <script src="js/experience.js?v=5.3" defer></script>
 </body>
 </html>
