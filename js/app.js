@@ -42,7 +42,6 @@ function openReview(event){if(!reviewDialog)return;event?.preventDefault?.();rev
 function closeReview(){if(!reviewDialog)return;reviewDialog.classList.remove('is-open');reviewDialog.setAttribute('aria-hidden','true');body.classList.remove('no-scroll');reviewOpener?.focus?.()}
 document.addEventListener('click',event=>{const opener=event.target.closest('[data-review-open]');if(opener){openReview(event);return}if(event.target.closest('[data-review-close]'))closeReview()});
 reviewForm?.addEventListener('submit',event=>{event.preventDefault();if(!reviewForm.reportValidity())return;const f=new FormData(reviewForm);if(!f.get('consent'))return;const stars='★'.repeat(Number(f.get('rating')||5));const msg=['Merhaba Efecan, EB Digital Studio için müşteri yorumu paylaşmak istiyorum.','',`Ad Soyad: ${f.get('reviewer')||'-'}`,`Marka / Proje: ${f.get('brand')||'-'}`,`Proje türü: ${f.get('project')||'-'}`,`Değerlendirme: ${f.get('rating')||'-'}/5 ${stars}`,`Yorum: ${f.get('comment')||'-'}`,'','Bu yorumun adım ve marka bilgimle EB Digital Studio sitesinde yayınlanmasına izin veriyorum.'].join('\n');const url=`https://wa.me/905425866513?text=${encodeURIComponent(msg)}`;const opened=window.open(url,'_blank');if(opened)opened.opener=null;else window.location.href=url;closeReview();reviewForm.reset()});
-
 /* ============================
    PREMIUM CUSTOM SELECTS
    Replaces browser-native white dropdown panels while keeping the
