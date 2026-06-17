@@ -361,3 +361,8 @@ html[data-motion=reduced] .command-panel,.lab-browser,.journey-step{transition:n
 @media(max-width:1050px){.design-lab-v5{grid-template-columns:1fr;min-height:0}.design-lab-v5 .lab-controls{border-right:0;border-bottom:1px solid var(--line)}.lab-feature-grid{grid-template-columns:repeat(2,1fr)}.lab-input-grid,.lab-select-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.design-lab-v5 .lab-controls{padding:20px}.design-lab-v5 .lab-preview-wrap{padding:24px 10px}.lab-input-grid,.lab-select-grid,.lab-feature-grid{grid-template-columns:1fr}.lab-sector-pills{max-height:none}.lab-preview-toolbar{padding:0 5px}.lab-browser[data-device=desktop],.lab-browser[data-device=tablet]{max-width:100%}.lab-browser[data-device=desktop] .lab-site,.lab-browser[data-device=tablet] .lab-site{min-height:430px}.lab-system-stack{display:none}.lab-service-row{grid-template-columns:1fr 1fr}.lab-service-row span:nth-child(3){display:none}.lab-quote-card{padding:17px}.lab-quote-head{align-items:flex-start;flex-direction:column}.lab-actions{grid-template-columns:1fr}.lab-price-mini>strong{font-size:33px}}
 @media(max-width:430px){.lab-preview-toolbar>div:first-child b{font-size:8px}.lab-device-switch{display:none}.lab-browser{max-width:100%!important}.lab-site nav button{padding:8px 9px}.lab-copy h3{font-size:29px!important}.lab-copy p{max-width:75%;font-size:8px}.lab-art{opacity:.44!important}.lab-quote-head>b{font-size:30px}.lab-feature-grid span{font-size:8px}}
+
+
+/* V5.1 — Design Lab custom dropdown integration */
+.lab-select-grid label,.lab-single-select,.proposal-form>label,.review-form-grid label{position:relative}
+.lab-select-grid .eb-select-trigger,.lab-single-select .eb-select-trigger{width:100%}

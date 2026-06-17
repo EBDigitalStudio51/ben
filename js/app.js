@@ -42,6 +42,162 @@ function openReview(event){if(!reviewDialog)return;event?.preventDefault?.();rev
 function closeReview(){if(!reviewDialog)return;reviewDialog.classList.remove('is-open');reviewDialog.setAttribute('aria-hidden','true');body.classList.remove('no-scroll');reviewOpener?.focus?.()}
 document.addEventListener('click',event=>{const opener=event.target.closest('[data-review-open]');if(opener){openReview(event);return}if(event.target.closest('[data-review-close]'))closeReview()});
 reviewForm?.addEventListener('submit',event=>{event.preventDefault();if(!reviewForm.reportValidity())return;const f=new FormData(reviewForm);if(!f.get('consent'))return;const stars='★'.repeat(Number(f.get('rating')||5));const msg=['Merhaba Efecan, EB Digital Studio için müşteri yorumu paylaşmak istiyorum.','',`Ad Soyad: ${f.get('reviewer')||'-'}`,`Marka / Proje: ${f.get('brand')||'-'}`,`Proje türü: ${f.get('project')||'-'}`,`Değerlendirme: ${f.get('rating')||'-'}/5 ${stars}`,`Yorum: ${f.get('comment')||'-'}`,'','Bu yorumun adım ve marka bilgimle EB Digital Studio sitesinde yayınlanmasına izin veriyorum.'].join('\n');const url=`https://wa.me/905425866513?text=${encodeURIComponent(msg)}`;const opened=window.open(url,'_blank');if(opened)opened.opener=null;else window.location.href=url;closeReview();reviewForm.reset()});
+
+/* ============================
+   PREMIUM CUSTOM SELECTS
+   Replaces browser-native white dropdown panels while keeping the
+   original <select> elements fully functional for forms and scripts.
+   ============================ */
+(function initPremiumSelects(){
+  const selects=[...document.querySelectorAll('select:not([data-native-select])')];
+  if(!selects.length)return;
+  let active=null;
+  const valueDescriptor=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value');
+
+  function variantFor(select){
+    if(select.closest('.design-lab-v5'))return'lab';
+    if(select.closest('.review-dialog'))return'review';
+    return'proposal';
+  }
+  function selectedOption(select){return select.options[select.selectedIndex]||select.options[0]}
+  function closeActive({focus=false}={}){
+    if(!active)return;
+    active.popover.classList.remove('is-open','opens-up');
+    active.popover.setAttribute('aria-hidden','true');
+    active.trigger.setAttribute('aria-expanded','false');
+    if(focus)active.trigger.focus();
+    active=null;
+  }
+  function positionPopover(item){
+    const rect=item.trigger.getBoundingClientRect();
+    const margin=10;
+    const width=Math.max(rect.width,Math.min(360,window.innerWidth-margin*2));
+    item.popover.style.width=`${Math.min(width,window.innerWidth-margin*2)}px`;
+    item.popover.style.left=`${Math.max(margin,Math.min(rect.left,window.innerWidth-width-margin))}px`;
+    item.popover.style.top=`${rect.bottom+8}px`;
+    item.popover.classList.remove('opens-up');
+    const popRect=item.popover.getBoundingClientRect();
+    const below=window.innerHeight-rect.bottom;
+    const above=rect.top;
+    if(below<Math.min(popRect.height+20,300)&&above>below){
+      item.popover.classList.add('opens-up');
+      item.popover.style.top=`${Math.max(margin,rect.top-popRect.height-8)}px`;
+    }
+  }
+  function sync(item){
+    const option=selectedOption(item.select);
+    item.value.textContent=option?.textContent?.trim()||'Seçiniz';
+    item.buttons.forEach((button,index)=>{
+      const isSelected=index===item.select.selectedIndex;
+      button.setAttribute('aria-selected',String(isSelected));
+      button.tabIndex=isSelected?0:-1;
+    });
+  }
+  function open(item){
+    if(active&&active!==item)closeActive();
+    active=item;
+    item.popover.classList.add('is-open');
+    item.popover.setAttribute('aria-hidden','false');
+    item.trigger.setAttribute('aria-expanded','true');
+    positionPopover(item);
+    requestAnimationFrame(()=>item.buttons[item.select.selectedIndex]?.focus({preventScroll:true}));
+  }
+
+  selects.forEach((select,index)=>{
+    const variant=variantFor(select);
+    select.classList.add('eb-native-select');
+    select.tabIndex=-1;
+    select.setAttribute('aria-hidden','true');
+
+    const trigger=document.createElement('button');
+    trigger.type='button';
+    trigger.className='eb-select-trigger';
+    trigger.dataset.selectVariant=variant;
+    trigger.setAttribute('aria-haspopup','listbox');
+    trigger.setAttribute('aria-expanded','false');
+    trigger.setAttribute('aria-controls',`ebSelectList${index}`);
+    trigger.innerHTML='<span class="eb-select-value"></span><span class="eb-select-caret" aria-hidden="true">⌄</span>';
+    select.insertAdjacentElement('afterend',trigger);
+
+    const popover=document.createElement('div');
+    popover.id=`ebSelectList${index}`;
+    popover.className='eb-select-popover';
+    popover.dataset.selectVariant=variant;
+    popover.setAttribute('role','listbox');
+    popover.setAttribute('aria-hidden','true');
+    document.body.appendChild(popover);
+
+    const buttons=[...select.options].map((option,optionIndex)=>{
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='eb-select-option';
+      button.setAttribute('role','option');
+      button.disabled=option.disabled;
+      button.dataset.optionIndex=String(optionIndex);
+      button.innerHTML=`<span>${option.textContent.trim()}</span><span class="eb-select-check" aria-hidden="true">✓</span>`;
+      popover.appendChild(button);
+      return button;
+    });
+    const item={select,trigger,popover,value:trigger.querySelector('.eb-select-value'),buttons};
+
+    // Programmatic select.value changes (used by Design Lab -> contact transfer)
+    // also refresh the custom visible label.
+    try{
+      Object.defineProperty(select,'value',{
+        configurable:true,
+        get(){return valueDescriptor.get.call(this)},
+        set(value){valueDescriptor.set.call(this,value);sync(item)}
+      });
+    }catch(_error){}
+
+    trigger.addEventListener('click',event=>{
+      event.preventDefault();event.stopPropagation();
+      active===item?closeActive({focus:true}):open(item);
+    });
+    trigger.addEventListener('keydown',event=>{
+      if(['ArrowDown','ArrowUp','Enter',' '].includes(event.key)){
+        event.preventDefault();open(item);
+      }
+    });
+    buttons.forEach((button,optionIndex)=>{
+      button.addEventListener('click',event=>{
+        event.preventDefault();
+        if(button.disabled)return;
+        select.selectedIndex=optionIndex;
+        select.dispatchEvent(new Event('input',{bubbles:true}));
+        select.dispatchEvent(new Event('change',{bubbles:true}));
+        sync(item);closeActive({focus:true});
+      });
+      button.addEventListener('keydown',event=>{
+        const enabled=buttons.filter(x=>!x.disabled);
+        const current=enabled.indexOf(button);
+        let next=current;
+        if(event.key==='ArrowDown')next=Math.min(enabled.length-1,current+1);
+        else if(event.key==='ArrowUp')next=Math.max(0,current-1);
+        else if(event.key==='Home')next=0;
+        else if(event.key==='End')next=enabled.length-1;
+        else if(event.key==='Escape'){event.preventDefault();closeActive({focus:true});return}
+        else if(event.key==='Tab'){closeActive();return}
+        else return;
+        event.preventDefault();enabled[next]?.focus();
+      });
+    });
+    select.addEventListener('change',()=>sync(item));
+    select.form?.addEventListener('reset',()=>setTimeout(()=>sync(item),0));
+    sync(item);
+  });
+
+  document.addEventListener('pointerdown',event=>{
+    if(active&&!active.trigger.contains(event.target)&&!active.popover.contains(event.target))closeActive();
+  });
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&active)closeActive({focus:true})});
+  addEventListener('resize',()=>closeActive(),{passive:true});
+  addEventListener('scroll',event=>{if(active&&event.target!==active.popover)closeActive()},{passive:true,capture:true});
+  document.addEventListener('click',event=>{
+    if(event.target.closest('[data-lab-apply]'))setTimeout(()=>selects.forEach(select=>select.dispatchEvent(new Event('change',{bubbles:true}))),0);
+  });
+})();
+
 if(!reduced&&matchMedia('(pointer:fine)').matches){
   const dot=document.querySelector('.cursor-dot'),ring=document.querySelector('.cursor-ring'),label=ring?.querySelector('span');
   if(dot&&ring){

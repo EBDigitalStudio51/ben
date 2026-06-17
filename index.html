@@ -60,8 +60,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <script>try{document.documentElement.dataset.motion=localStorage.getItem('eb-motion')||'full'}catch(e){document.documentElement.dataset.motion='full'};document.documentElement.classList.add('js')</script>
-  <link rel="stylesheet" href="css/style.css?v=4.2">
-  <link rel="stylesheet" href="css/experience.css?v=4.1">
+  <link rel="stylesheet" href="css/style.css?v=5.1">
+  <link rel="stylesheet" href="css/experience.css?v=5.1">
 </head>
 <body>
   <a class="skip-link" href="#content">İçeriğe geç</a>
@@ -198,54 +198,41 @@
     <section class="section-pad lab-section" id="lab">
       <div class="container">
         <div class="section-heading reveal">
-          <div><span class="section-no">02</span><span class="eyebrow">LIVE SITE CONFIGURATOR</span>
-            <h2>Markanı yaz,<br><span class="gradient-text">siteni ve fiyatını canlı gör.</span></h2>
+          <div><span class="section-no">02</span><span class="eyebrow">LIVE DESIGN LAB</span>
+            <h2>Fikrini seç,<br><span class="gradient-text">deneyimi anında gör.</span></h2>
           </div>
-          <p>İşletme bilgilerini, tasarım dilini ve ihtiyaç duyduğun özellikleri seç. Ön izleme markana göre şekillenir; seçili kapsamın tek toplam fiyatı anında hesaplanır.</p>
+          <p>Bir sektör, görsel dil ve sistem ihtiyacı seç. EB tasarım motoru sana birkaç saniye içinde canlı bir konsept üretsin.</p>
         </div>
 
-        <div class="design-lab design-lab-v5 reveal">
+        <div class="design-lab reveal">
           <div class="lab-controls">
             <div class="lab-system-head">
-              <span><i></i> EB CONFIGURATION ENGINE</span><b data-lab-status>READY</b>
+              <span><i></i> EB DESIGN ENGINE</span><b data-lab-status>READY</b>
             </div>
 
-            <fieldset class="lab-group lab-business-info">
-              <legend>01 · İşletme bilgileri</legend>
-              <div class="lab-input-grid">
-                <label><span>Marka / işletme adı</span><input type="text" maxlength="30" placeholder="Örn. Atlas Fitness" data-lab-input="brand"></label>
-                <label><span>Ana slogan</span><input type="text" maxlength="70" placeholder="Boş bırakırsan sektöre göre oluşturulur" data-lab-input="slogan"></label>
-              </div>
-            </fieldset>
-
             <fieldset class="lab-group">
-              <legend>02 · Sektör</legend>
-              <div class="lab-pills lab-sector-pills" data-lab-group="sector">
+              <legend>01 · Sektör</legend>
+              <div class="lab-pills" data-lab-group="sector">
                 <button type="button" class="is-active" data-value="fitness">Fitness</button>
-                <button type="button" data-value="beauty">Güzellik</button>
                 <button type="button" data-value="architecture">Mimarlık</button>
-                <button type="button" data-value="restaurant">Restoran</button>
-                <button type="button" data-value="realestate">Emlak</button>
-                <button type="button" data-value="clinic">Klinik</button>
+                <button type="button" data-value="beauty">Güzellik</button>
                 <button type="button" data-value="technology">Teknoloji</button>
-                <button type="button" data-value="education">Eğitim</button>
-                <button type="button" data-value="automotive">Otomotiv</button>
                 <button type="button" data-value="personal">Kişisel Marka</button>
               </div>
             </fieldset>
 
             <fieldset class="lab-group">
-              <legend>03 · Tasarım dili</legend>
+              <legend>02 · Tasarım dili</legend>
               <div class="lab-pills" data-lab-group="style">
-                <button type="button" class="is-active" data-value="futuristic">Futuristik <small>+7.500</small></button>
-                <button type="button" data-value="luxury">Lüks <small>+6.000</small></button>
+                <button type="button" class="is-active" data-value="futuristic">Futuristik</button>
+                <button type="button" data-value="luxury">Lüks</button>
                 <button type="button" data-value="minimal">Minimal</button>
-                <button type="button" data-value="corporate">Kurumsal <small>+3.000</small></button>
+                <button type="button" data-value="corporate">Kurumsal</button>
               </div>
             </fieldset>
 
             <fieldset class="lab-group">
-              <legend>04 · Renk atmosferi</legend>
+              <legend>03 · Renk atmosferi</legend>
               <div class="lab-color-grid" data-lab-group="palette">
                 <button type="button" class="is-active" data-value="electric" aria-label="Elektrik mavi mor"><i></i><i></i></button>
                 <button type="button" data-value="emerald" aria-label="Zümrüt turkuaz"><i></i><i></i></button>
@@ -256,94 +243,52 @@
             </fieldset>
 
             <fieldset class="lab-group">
-              <legend>05 · Proje kapsamı</legend>
-              <div class="lab-select-grid">
-                <label><span>Sayfa sayısı</span><select data-lab-select="pages"><option value="starter">1–3 sayfa · 17.900 TL</option><option value="business" selected>4–7 sayfa · 29.900 TL</option><option value="signature">8–12 sayfa · 49.900 TL</option><option value="extended">13+ sayfa · 64.900 TL</option></select></label>
-                <label><span>Teslim planı</span><select data-lab-select="deadline"><option value="standard" selected>Standart teslim</option><option value="urgent">Acil teslim · +%25</option></select></label>
+              <legend>04 · Sistem özellikleri</legend>
+              <div class="lab-checks">
+                <label><input type="checkbox" data-lab-feature value="Üyelik sistemi"><span>Üyelik</span></label>
+                <label><input type="checkbox" data-lab-feature value="Admin paneli"><span>Admin paneli</span></label>
+                <label><input type="checkbox" data-lab-feature value="Veritabanı"><span>Veritabanı</span></label>
+                <label><input type="checkbox" data-lab-feature value="Mobil uyum" checked><span>Mobil uyum</span></label>
               </div>
             </fieldset>
 
-            <fieldset class="lab-group">
-              <legend>06 · Ek özellikler</legend>
-              <div class="lab-checks lab-feature-grid">
-                <label><input type="checkbox" data-lab-feature value="animations"><span>Gelişmiş animasyon <b>+7.500</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="language"><span>İkinci dil <b>+7.500</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="blog"><span>Blog sistemi <b>+8.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="appointment"><span>Randevu / başvuru <b>+6.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="membership"><span>Üyelik ve giriş <b>+15.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="database"><span>Supabase veritabanı <b>+12.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="admin"><span>Admin paneli <b>+20.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="tracking"><span>Müşteri takip paneli <b>+18.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="uploads"><span>Dosya / fotoğraf yükleme <b>+8.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="roles"><span>Rol ve yetkilendirme <b>+8.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="payment"><span>Ödeme entegrasyonu <b>+15.000</b></span></label>
-                <label><input type="checkbox" data-lab-feature value="seo"><span>Gelişmiş teknik SEO <b>+5.000</b></span></label>
-              </div>
-            </fieldset>
-
-            <fieldset class="lab-group">
-              <legend>07 · Aylık bakım (isteğe bağlı)</legend>
-              <label class="lab-single-select"><select data-lab-select="maintenance"><option value="none">Bakım paketi istemiyorum</option><option value="basic">Temel Bakım · 2.000 TL/ay</option><option value="business">Business Care · 3.500 TL/ay</option><option value="system">System Care · 6.000 TL/ay</option></select></label>
-            </fieldset>
-
-            <div class="lab-price-mini" aria-live="polite">
-              <span>SEÇİLİ KAPSAMIN TOPLAMI</span>
-              <strong data-lab-total>37.400 TL</strong>
-              <small><b data-lab-delivery>12–18 iş günü</b> · Mobil uyum, temel SEO, SSL ve yayın kurulumu dahil.</small>
-            </div>
+            <button class="button button-primary lab-apply magnetic" type="button" data-lab-apply>
+              BU KONSEPTLE TEKLİF OLUŞTUR <span>↗</span>
+            </button>
           </div>
 
           <div class="lab-preview-wrap">
-            <div class="lab-preview-toolbar">
-              <div><span>CANLI ÖN İZLEME</span><b data-preview-sector>FITNESS & COACHING</b></div>
-              <div class="lab-device-switch" data-lab-device>
-                <button type="button" class="is-active" data-device="desktop" aria-label="Masaüstü görünümü">▰</button>
-                <button type="button" data-device="tablet" aria-label="Tablet görünümü">▯</button>
-                <button type="button" data-device="mobile" aria-label="Telefon görünümü">▯</button>
-              </div>
-            </div>
-
-            <div class="lab-browser" data-lab-preview data-style="futuristic" data-palette="electric" data-device="desktop">
+            <div class="lab-browser" data-lab-preview data-style="futuristic" data-palette="electric">
               <div class="lab-browser-bar">
-                <div><i></i><i></i><i></i></div><span data-preview-domain>pulsefitness.com</span><b>LIVE</b>
+                <div><i></i><i></i><i></i></div><span>preview.ebstudio.design</span><b>LIVE</b>
               </div>
-              <div class="lab-site" data-preview-sector-art="fitness">
-                <nav><strong data-preview-brand>PULSE FITNESS</strong><span data-preview-menu>Hakkımızda&nbsp;&nbsp; Programlar&nbsp;&nbsp; Başarılar&nbsp;&nbsp; İletişim</span><button data-preview-cta>Ücretsiz Görüşme</button></nav>
+              <div class="lab-site">
+                <nav><strong data-preview-brand>PULSE</strong><span>Hakkımızda&nbsp;&nbsp; Hizmetler&nbsp;&nbsp; İletişim</span><button>Başla</button></nav>
                 <main>
                   <div class="lab-copy">
                     <small data-preview-kicker>PERFORMANCE COACHING</small>
-                    <h3><span data-preview-title-main>Potansiyelini</span><br><em data-preview-title-accent>performansa dönüştür.</em></h3>
+                    <h3 data-preview-title>Potansiyelini<br><em>performansa</em> dönüştür.</h3>
                     <p data-preview-desc>Bilimsel yaklaşım, güçlü takip ve kişiye özel dijital deneyim.</p>
-                    <div><button data-preview-primary>Programları Keşfet →</button><a data-preview-secondary>Nasıl çalışır?</a></div>
-                    <div class="lab-service-row" data-preview-services><span>Kişisel Program</span><span>Gelişim Takibi</span><span>Online Koçluk</span></div>
+                    <div><button>Keşfet →</button><a>Nasıl çalışır?</a></div>
                   </div>
                   <div class="lab-art">
-                    <span class="lab-orb"><i data-preview-icon>⚡</i></span>
-                    <div class="lab-glass-card"><small data-preview-metric-label>HAFTALIK GELİŞİM</small><strong data-preview-metric>+24%</strong><i></i></div>
+                    <span class="lab-orb"></span>
+                    <div class="lab-glass-card"><small>GELİŞİM</small><strong>+24%</strong><i></i></div>
                     <div class="lab-mini-card"><b>01</b><span data-preview-feature>Mobil deneyim</span></div>
-                    <div class="lab-system-stack" data-preview-stack></div>
                   </div>
                 </main>
-                <footer><span>Özel Tasarım</span><span>Mobil Uyum</span><span>Hızlı & Güvenli</span></footer>
+                <footer><span>Özel Tasarım</span><span>Hızlı Altyapı</span><span>Güvenli Sistem</span></footer>
               </div>
               <div class="lab-device-shadow"></div>
             </div>
-
-            <aside class="lab-quote-card" aria-live="polite">
-              <div class="lab-quote-head"><div><span>CANLI MALİYET DÖKÜMÜ</span><strong data-quote-package>Marka Deneyimi</strong></div><b data-quote-total>37.400 TL</b></div>
-              <div class="lab-breakdown" data-lab-breakdown></div>
-              <div class="lab-recurring" data-lab-recurring hidden><span>Aylık bakım</span><strong>0 TL/ay</strong></div>
-              <div class="lab-quote-note"><b>Tek fiyat:</b> Seçili standart kapsam değişmediği sürece hesaplanan proje toplamıdır. Alan adı, ücretli lisanslar, üçüncü taraf servis kullanımları ve vergiler dahil değildir.</div>
-              <div class="lab-actions">
-                <button class="button button-primary magnetic" type="button" data-lab-whatsapp>BU KONFİGÜRASYONU GÖNDER <span>↗</span></button>
-                <button class="button button-ghost" type="button" data-lab-apply>PROJE FORMUNA AKTAR</button>
-              </div>
-            </aside>
+            <div class="lab-insight">
+              <span>CANLI ÖN İZLEME</span>
+              <p>Seçimlerin yalnızca renkleri değil; tipografiyi, kart yapısını, ışığı ve mesaj tonunu değiştirir.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
-
 
     <section class="section-pad services-section" id="services">
       <div class="container">
@@ -363,24 +308,24 @@
         <div class="solution-suite reveal" aria-labelledby="solutionTitle">
           <div class="solution-suite-head">
             <div><span class="eyebrow">ÇÖZÜM PAKETLERİ</span><h3 id="solutionTitle">İhtiyacına göre doğru başlangıç.</h3></div>
-            <p>Hazır kalıplar yerine projenin hedeflerine göre şekillenen net kapsamlar. Canlı konfigüratörde seçtiğin özellikler tek toplam fiyat olarak anında hesaplanır.</p>
+            <p>Hazır kalıplar yerine projenin hedeflerine göre şekillenen net kapsamlar. Fiyat ve teslim süresi, ihtiyaç analizi sonrasında belirlenir.</p>
           </div>
           <div class="solution-grid">
             <article class="solution-card">
               <span class="solution-index">01</span><small>STARTER</small><h4>Dijital Başlangıç</h4>
-              <p>Kişisel marka, portföy veya tek amaçlı tanıtım sayfası için hızlı ve güçlü başlangıç.</p><div class="solution-price"><strong>17.900 TL</strong><span>başlangıç</span></div>
+              <p>Kişisel marka, portföy veya tek amaçlı tanıtım sayfası için hızlı ve güçlü başlangıç.</p>
               <ul><li>Özel arayüz tasarımı</li><li>Mobil uyum</li><li>Temel SEO kurulumu</li><li>Alan adı ve yayın desteği</li></ul>
               <a href="#contact">PROJEYİ PLANLA <span>→</span></a>
             </article>
             <article class="solution-card is-featured">
               <span class="solution-badge">EN ÇOK TERCİH EDİLEN</span><span class="solution-index">02</span><small>BUSINESS</small><h4>Marka Deneyimi</h4>
-              <p>Kurumsal güveni güçlendiren, hizmetleri anlatan ve ziyaretçiyi iletişime yönlendiren kapsamlı web sitesi.</p><div class="solution-price"><strong>29.900 TL</strong><span>başlangıç</span></div>
+              <p>Kurumsal güveni güçlendiren, hizmetleri anlatan ve ziyaretçiyi iletişime yönlendiren kapsamlı web sitesi.</p>
               <ul><li>Çok sayfalı yapı</li><li>Premium marka dili</li><li>İletişim ve teklif akışları</li><li>Bakım ve güncelleme altyapısı</li></ul>
               <a href="#contact">PROJEYİ PLANLA <span>→</span></a>
             </article>
             <article class="solution-card">
               <span class="solution-index">03</span><small>CUSTOM SYSTEM</small><h4>Özel Dijital Sistem</h4>
-              <p>Üyelik, takip, yönetim ve veri altyapısı gerektiren işletmeye özel çalışan ürünler.</p><div class="solution-price"><strong>84.900 TL</strong><span>başlangıç</span></div>
+              <p>Üyelik, takip, yönetim ve veri altyapısı gerektiren işletmeye özel çalışan ürünler.</p>
               <ul><li>Üyelik ve güvenli giriş</li><li>Admin / müşteri paneli</li><li>Supabase veritabanı</li><li>Yetkilendirme ve özel akışlar</li></ul>
               <a href="#contact">SİSTEMİ KONUŞALIM <span>→</span></a>
             </article>
@@ -480,8 +425,6 @@
       <div class="container contact-shell reveal">
         <div class="contact-head"><div><span class="section-no">08</span><span class="eyebrow">PROJE SİHİRBAZI</span><h2>Fikrini anlat,<br><span class="gradient-text">birlikte şekillendirelim.</span></h2><p>Kısa formu doldur. Bilgilerin hazır WhatsApp mesajına dönüşsün ve projen için doğrudan iletişime geç.</p></div><div class="direct-contact"><a href="tel:+905425866513"><small>TELEFON</small><strong>0542 586 65 13</strong></a><a href="mailto:efecanberber0@gmail.com"><small>E-POSTA</small><strong>efecanberber0@gmail.com</strong></a><a href="https://www.instagram.com/ebdigitalstudioffical/" target="_blank" rel="noopener noreferrer"><small>INSTAGRAM</small><strong>@ebdigitalstudioffical ↗</strong></a></div></div>
         <form id="proposalForm" class="proposal-form">
-          <input type="hidden" name="labPrice" value="">
-          <input type="hidden" name="labConfig" value="">
           <label><span>Adınız / marka adınız</span><input name="name" autocomplete="name" required placeholder="Örn. ABC Mimarlık"></label>
           <label><span>Proje türü</span><select name="type" required><option value="">Seçiniz</option><option>Kurumsal web sitesi</option><option>Kişisel portföy</option><option>Üyelik ve giriş sistemi</option><option>Öğrenci / müşteri takip paneli</option><option>Admin paneli</option><option>Site bakım ve güncelleme</option><option>Diğer</option></select></label>
           <label><span>Sayfa sayısı</span><select name="pages"><option>1–3 sayfa</option><option>4–7 sayfa</option><option>8+ sayfa</option><option>Henüz belli değil</option></select></label>
@@ -550,7 +493,7 @@
     </section>
   </div>
 
-  <script src="js/app.js?v=5.0" defer></script>
-  <script src="js/experience.js?v=5.0" defer></script>
+  <script src="js/app.js?v=4.2" defer></script>
+  <script src="js/experience.js?v=4.1" defer></script>
 </body>
 </html>
