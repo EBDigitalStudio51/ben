@@ -37,10 +37,10 @@
       extended:{name:'Geniş Kapsamlı Web Deneyimi', label:'13+ sayfa', price:64900, delivery:'30–45 iş günü'}
     };
     const stylePlans = {
-      futuristic:{name:'Futuristik tasarım dili', price:7500},
-      luxury:{name:'Lüks tasarım dili', price:6000},
-      minimal:{name:'Minimal tasarım dili', price:0},
-      corporate:{name:'Kurumsal tasarım dili', price:3000}
+      futuristic:{name:'Futuristik tasarım dili', price:7500, preview:'FUTURISTIC / IMMERSIVE'},
+      luxury:{name:'Lüks tasarım dili', price:6000, preview:'LUXURY / EDITORIAL'},
+      minimal:{name:'Minimal tasarım dili', price:0, preview:'MINIMAL / PURE'},
+      corporate:{name:'Kurumsal tasarım dili', price:3000, preview:'CORPORATE / TRUST'}
     };
     const paletteNames = {electric:'Elektrik Mavi / Mor', emerald:'Zümrüt / Turkuaz', gold:'Altın / Siyah', fire:'Turuncu / Kırmızı', mono:'Gümüş / Minimal'};
     const featurePlans = {
@@ -195,6 +195,7 @@
       renderPreviewSystems(selected, sector);
 
       preview.dataset.style = state.style;
+      $('[data-preview-style-name]')?.replaceChildren(document.createTextNode(stylePlans[state.style].preview));
       preview.dataset.palette = state.palette;
       preview.dataset.device = state.device;
       $('[data-lab-total]')?.replaceChildren(document.createTextNode(money(result.total)));

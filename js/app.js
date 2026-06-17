@@ -31,6 +31,20 @@ document.querySelectorAll('[data-motion-value]').forEach(b=>b.addEventListener('
 const toggle=document.querySelector('.menu-toggle'),menu=document.getElementById('mobileMenu');
 function toggleMenu(force){if(!toggle||!menu)return;const open=typeof force==='boolean'?force:!menu.classList.contains('is-open');menu.classList.toggle('is-open',open);menu.setAttribute('aria-hidden',String(!open));toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Menüyü kapat':'Menüyü aç')}
 toggle?.addEventListener('click',()=>toggleMenu());menu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
+
+/* V5.4 — reliable home-logo and back-to-top controls */
+function scrollHome(event){
+  event?.preventDefault?.();
+  closeTheme?.();
+  toggleMenu?.(false);
+  window.scrollTo({top:0,left:0,behavior:reduced?'auto':'smooth'});
+  if(history.replaceState)history.replaceState(null,'',location.pathname+location.search);
+}
+document.querySelectorAll('a.brand[href="#top"],a.to-top[href="#top"]').forEach(link=>{
+  link.addEventListener('click',scrollHome);
+  link.setAttribute('role','button');
+});
+
 const io='IntersectionObserver'in window?new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target)}}),{threshold:.1,rootMargin:'0px 0px -35px'}):null;
 document.querySelectorAll('.reveal').forEach(el=>{if(el.dataset.delay)el.style.setProperty('--delay',`${Number(el.dataset.delay)}ms`);io?io.observe(el):el.classList.add('is-visible')});
 const rotate=document.querySelector('[data-rotate-word]'),words=['kusursuz detay','özgün karakter','güçlü performans','net kullanıcı deneyimi','kalıcı etki'];let wi=0;if(rotate&&!reduced)setInterval(()=>{rotate.classList.add('swap');setTimeout(()=>{wi=(wi+1)%words.length;rotate.textContent=words[wi];rotate.classList.remove('swap')},220)},2400);
