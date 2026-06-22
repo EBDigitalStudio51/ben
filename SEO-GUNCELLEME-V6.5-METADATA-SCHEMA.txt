@@ -1,0 +1,13 @@
+V6.5 Metadata & Schema Alignment
+
+Bu sürümde görünür tasarım değiştirilmedi. CSS, JS, metin akışı, bölüm yapısı ve görseller korunmuştur.
+
+Yapılan teknik/görünmeyen düzenlemeler:
+- Ana sayfa title etiketi kısaltıldı.
+- Meta description 160 karakter bandına yaklaştırıldı.
+- OG/Twitter başlık ve açıklama alanları yeni metadata ile eşitlendi.
+- case-study-bercant.html ve hizmet-ve-odeme-kosullari.html linklerine açıklayıcı title attribute eklendi.
+- JSON-LD içindeki WebPage nesnesi schema graph içinde öne alındı.
+- WebPage/WebSite schema description alanları meta description ile eşitlendi.
+
+Amaç: SEO analizindeki turuncu Meta Title, Meta Description, Title etiketi olmayan link ve schema name/headline uyumu uyarılarını azaltmak.
