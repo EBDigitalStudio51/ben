@@ -19,8 +19,8 @@
   const statePrice = $('[data-ai-state-price]', assistant);
 
   const PHONE = '905425866513';
-  const VERSION = '6.0';
-  const STORE = 'eb_crown_ai_v60';
+  const VERSION = '6.1';
+  const STORE = 'eb_crown_ai_v61';
 
   const state = {
     lastText: '',
@@ -559,17 +559,30 @@
 
   function openAssistant() {
     assistant.classList.add('is-open');
-    panel.setAttribute('aria-hidden', 'false');
+    panel && panel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('eb-ai-lock-ready');
     boot();
     setTimeout(() => input && input.focus(), 100);
   }
   function closeAssistant() {
     assistant.classList.remove('is-open');
-    panel.setAttribute('aria-hidden', 'true');
+    panel && panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('eb-ai-lock-ready');
+    if (document.activeElement && assistant.contains(document.activeElement)) document.activeElement.blur();
   }
 
-  $$('[data-assistant-open]').forEach(btn => btn.addEventListener('click', openAssistant));
-  $$('[data-assistant-close]', assistant).forEach(btn => btn.addEventListener('click', closeAssistant));
+  $$('[data-assistant-open]').forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); openAssistant(); }));
+  $$('[data-assistant-close]', assistant).forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeAssistant(); }));
+
+  // V6.1 güvenli kapatma katmanı: buton başka katmanların altında kalsa bile yakalar.
+  document.addEventListener('click', (e) => {
+    const closeBtn = e.target.closest && e.target.closest('[data-assistant-close]');
+    if (closeBtn && assistant.contains(closeBtn)) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeAssistant();
+    }
+  }, true);
 
   assistant.addEventListener('click', (e) => {
     const actionBtn = e.target.closest('[data-ai-action]');

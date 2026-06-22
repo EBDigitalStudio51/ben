@@ -91,3 +91,279 @@
 @keyframes ebAiCrownScan{0%{transform:translateX(-85%) rotate(8deg)}100%{transform:translateX(85%) rotate(8deg)}}@keyframes ebAiCrownGrid{0%{background-position:0 0,0 0,0 0}100%{background-position:0 30px,30px 0,0 0}}@keyframes ebAiPulse{0%,100%{opacity:.3;transform:scale(.95)}50%{opacity:.85;transform:scale(1.06)}}
 @media(max-width:1040px){.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-panel{width:min(640px,calc(100vw - 22px))}.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-main{grid-template-columns:1fr}.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-intel{display:none}.crown-board{grid-template-columns:1fr}}
 @media(max-width:720px){.eb-ai-assistant[data-ai-version="6.0"]{right:12px;bottom:70px}.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-fab{min-width:0}.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-panel{width:calc(100vw - 18px);height:min(820px,calc(100vh - 18px));border-radius:28px}.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-status{grid-template-columns:1fr}.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head h2{font-size:19px}.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-oracle-card .ai-price{font-size:30px}.crown-score-grid,.crown-preview-cards{grid-template-columns:1fr}.crown-board{grid-template-columns:1fr}}
+
+/* =========================================================
+   V6.1 — AI FIT FIX
+   Siteye uyumlu kompakt panel, taşma engeli ve güçlü kapatma katmanı.
+   ========================================================= */
+.eb-ai-assistant[data-ai-version="6.1"],
+.eb-ai-assistant[data-ai-version="6.0"]{
+  right: clamp(12px, 2vw, 22px) !important;
+  bottom: clamp(70px, 7vh, 92px) !important;
+  z-index: 2147482500 !important;
+  max-width: calc(100vw - 24px) !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-fab,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-fab{
+  min-width: 0 !important;
+  max-width: min(330px, calc(100vw - 26px)) !important;
+  min-height: 56px !important;
+  padding: 8px 12px 8px 8px !important;
+  border-radius: 20px !important;
+  transform-origin: right bottom !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-fab span:last-of-type small,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-fab span:last-of-type small{
+  max-width: 180px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-panel,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-panel{
+  position: fixed !important;
+  right: clamp(12px, 2vw, 22px) !important;
+  left: auto !important;
+  top: auto !important;
+  bottom: clamp(76px, 8vh, 98px) !important;
+  width: min(468px, calc(100vw - 26px)) !important;
+  height: min(682px, calc(100dvh - 122px)) !important;
+  max-height: calc(100dvh - 122px) !important;
+  min-height: 430px !important;
+  border-radius: 28px !important;
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto auto !important;
+  overflow: hidden !important;
+  transform-origin: right bottom !important;
+  box-shadow: 0 32px 115px rgba(0,0,0,.78), 0 0 72px rgba(var(--c1, 0,229,255),.18), inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-head,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head{
+  padding: 14px 14px 12px !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-head-title,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head-title{
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-head-title .eb-ai-orb,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head-title .eb-ai-orb{
+  width: 40px !important;
+  height: 40px !important;
+  flex-basis: 40px !important;
+  border-radius: 16px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-head h2,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head h2{
+  font-size: 17px !important;
+  line-height: 1.05 !important;
+  white-space: nowrap !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-head p,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head p{
+  max-width: 245px !important;
+  font-size: 10.4px !important;
+  line-height: 1.35 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-head-actions,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head-actions{
+  position: relative !important;
+  z-index: 5 !important;
+  flex: 0 0 auto !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-close,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-close{
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 14px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 999 !important;
+  background: rgba(255,255,255,.1) !important;
+  border-color: rgba(255,255,255,.2) !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-close:hover,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-close:hover{
+  background: rgba(255,88,88,.18) !important;
+  border-color: rgba(255,140,140,.42) !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-mini,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-mini{
+  height: 40px !important;
+  display: none !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-status,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-status{
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+  padding: 9px 10px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-status span,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-status span{
+  padding: 8px 8px 10px !important;
+  border-radius: 15px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-status b,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-status b{
+  font-size: 8.6px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-status small,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-status small{
+  font-size: 8.8px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-main,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-main{
+  grid-template-columns: 1fr !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-intel,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-intel{
+  display: none !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-messages,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-messages{
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  padding: 14px !important;
+  gap: 10px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-msg,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-msg{
+  max-width: 98% !important;
+  font-size: 12.15px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-msg .ai-card,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-msg .ai-card{
+  border-radius: 18px !important;
+  padding: 13px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .crown-board,
+.eb-ai-assistant[data-ai-version="6.0"] .crown-board,
+.eb-ai-assistant[data-ai-version="6.1"] .crown-score-grid,
+.eb-ai-assistant[data-ai-version="6.0"] .crown-score-grid,
+.eb-ai-assistant[data-ai-version="6.1"] .crown-preview-cards,
+.eb-ai-assistant[data-ai-version="6.0"] .crown-preview-cards{
+  grid-template-columns: 1fr !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .crown-preview,
+.eb-ai-assistant[data-ai-version="6.0"] .crown-preview{
+  padding: 14px !important;
+  border-radius: 20px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .crown-preview h3,
+.eb-ai-assistant[data-ai-version="6.0"] .crown-preview h3{
+  font-size: 20px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-quick,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-quick{
+  max-height: 112px !important;
+  padding: 10px 12px !important;
+  gap: 6px !important;
+  overflow-y: auto !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-chip,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-chip{
+  min-height: 34px !important;
+  padding: 0 10px !important;
+  font-size: 8.4px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-input,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-input{
+  grid-template-columns: minmax(0, 1fr) 48px !important;
+  padding: 10px !important;
+  gap: 7px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-input input,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-input input{
+  min-height: 48px !important;
+  border-radius: 16px !important;
+  font-size: 12.2px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-input button,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-input button{
+  width: 48px !important;
+  min-width: 48px !important;
+  border-radius: 16px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-foot,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-foot{
+  padding: 7px 10px !important;
+  gap: 5px !important;
+}
+.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-foot span,
+.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-foot span{
+  font-size: 7.4px !important;
+  padding: 4px 7px !important;
+}
+@media (max-width: 720px){
+  .eb-ai-assistant[data-ai-version="6.1"],
+  .eb-ai-assistant[data-ai-version="6.0"]{
+    right: 10px !important;
+    bottom: 66px !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-fab,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-fab{
+    width: 56px !important;
+    height: 56px !important;
+    padding: 8px !important;
+    border-radius: 20px !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-fab span:last-of-type,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-fab span:last-of-type,
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-fab em,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-fab em{
+    display:none !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-panel,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-panel{
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 8px !important;
+    width: auto !important;
+    height: min(700px, calc(100dvh - 16px)) !important;
+    max-height: calc(100dvh - 16px) !important;
+    min-height: 0 !important;
+    border-radius: 22px !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-head,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head{
+    padding: 12px !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-head p,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-head p{
+    display:none !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-status,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-status{
+    grid-template-columns: 1fr !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-status span:nth-child(n+2),
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-status span:nth-child(n+2){
+    display:none !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-quick,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-quick{
+    max-height: 96px !important;
+  }
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-foot,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-foot{
+    display:none !important;
+  }
+}
+@supports not (height: 100dvh){
+  .eb-ai-assistant[data-ai-version="6.1"] .eb-ai-panel,
+  .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-panel{height:min(682px, calc(100vh - 122px)) !important;max-height:calc(100vh - 122px) !important}
+  @media(max-width:720px){.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-panel,.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-panel{height:min(700px, calc(100vh - 16px)) !important;max-height:calc(100vh - 16px) !important}}
+}
