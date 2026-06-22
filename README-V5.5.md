@@ -1,12 +1,23 @@
-# EB Digital Studio V5.5 — Berkant Yenel müşteri yorumu
+# EB Digital Studio V5.5 — EB Asistan V1
 
-- Berkant Yenel'in 5/5 doğrulanmış müşteri yorumu yayınlandı.
-- Marka: Ber Can’t Online Coaching
-- Proje türü: Kurumsal web sitesi
-- Yazım düzeltmesi: “ögrenci” → “öğrenci”
-- Fotoğraf yerine izin kapsamına uygun olarak “BY” harfli avatar kullanıldı.
-- Vaka çalışması bağlantısı ve yeni yorum gönderme butonu korundu.
+Bu sürüm mevcut V5.4 yapısını bozmadan sağ alt bölüme kontrollü müşteri temsilcisi ekler.
 
-## Patch dosyaları
-- index.html
-- css/style.css
+## Eklenenler
+
+- EB Asistan floating paneli
+- İşletme türüne göre paket önerici
+- Hedef ve özellik seçimine göre öneri üretimi
+- Fiyat, teslim, ödeme, SEO, admin paneli ve randevu konularında güvenli cevaplar
+- Design Lab ve teklif formuna yönlendirme
+- WhatsApp'a hazır proje ön değerlendirme mesajı
+- API gerektirmeyen, maliyetsiz ve risksiz çalışma
+
+## Dosyalar
+
+- `index.html`
+- `css/ai-assistant.css`
+- `js/ai-assistant.js`
+
+## Not
+
+Bu sürüm gerçek OpenAI API bağlantısı içermez. Kontrollü satış asistanı olarak çalışır. Gerçek yapay zekâ bağlantısına geçilecekse API anahtarı doğrudan tarayıcı tarafına koyulmamalı, güvenli backend üzerinden kullanılmalıdır.
