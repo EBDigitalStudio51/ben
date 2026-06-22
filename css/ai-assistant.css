@@ -367,3 +367,39 @@
   .eb-ai-assistant[data-ai-version="6.0"] .eb-ai-panel{height:min(682px, calc(100vh - 122px)) !important;max-height:calc(100vh - 122px) !important}
   @media(max-width:720px){.eb-ai-assistant[data-ai-version="6.1"] .eb-ai-panel,.eb-ai-assistant[data-ai-version="6.0"] .eb-ai-panel{height:min(700px, calc(100vh - 16px)) !important;max-height:calc(100vh - 16px) !important}}
 }
+
+/* =========================================================
+   V6.2 — CUSTOM CURSOR VISIBILITY FIX
+   Crown AI paneli site cursor katmanının üstüne çıkıp imleci gizliyordu.
+   Asistan hâlâ tüm site katmanlarının üstünde kalır; custom cursor ise en üstte görünür.
+   ========================================================= */
+.eb-ai-assistant[data-ai-version="6.1"],
+.eb-ai-assistant[data-ai-version="6.0"]{
+  z-index: 42000 !important;
+}
+html.custom-cursor-ready .eb-ai-assistant,
+html.custom-cursor-ready .eb-ai-assistant *,
+html.custom-cursor-ready .eb-ai-panel,
+html.custom-cursor-ready .eb-ai-panel *{
+  cursor: none !important;
+}
+html.custom-cursor-ready .cursor-dot,
+html.custom-cursor-ready .cursor-ring{
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+}
+html.custom-cursor-ready .cursor-dot.is-visible,
+html.custom-cursor-ready .cursor-ring.is-visible{
+  opacity: 1 !important;
+}
+html:not(.custom-cursor-ready) .eb-ai-assistant,
+html:not(.custom-cursor-ready) .eb-ai-assistant *{
+  cursor: auto;
+}
+html:not(.custom-cursor-ready) .eb-ai-fab,
+html:not(.custom-cursor-ready) .eb-ai-close,
+html:not(.custom-cursor-ready) .eb-ai-mini,
+html:not(.custom-cursor-ready) .eb-ai-chip,
+html:not(.custom-cursor-ready) .eb-ai-input button{
+  cursor: pointer !important;
+}
