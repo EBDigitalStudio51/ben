@@ -1,0 +1,16 @@
+EB Digital Studio V6.4 Non-Visual SEO Patch
+
+Bu güncellemede görünür tasarım, sayfa metinleri, CSS animasyonları ve JavaScript davranışları değiştirilmedi.
+Yalnızca SEO analizinde görünen teknik uyarıları azaltmak için görünmeyen/atribüt seviyesinde düzenlemeler yapıldı.
+
+Yapılanlar:
+- Root favicon.ico eklendi.
+- favicon PNG, Apple touch icon ve manifest PNG ikonları eklendi.
+- Head içindeki favicon bildirimleri sizes/apple-touch-icon ile tamamlandı.
+- Görsel alt/width/height/decoding/loading eksikleri tamamlandı.
+- Dış bağlantılara güvenli rel değerleri eklendi.
+- Boş href oluşturan preview linkine sayfa içi hedef verildi.
+- WebPage schema eklendi.
+- Referrer ve nosniff meta bildirimi eklendi.
+
+Not: GitHub Pages üzerinde gerçek HTTP güvenlik headerları tam yönetilemez. Content-Security-Policy gibi headerlar için Cloudflare önerilir.
