@@ -57,8 +57,8 @@
       styleDefault: 'luxury',
       keywords: ['guzellik','güzellik','beauty','lazer','epilasyon','cilt','kalici makyaj','kalıcı makyaj','tirnak','tırnak','bolgesel','bölgesel','incelme','diyet','kirpik','salon','estetik','mezitli','bakim','bakım'],
       goal: 'Güven, hijyen, lüks algı ve randevu kararını aynı akışta güçlendirmek.',
-      pages: ['Ana sayfa','Merve Yıldırım hakkında','Lazer epilasyon','Cilt bakımı','Kalıcı makyaj','Bölgesel incelme','Tırnak hizmetleri','Kampanyalar','Danışan yorumları','Randevu al','İletişim','Gizlilik / KVKK'],
-      seo: ['mersin güzellik merkezi','mezitli lazer epilasyon','mersin cilt bakımı','mersin kalıcı makyaj','güzellik salonu randevu'],
+      pages: ['Ana sayfa','Marka hakkında','Lazer epilasyon','Cilt bakımı','Kalıcı makyaj','Bölgesel incelme','Tırnak hizmetleri','Kampanyalar','Danışan yorumları','Randevu al','İletişim','Gizlilik / KVKK'],
+      seo: ['şehir güzellik merkezi','bölge lazer epilasyon','cilt bakımı randevu','kalıcı makyaj hizmeti','güzellik salonu randevu'],
       angle: 'Instagram’da görünen güzelliği, Google’da güven veren premium bakım merkezine taşımak.',
       warnings: ['Kesin sonuç, garanti zayıflama veya tıbbi tedavi vaadi kullanılmaz.','Öncesi/sonrası görselleri izinli yayınlanır.','Yorumlar onaydan geçer.'],
       conversion: ['Hero’da lüks güven mesajı','Hizmet detaylarında işlem bilgisi','Sosyal kanıt ve yorumlar','WhatsApp randevu','Takip mesajı']
@@ -401,7 +401,7 @@
   }
 
   function miniPreview(brief) {
-    const label = brief.business || (brief.sector.key === 'beauty' ? 'Merve Yıldırım Beauty' : brief.sector.key === 'realestate' ? 'Net Emlak' : 'Yeni Marka');
+    const label = brief.business || (brief.sector.key === 'beauty' ? 'Premium Beauty Studio' : brief.sector.key === 'realestate' ? 'Örnek Emlak Ofisi' : 'Yeni Marka');
     const cta = brief.sector.key === 'realestate' ? 'Portföyü İncele' : brief.sector.key === 'food' ? 'Rezervasyon Yap' : 'Randevu / Teklif Al';
     return `
       <div class="crown-preview is-${esc(brief.style.key)}">
@@ -446,7 +446,7 @@
     addMessage('bot', `
       <b>EB Crown AI hazır.</b><br>
       Bir müşterinin işletmesini tek paragraf anlat. Ben bunu müşteri kazanma dosyasına çeviririm: strateji kurulu, site mimarisi, fiyat, SEO, risk, satış konuşması, itiraz cevapları, mini ön izleme reçetesi ve WhatsApp teklifi.
-      <div class="ai-card"><h3>Profesyonel test</h3><p>“Mersin Mezitli’de Merve Yıldırım Beauty adında güzellik merkezim var. Krem-gold lüks tasarım, randevu, yorum paneli, kampanya, hizmet sayfaları, galeri, KVKK ve SEO istiyorum.”</p></div>
+      <div class="ai-card"><h3>Profesyonel test</h3><p>“Güzellik merkezim için krem-gold lüks tasarım, randevu, yorum paneli, kampanya, hizmet sayfaları, galeri, KVKK ve SEO istiyorum.”</p></div>
     `);
     quick.innerHTML = [
       ['demoBeauty','Beauty Luxury demo',true],
@@ -539,7 +539,7 @@
 
   function handleAction(action) {
     const brief = state.lastBrief;
-    if (action === 'demoBeauty') return analyzeAndRender('Mersin Mezitli’de Merve Yıldırım Beauty adında güzellik merkezim var. Lazer epilasyon, cilt bakımı, kalıcı makyaj, bölgesel incelme ve tırnak hizmetleri veriyoruz. Krem-gold lüks tasarım, WhatsApp randevu, onaylı yorum paneli, kampanya alanı, hizmet detay sayfaları, galeri, KVKK, dönüşüm takibi ve Google SEO istiyorum.');
+    if (action === 'demoBeauty') return analyzeAndRender('Güzellik merkezim var. Lazer epilasyon, cilt bakımı, kalıcı makyaj, bölgesel incelme ve tırnak hizmetleri veriyoruz. Krem-gold lüks tasarım, WhatsApp randevu, onaylı yorum paneli, kampanya alanı, hizmet detay sayfaları, galeri, KVKK, dönüşüm takibi ve Google SEO istiyorum.');
     if (action === 'demoEstate') return analyzeAndRender('Niğde’de Net Emlak adında emlak ofisim var. Satılık ve kiralık ilanlarımı göstermek, mahalle fiyat oda sayısı ve ilan türüne göre filtreleme yapmak, her ilan için detay sayfası ve WhatsApp bilgi al butonu eklemek istiyorum. İleride admin panelinden ilanları kendim eklemek istiyorum.');
     if (action === 'demoClinic') return analyzeAndRender('Niğde’de diş kliniğim var. Hekim profilleri, tedavi sayfaları, online randevu, hasta yorumları, KVKK, Google SEO ve güven veren temiz klinik tasarımı istiyorum.');
     if (action === 'how') return addMessage('bot', '<b>Crown AI nasıl çalışır?</b><br>Müşteri briefini sektör, tasarım, modül, fiyat, risk, SEO, dönüşüm ve satış psikolojisi açısından okur. Sonuçta paket değil, müşteri kazanma dosyası üretir. Bu sürüm API kullanmaz; güvenli ve maliyetsizdir.');
