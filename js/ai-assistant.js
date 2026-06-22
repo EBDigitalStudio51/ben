@@ -1,659 +1,586 @@
 (() => {
   'use strict';
+
   const assistant = document.getElementById('ebAiAssistant');
   if (!assistant) return;
 
-  const panel = assistant.querySelector('[data-ai-panel]');
-  const messages = assistant.querySelector('[data-ai-messages]');
-  const quick = assistant.querySelector('[data-ai-quick]');
-  const form = assistant.querySelector('[data-ai-form]');
-  const input = assistant.querySelector('[data-ai-input]');
-  const intelList = assistant.querySelector('[data-ai-intel-list]');
-  const intelScore = assistant.querySelector('[data-ai-score]');
-  const stateSector = assistant.querySelector('[data-ai-state-sector]');
-  const statePackage = assistant.querySelector('[data-ai-state-package]');
-  const statePrice = assistant.querySelector('[data-ai-state-price]');
-  const phone = '905425866513';
-  const VERSION = '5.8';
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+
+  const panel = $('[data-ai-panel]', assistant);
+  const messages = $('[data-ai-messages]', assistant);
+  const quick = $('[data-ai-quick]', assistant);
+  const form = $('[data-ai-form]', assistant);
+  const input = $('[data-ai-input]', assistant);
+  const intelList = $('[data-ai-intel-list]', assistant);
+  const intelScore = $('[data-ai-score]', assistant);
+  const stateSector = $('[data-ai-state-sector]', assistant);
+  const statePackage = $('[data-ai-state-package]', assistant);
+  const statePrice = $('[data-ai-state-price]', assistant);
+
+  const PHONE = '905425866513';
+  const VERSION = '5.9';
+  const STORE = 'eb_oracle_ai_v59';
 
   const state = {
-    business:'', city:'', district:'', sector:'', goal:'', style:'', pages:'', urgency:'normal',
-    audience:'local', features:[], budget:'', lastText:'', lastBrief:null, history:[],
-    mode:'strategist', leadTemperature:'warm'
+    lastText: '',
+    lastBrief: null,
+    history: JSON.parse(localStorage.getItem(STORE) || '[]').slice(-6),
+    booted: false
   };
-  let booted = false;
 
-  const sectorDB = [
+  const tr = (value) => String(value || '')
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ı/g, 'i')
+    .replace(/ğ/g, 'g')
+    .replace(/ü/g, 'u')
+    .replace(/ş/g, 's')
+    .replace(/ö/g, 'o')
+    .replace(/ç/g, 'c');
+
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (m) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[m]));
+
+  const money = (n) => `${Math.round(n).toLocaleString('tr-TR')} TL`;
+  const uniq = (arr) => [...new Set(arr.filter(Boolean))];
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  const matchAny = (text, words) => words.some(w => tr(text).includes(tr(w)));
+
+  const sectors = [
     {
-      label:'Güzellik / Beauty Clinic', value:'beauty', weight:98,
-      keywords:['güzellik','beauty','lazer','epilasyon','cilt','kalıcı makyaj','tırnak','bölgesel','incelme','diyet','kaş','kirpik','salon','mezitli','estetik'],
-      package:'Signature Web Experience', style:'Krem–gold luxury clinic',
-      baseGoal:'Randevu, güven, hijyen ve premium algıyı aynı anda yükseltmek.',
-      pages:['Ana sayfa','Hakkımızda','Lazer epilasyon','Cilt bakımı','Kalıcı makyaj','Bölgesel incelme','Tırnak hizmetleri','Kampanyalar','Danışan yorumları','Randevu al','İletişim','Gizlilik / KVKK'],
-      seo:['mersin güzellik merkezi','mezitli lazer epilasyon','mersin cilt bakımı','mersin kalıcı makyaj','güzellik salonu randevu'],
-      modules:['WhatsApp randevu akışı','Onaylı danışan yorum paneli','Kampanya vitrini','Hizmet detay sayfaları','Galeri','KVKK onayları'],
-      pains:['Instagram içerikleri dağınık kalır','Hizmet güveni sayfa sayfa anlatılamaz','Randevu soruları tekrarlanır','Google aramalarından yeterli talep alınmaz'],
-      sales:'Bu siteyi “güzellik salonu vitrini” değil, randevu üreten premium bakım merkezi deneyimi olarak konumlandır.',
-      caution:['Kesin sonuç, garanti zayıflama, tıbbi tedavi iddiası kullanma','Öncesi/sonrası görseller için açık izin iste','Yorumları işletme onayından geçir']
+      key: 'beauty', label: 'Güzellik / Beauty Clinic', package: 'Signature Web Experience', base: 49900, min: 59900,
+      icon: '✦', weight: 98, style: 'Krem–gold luxury beauty clinic',
+      keywords: ['guzellik','beauty','lazer','epilasyon','cilt','kalici makyaj','tirnak','bolgesel','incelme','diyet','kas','kirpik','salon','estetik','mezitli','bakim'],
+      goal: 'Güven, hijyen, lüks algı ve randevu kararını aynı akışta güçlendirmek.',
+      pages: ['Ana sayfa','Hakkımızda','Lazer epilasyon','Cilt bakımı','Kalıcı makyaj','Bölgesel incelme','Tırnak hizmetleri','Kampanyalar','Danışan yorumları','Randevu al','İletişim','Gizlilik / KVKK'],
+      seo: ['mersin güzellik merkezi','mezitli lazer epilasyon','mersin cilt bakımı','mersin kalıcı makyaj','güzellik salonu randevu'],
+      angle: '“Instagram’da güzel görünen marka” algısını Google’da güven veren premium bakım merkezine taşımak.',
+      warnings: ['Kesin sonuç / garanti zayıflama vaadi kullanılmaz.','Öncesi–sonrası görselleri izinli yayınlanır.','Yorumlar onaydan geçer.']
     },
     {
-      label:'Emlak / Gayrimenkul', value:'realestate', weight:99,
-      keywords:['emlak','gayrimenkul','ilan','satılık','kiralık','arsa','daire','mülk','konut','portföy','ofis','iş yeri','tapu','mahalle'],
-      package:'Özel Dijital Sistem', style:'Lacivert–gold yatırım platformu',
-      baseGoal:'İlanları portallardan bağımsız, markaya ait güvenilir dijital portföye dönüştürmek.',
-      pages:['Ana sayfa','Satılık ilanlar','Kiralık ilanlar','Arsa & yatırım','İlan detay sayfası','Hakkımızda','Danışmanlık','Portföy ekle','İletişim'],
-      seo:['niğde satılık daire','niğde kiralık ev','niğde emlakçı','niğde satılık arsa','niğde gayrimenkul danışmanlığı'],
-      modules:['İlan listeleme','Gelişmiş filtreleme','İlan detay sayfası','WhatsApp ilan talebi','Admin ilan yönetimi','Konum ve mahalle odaklı SEO'],
-      pains:['İlanlar sosyal medyada hızlı kaybolur','Portal bağımlılığı marka değerini düşürür','Müşteri fiyat/konum/oda bilgisi için tekrar tekrar sorar'],
-      sales:'Siteyi “ilan panosu” değil, Net Emlak adına çalışan dijital emlak ofisi gibi sun.',
-      caution:['Fiyat ve tapu bilgisinin güncelliğini işletme onaylasın','Sahte ilan veya temsil edilmeyen mülk yayınlanmasın']
+      key: 'realestate', label: 'Emlak / Gayrimenkul', package: 'Özel Dijital Sistem', base: 84900, min: 84900,
+      icon: '◆', weight: 99, style: 'Lacivert–gold yatırım platformu',
+      keywords: ['emlak','gayrimenkul','ilan','satilik','kiralik','arsa','daire','konut','mulkiyet','portfoy','tapu','mahalle','is yeri','filtre'],
+      goal: 'İlanları portallardan bağımsız, markaya ait güvenilir dijital portföye dönüştürmek.',
+      pages: ['Ana sayfa','Satılık ilanlar','Kiralık ilanlar','Arsa & yatırım','İlan detay sayfası','Hakkımızda','Portföy ekle','İletişim'],
+      seo: ['niğde satılık daire','niğde kiralık ev','niğde emlakçı','niğde satılık arsa','niğde gayrimenkul danışmanlığı'],
+      angle: 'Sosyal medyada kaybolan ilanları, kendi markasına ait dijital emlak ofisine çevirmek.',
+      warnings: ['Fiyat, tapu ve ilan durumu güncel tutulmalı.','Temsil edilmeyen mülk yayınlanmamalı.']
     },
     {
-      label:'Restoran / Kafe', value:'food', weight:88,
-      keywords:['restoran','kafe','cafe','menü','rezervasyon','kahvaltı','tatlı','yemek','doğum günü','organizasyon','masa'],
-      package:'Marka Deneyimi', style:'Sıcak premium gastro deneyimi',
-      baseGoal:'Menü, rezervasyon ve organizasyon taleplerini düzenli bir dijital akışa çevirmek.',
-      pages:['Ana sayfa','Dijital menü','Rezervasyon','Organizasyon paketleri','Galeri','Yorumlar','Konum'],
-      seo:['niğde kafe','niğde restoran','niğde kahvaltı','niğde doğum günü organizasyonu'],
-      modules:['QR dijital menü','WhatsApp rezervasyon','Galeri','Kampanya alanı','Çalışma saatleri','Harita'],
-      pains:['Menü dağınık görünür','Fiyat ve rezervasyon soruları tekrar eder','Etkinlik paketleri yeterince satılamaz'],
-      sales:'İştah açıcı görsel dil + hızlı rezervasyon = daha fazla masa ve organizasyon talebi.',
-      caution:['Fiyatlar güncel tutulmalı','Gıda görsellerinde gerçeklik korunmalı']
+      key: 'food', label: 'Restoran / Kafe', package: 'Marka Deneyimi', base: 29900, min: 29900,
+      icon: '●', weight: 88, style: 'Sıcak premium gastro deneyimi',
+      keywords: ['restoran','kafe','cafe','menu','menü','rezervasyon','kahvalti','tatli','yemek','organizasyon','masa','bistro'],
+      goal: 'Menü, rezervasyon ve organizasyon taleplerini net bir satış akışına çevirmek.',
+      pages: ['Ana sayfa','Dijital menü','Rezervasyon','Organizasyon paketleri','Galeri','Yorumlar','Konum'],
+      seo: ['niğde kafe','niğde restoran','niğde kahvaltı','niğde doğum günü organizasyonu'],
+      angle: 'İştah açıcı görsel dil + hızlı rezervasyon = daha fazla masa ve organizasyon talebi.',
+      warnings: ['Menü fiyatları güncel tutulmalı.','Görseller gerçek ürünlerle uyumlu olmalı.']
     },
     {
-      label:'Fitness / Pilates', value:'fitness', weight:92,
-      keywords:['fitness','pilates','gym','reformer','spor','antrenör','koçluk','zumba','üyelik','salon'],
-      package:'Signature Web Experience', style:'Dinamik, güçlü, üyelik odaklı',
-      baseGoal:'Salonun enerjisini üyelik ve deneme dersi talebine çevirmek.',
-      pages:['Ana sayfa','Paketler','Eğitmenler','Ders programı','Deneme dersi','Başarı hikayeleri','İletişim'],
-      seo:['fitness salonu','reformer pilates','pilates stüdyosu','online koçluk'],
-      modules:['Üyelik talebi','Deneme dersi formu','Ders programı','Eğitmen profilleri','Dönüşüm hikayeleri'],
-      pains:['Paketler net görünmez','Yeni müşteri salonu görmeden karar veremez','Instagram güveni tek başına yetmez'],
-      sales:'Bu site salonun enerjisini, koç güvenini ve üyelik teklifini tek akışa bağlar.',
-      caution:['Sağlık iddialarında garanti ifade kullanılmamalı']
+      key: 'fitness', label: 'Fitness / Pilates', package: 'Signature Web Experience', base: 49900, min: 49900,
+      icon: '▲', weight: 92, style: 'Dinamik üyelik odaklı stüdyo',
+      keywords: ['fitness','pilates','gym','reformer','spor','antrenor','koçluk','kocluk','zumba','uyelik','salon','beslenme'],
+      goal: 'Salon enerjisini, eğitmen güvenini ve üyelik teklifini tek akışta toplamak.',
+      pages: ['Ana sayfa','Paketler','Eğitmenler','Ders programı','Deneme dersi','Başarı hikayeleri','İletişim'],
+      seo: ['fitness salonu','reformer pilates','pilates stüdyosu','online koçluk'],
+      angle: 'Kişiyi “salona bir bakayım” aşamasından deneme dersi talebine taşımak.',
+      warnings: ['Sağlık ve fiziksel sonuçlarda garanti verilmez.']
     },
     {
-      label:'Klinik / Sağlık', value:'clinic', weight:94,
-      keywords:['klinik','doktor','diş','hekim','veteriner','sağlık','poliklinik','tedavi','implant','hasta'],
-      package:'Signature Web Experience', style:'Temiz klinik güveni',
-      baseGoal:'Uzmanlık, hijyen ve randevu güvenini net bir dijital yapıya çevirmek.',
-      pages:['Ana sayfa','Uzmanlar','Tedaviler','Randevu','Hasta bilgilendirme','SSS','İletişim','KVKK'],
-      seo:['randevu','klinik','diş hekimi','veteriner kliniği','tedavi'],
-      modules:['Online randevu','Uzman profilleri','Bilgilendirme sayfaları','KVKK','SSS','Harita'],
-      pains:['Hasta güveni ilk izlenimde oluşur','Tedavi bilgileri dağınık kalır','Randevu süreci manuel ilerler'],
-      sales:'Tasarımın görevi sadece şık görünmek değil; tedirginliği azaltıp randevu kararını kolaylaştırmak.',
-      caution:['Tıbbi garanti, teşhis veya tedavi vaadi verilmez','KVKK ve açık rıza metinleri ciddi tutulmalı']
+      key: 'clinic', label: 'Klinik / Sağlık', package: 'Signature Web Experience', base: 49900, min: 59900,
+      icon: '✚', weight: 94, style: 'Temiz klinik güveni',
+      keywords: ['klinik','doktor','dis','diş','hekim','veteriner','saglik','sağlık','poliklinik','tedavi','hasta','randevu'],
+      goal: 'Uzmanlık, hijyen ve randevu güvenini sakin, açıklayıcı bir yapıya çevirmek.',
+      pages: ['Ana sayfa','Uzmanlar','Tedaviler','Randevu','Hasta bilgilendirme','SSS','İletişim','KVKK'],
+      seo: ['randevu','klinik','diş hekimi','veteriner kliniği','tedavi'],
+      angle: 'Tedirginliği azaltan bilgi mimarisiyle randevu kararını kolaylaştırmak.',
+      warnings: ['Teşhis / tedavi garantisi verilmez.','KVKK ve açık rıza ciddi tutulur.']
     },
     {
-      label:'Eğitim / Kurs', value:'education', weight:87,
-      keywords:['kurs','eğitim','okul','öğrenci','veli','lgs','yks','akademi','ders','sınıf'],
-      package:'Marka Deneyimi', style:'Kurumsal güven + başarı odağı',
-      baseGoal:'Veli ve öğrencinin güvenini ön kayıt talebine dönüştürmek.',
-      pages:['Ana sayfa','Programlar','Öğretmen kadrosu','Başarılar','Ön kayıt','Duyurular','İletişim'],
-      seo:['kurs merkezi','yks kurs','lgs kurs','özel ders','eğitim kurumu'],
-      modules:['Ön kayıt formu','Programlar','Duyurular','Başarı alanı','Kadro tanıtımı'],
-      pains:['Veli güveni için bilgiler tek yerde değildir','Kayıt dönemlerinde mesaj yoğunluğu artar'],
-      sales:'Siteyi dijital broşür değil, kayıt döneminde çalışan ön kayıt makinesi gibi sun.',
-      caution:['Başarı iddiaları kanıtlı olmalı']
+      key: 'education', label: 'Eğitim / Kurs', package: 'Marka Deneyimi', base: 29900, min: 29900,
+      icon: '◆', weight: 87, style: 'Kurumsal güven + başarı odağı',
+      keywords: ['kurs','egitim','eğitim','okul','ogrenci','öğrenci','veli','lgs','yks','akademi','ders','sinif'],
+      goal: 'Veli ve öğrencinin güvenini ön kayıt talebine dönüştürmek.',
+      pages: ['Ana sayfa','Programlar','Öğretmen kadrosu','Başarılar','Ön kayıt','Duyurular','İletişim'],
+      seo: ['kurs merkezi','yks kurs','lgs kurs','özel ders','eğitim kurumu'],
+      angle: 'Kayıt döneminde çalışan dijital ön kayıt makinesi kurmak.',
+      warnings: ['Başarı iddiaları kanıtlı olmalı.']
     },
     {
-      label:'Mimarlık / İnşaat', value:'architecture', weight:91,
-      keywords:['mimarlık','iç mimar','inşaat','dekorasyon','proje','anahtar teslim','3d','tasarım'],
-      package:'Signature Web Experience', style:'Minimal editorial portföy',
-      baseGoal:'Projeleri prestijli sunup keşif ve teklif talebi oluşturmak.',
-      pages:['Ana sayfa','Projeler','Hizmetler','Önce/sonra','Süreç','Teklif al','İletişim'],
-      seo:['mimarlık ofisi','iç mimarlık','anahtar teslim dekorasyon','proje tasarım'],
-      modules:['Proje portföyü','Teklif formu','Galeri','Süreç anlatımı','Before/after'],
-      pains:['Kalite fotoğrafla satılır ama sosyal medyada kalıcı değildir','Teklif öncesi güven kurmak gerekir'],
-      sales:'Markayı “iş yapan ekip” değil, premium proje stüdyosu gibi konumlandır.',
-      caution:['Görsellerin proje sahibi/izin durumu net olmalı']
+      key: 'architecture', label: 'Mimarlık / İnşaat', package: 'Signature Web Experience', base: 49900, min: 49900,
+      icon: '▰', weight: 91, style: 'Minimal editorial portföy',
+      keywords: ['mimarlik','mimarlık','ic mimar','iç mimar','insaat','inşaat','dekorasyon','proje','anahtar teslim','3d','tasarim'],
+      goal: 'Projeleri prestijli sunup keşif ve teklif talebi oluşturmak.',
+      pages: ['Ana sayfa','Projeler','Hizmetler','Önce/sonra','Süreç','Teklif al','İletişim'],
+      seo: ['mimarlık ofisi','iç mimarlık','anahtar teslim dekorasyon','proje tasarım'],
+      angle: 'Markayı iş yapan ekipten premium proje stüdyosuna taşımak.',
+      warnings: ['Proje görselleri izinli kullanılmalı.']
     },
     {
-      label:'Kurumsal Şirket', value:'corporate', weight:84,
-      keywords:['kurumsal','şirket','firma','danışmanlık','üretim','hizmet','lojistik','sanayi'],
-      package:'Marka Deneyimi', style:'Kurumsal netlik ve güven',
-      baseGoal:'Firma güvenini, hizmet bilgisini ve teklif talebini tek yapıda toplamak.',
-      pages:['Ana sayfa','Hakkımızda','Hizmetler','Referanslar','Süreç','Teklif formu','İletişim'],
-      seo:['kurumsal web sitesi','firma tanıtım','hizmet şirketi'],
-      modules:['Teklif formu','Hizmet sayfaları','Referanslar','Kurumsal kimlik','SEO altyapısı'],
-      pains:['Firma profesyonel görünmezse teklif değeri düşer','Hizmetler net anlatılmazsa müşteri karar vermez'],
-      sales:'Bu site firmanın ciddiyetini ve teklif değerini yükselten dijital kurumsal kimliktir.',
-      caution:['Referans ve sertifika bilgileri doğrulanmalı']
+      key: 'corporate', label: 'Kurumsal Şirket', package: 'Marka Deneyimi', base: 29900, min: 29900,
+      icon: '◇', weight: 84, style: 'Kurumsal netlik ve güven',
+      keywords: ['kurumsal','sirket','şirket','firma','danismanlik','danışmanlık','uretim','üretim','hizmet','lojistik','sanayi'],
+      goal: 'Firma güvenini, hizmet bilgisini ve teklif talebini tek yapıda toplamak.',
+      pages: ['Ana sayfa','Hakkımızda','Hizmetler','Referanslar','Süreç','Teklif formu','İletişim'],
+      seo: ['kurumsal web sitesi','firma tanıtım','hizmet şirketi'],
+      angle: 'Daha ciddi görünümle teklif değerini ve güveni yükseltmek.',
+      warnings: ['Referans, sertifika ve belge bilgileri doğrulanmalı.']
     }
   ];
 
-  const featureDB = [
-    {label:'Admin paneli', value:'admin', price:20000, keywords:['admin','panel','yönetim','ekleyip kaldır','kendim ekleyeyim']},
-    {label:'Üyelik sistemi', value:'membership', price:15000, keywords:['üyelik','giriş','login','kayıt','müşteri hesabı']},
-    {label:'Veritabanı', value:'database', price:12000, keywords:['veritabanı','database','supabase','kayıt tut','kalıcı']},
-    {label:'Randevu / rezervasyon', value:'appointment', price:6000, keywords:['randevu','rezervasyon','takvim','masa ayırt','deneme dersi']},
-    {label:'Ödeme entegrasyonu', value:'payment', price:15000, keywords:['ödeme','shopier','iyzico','kart','satın alma','sepet']},
-    {label:'Blog / içerik sistemi', value:'blog', price:8000, keywords:['blog','içerik','makale','duyuru','haber']},
-    {label:'Galeri / portföy', value:'gallery', price:4000, keywords:['galeri','fotoğraf','portföy','görsel','öncesi sonrası']},
-    {label:'Gelişmiş SEO', value:'seo', price:5000, keywords:['seo','google','arama','search console','sıra','görünür']},
-    {label:'Çoklu dil', value:'language', price:7500, keywords:['ingilizce','çoklu dil','ikinci dil','arapça','rusça']},
-    {label:'Gelişmiş animasyon', value:'animation', price:7500, keywords:['animasyon','hareketli','efekt','wow','3d','parallax']},
-    {label:'Yorum paneli', value:'reviews', price:9000, keywords:['yorum','değerlendirme','puan','review','yıldız']},
-    {label:'Dosya / fotoğraf yükleme', value:'upload', price:8000, keywords:['yükleme','fotoğraf ekleme','dosya','resim ekleme']},
-    {label:'Rol ve yetki sistemi', value:'roles', price:8000, keywords:['rol','yetki','coach','koç','personel','admin rol']},
-    {label:'İlan / ürün yönetimi', value:'catalog', price:18000, keywords:['ilan','ürün yönetimi','katalog','portföy yönetimi','listeleme','filtre']},
-    {label:'CRM / müşteri takip', value:'crm', price:18000, keywords:['crm','takip','müşteri takip','lead','görüşme takibi']},
-    {label:'AI müşteri temsilcisi', value:'ai', price:18000, keywords:['yapay zeka','ai','asistan','chatbot','müşteri temsilcisi']},
-    {label:'Analitik ve dönüşüm takibi', value:'analytics', price:5000, keywords:['analitik','analytics','ölçüm','dönüşüm','tıklama']}
+  const features = [
+    { key:'appointment', label:'Randevu / rezervasyon', price:6000, keywords:['randevu','rezervasyon','takvim','masa','deneme dersi','başvuru','basvuru'] },
+    { key:'reviews', label:'Onaylı yorum paneli', price:12000, keywords:['yorum','yıldız','yildiz','değerlendirme','deneyim','referans'] },
+    { key:'campaigns', label:'Kampanya vitrini', price:5000, keywords:['kampanya','indirim','fırsat','firsat','paket'] },
+    { key:'gallery', label:'Galeri / portföy', price:4000, keywords:['galeri','fotoğraf','fotograf','portföy','portfoy','öncesi','sonrası'] },
+    { key:'servicePages', label:'Hizmet detay sayfaları', price:8500, keywords:['hizmet sayfaları','hizmet detay','ayrı sayfa','seo sayfaları','sayfalar'] },
+    { key:'seo', label:'Gelişmiş SEO altyapısı', price:5000, keywords:['seo','google','search console','arama','görünür','gorunur','index'] },
+    { key:'admin', label:'Admin paneli', price:20000, keywords:['admin','panel','yönetim','yonetim','ekleyip kaldır','kendim ekleyeyim'] },
+    { key:'database', label:'Veritabanı', price:12000, keywords:['veritabanı','database','supabase','kayıt','kalıcı','kalici'] },
+    { key:'membership', label:'Üyelik / giriş sistemi', price:15000, keywords:['üyelik','uyelik','giriş','giris','login','kayıt ol','hesap'] },
+    { key:'listings', label:'İlan / ürün yönetimi', price:25000, keywords:['ilan','satılık','satilik','kiralık','kiralik','ürün','urun','stok','katalog'] },
+    { key:'filters', label:'Gelişmiş filtreleme', price:12000, keywords:['filtre','oda sayısı','oda sayisi','fiyat aralığı','mahalle','kategori','arama'] },
+    { key:'payment', label:'Ödeme entegrasyonu', price:15000, keywords:['ödeme','odeme','kart','shopier','iyzico','satın alma','satin alma','sepet'] },
+    { key:'multilang', label:'İkinci dil', price:7500, keywords:['ikinci dil','ingilizce','arapça','almanca','dil seçeneği'] },
+    { key:'blog', label:'Blog / içerik sistemi', price:8000, keywords:['blog','makale','duyuru','haber','içerik'] },
+    { key:'animation', label:'Gelişmiş animasyon', price:7500, keywords:['animasyon','premium geçiş','gecis','interaktif','3d','futuristik'] },
+    { key:'kvkk', label:'KVKK / gizlilik sayfaları', price:3500, keywords:['kvkk','gizlilik','çerez','cerez','hukuk','izin'] }
   ];
 
-  const styleDB = [
-    {label:'Futuristik', value:'futuristic', price:7500, keywords:['futuristik','fütüristik','neon','teknoloji','cyber','3d'], promise:'Gören kişide teknoloji ve wow etkisi bırakır.'},
-    {label:'Lüks', value:'luxury', price:6000, keywords:['lüks','luxury','gold','krem','premium','zarif','rose','şampanya'], promise:'Pahalı, seçkin ve güven veren marka algısı oluşturur.'},
-    {label:'Minimal', value:'minimal', price:0, keywords:['minimal','sade','temiz','beyaz','az'], promise:'Sakin, net ve modern bir premium sadelik sunar.'},
-    {label:'Kurumsal', value:'corporate', price:3000, keywords:['kurumsal','ciddi','güven','lacivert','firma'], promise:'Düzenli, resmi ve güven veren şirket görünümü sağlar.'}
+  const styleProfiles = [
+    { key:'luxury', label:'Luxury / Editorial', price:6000, keywords:['lüks','luks','gold','krem','rose','premium','şık','sik','zarif','altın'], description:'Krem, gold, rose-gold detaylar; geniş boşluk, editorial başlıklar, yüksek güven ve pahalı algı.' },
+    { key:'futuristic', label:'Futuristic / Immersive', price:7500, keywords:['futuristik','fütüristik','neon','ai','yapay zeka','teknolojik','cyber','interaktif'], description:'Koyu zemin, neon enerji, hareketli katmanlar, teknoloji ve yenilik algısı.' },
+    { key:'minimal', label:'Minimal / Pure', price:0, keywords:['minimal','sade','beyaz','temiz','soft','modern','basit'], description:'Ferah boşluk, net tipografi, az efekt; yüksek okunabilirlik ve premium sadelik.' },
+    { key:'corporate', label:'Corporate / Trust', price:3000, keywords:['kurumsal','ciddi','güven','guven','lacivert','profesyonel'], description:'Lacivert, düzenli grid, net CTA, şirket güveni ve karar verici dili.' }
   ];
 
-  const goals = [
-    {label:'Randevu almak', value:'appointment'},
-    {label:'Teklif toplamak', value:'sales'},
-    {label:'Google’da görünmek', value:'seo'},
-    {label:'Portföy / ilan göstermek', value:'portfolio'},
-    {label:'Admin panelli sistem', value:'system'},
-    {label:'Prestij yükseltmek', value:'brand'}
-  ];
-
-  const basePrices = { starter:17900, brand:29900, signature:49900, system:84900, platform:119900 };
-
-  const esc = v => String(v || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const norm = v => String(v || '').toLocaleLowerCase('tr-TR');
-  const formatTL = n => new Intl.NumberFormat('tr-TR').format(Math.max(0, Math.round(n))) + ' TL';
-  const unique = arr => [...new Set(arr.filter(Boolean))];
-  const has = (text, words) => words.some(w => text.includes(norm(w)));
-
-  function addMessage(role, html){
-    const node = document.createElement('div');
-    node.className = `eb-ai-msg ${role}`;
-    node.innerHTML = html;
-    messages.appendChild(node);
-    messages.scrollTop = messages.scrollHeight;
-    state.history.push({role, text: node.textContent.replace(/\s+/g,' ').trim().slice(0,1400)});
-  }
-
-  function setQuick(items){
-    quick.innerHTML = '';
-    items.forEach(item => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = `eb-ai-chip ${item.primary ? 'primary' : ''} ${item.active ? 'is-active' : ''} ${item.danger ? 'danger' : ''}`;
-      btn.textContent = item.label;
-      btn.dataset.aiAction = item.action;
-      if (item.value !== undefined) btn.dataset.value = item.value;
-      quick.appendChild(btn);
-    });
-  }
-
-  function open(){
-    assistant.classList.add('is-open');
-    panel.setAttribute('aria-hidden','false');
-    if(!booted) boot();
-    setTimeout(()=>input?.focus(), 150);
-  }
-  function close(){
-    assistant.classList.remove('is-open');
-    panel.setAttribute('aria-hidden','true');
-  }
-
-  function detectSector(text){
-    const n = norm(text);
-    let best = null;
-    sectorDB.forEach(s => {
-      let score = s.keywords.reduce((sum,k) => sum + (n.includes(norm(k)) ? 1 : 0), 0);
-      if (score > 0) score = score * 18 + s.weight/10;
-      if (!best || score > best.score) best = {sector:s, score};
-    });
-    return best && best.score > 0 ? best.sector : null;
-  }
-  function detectStyle(text){
-    const n = norm(text);
-    return styleDB.find(s => has(n, s.keywords)) || null;
-  }
-  function detectCity(text){
-    const n = norm(text);
-    const cities = ['mersin','mezitli','niğde','nigde','bor','adana','ankara','istanbul','konya','kayseri','antalya','tarsus'];
-    const hit = cities.find(c => n.includes(c));
-    if (!hit) return '';
-    return hit === 'nigde' ? 'Niğde' : hit[0].toLocaleUpperCase('tr-TR') + hit.slice(1);
-  }
-  function detectBrand(text){
-    const raw = String(text || '');
+  function detectBusinessName(text) {
+    const raw = String(text || '').replace(/\s+/g, ' ').trim();
     const patterns = [
-      /(?:marka(?:m| adı)?|işletme(?:m| adı)?|firmam|şirketim|adında)\s+(?:adı\s+)?([A-ZÇĞİÖŞÜ0-9][\wÇĞİÖŞÜçğıöşü\s&'.-]{2,42})/,
-      /([A-ZÇĞİÖŞÜ][\wÇĞİÖŞÜçğıöşü\s&'.-]{2,36})\s+(?:adında|isimli)/
+      /(?:marka|işletme|isletme|firma|şirket|sirket)\s*(?:adı|adi)?\s*[:\-]\s*([^.,;\n]{2,70})/i,
+      /([^.,;\n]{3,70})\s+adında\s+(?:bir\s+)?(?:güzellik|beauty|emlak|kafe|restoran|klinik|firma|işletme|isletme|salon)/i,
+      /([^.,;\n]{3,70})\s+isimli\s+(?:bir\s+)?(?:güzellik|beauty|emlak|kafe|restoran|klinik|firma|işletme|isletme|salon)/i,
+      /(?:benim|bizim)\s+([^.,;\n]{3,60})\s+(?:adlı|adli|isimli)\s+/i
     ];
-    for (const p of patterns){
-      const m = raw.match(p);
-      if (m && m[1]) return m[1].replace(/\s+(var|için|olarak).*$/i,'').trim();
+    for (const rgx of patterns) {
+      const m = raw.match(rgx);
+      if (m && m[1]) return m[1].replace(/^(Mersin|Niğde|Istanbul|İstanbul|Ankara|Mezitli|Bor)\s+/i, '').trim();
     }
     return '';
   }
-  function detectGoal(text){
-    const n = norm(text);
-    if (has(n,['randevu','rezervasyon','whatsapp randevu','deneme dersi'])) return 'appointment';
-    if (has(n,['google','seo','arama','görünür','search'])) return 'seo';
-    if (has(n,['ilan','portföy','katalog','ürün'])) return 'portfolio';
-    if (has(n,['admin','üyelik','panel','veritabanı','sistem'])) return 'system';
-    if (has(n,['prestij','kurumsal','güven','marka algısı','lüks'])) return 'brand';
-    return 'sales';
-  }
-  function detectFeatures(text){
-    const n = norm(text);
-    const found = [];
-    featureDB.forEach(f => { if (has(n, f.keywords)) found.push(f.value); });
-    if (found.includes('admin')) { found.push('database'); }
-    if (found.includes('membership')) { found.push('database'); }
-    if (found.includes('catalog')) { found.push('admin','database'); }
-    if (found.includes('reviews')) { found.push('admin','database'); }
-    if (found.includes('ai')) { found.push('analytics'); }
-    return unique(found);
-  }
-  function detectPages(text, sector, features){
-    const n = norm(text);
-    if (has(n,['13','çok sayfa','platform','tam sistem'])) return 'xlarge';
-    if (features.includes('catalog') || features.includes('admin') || features.includes('membership')) return 'large';
-    if (sector && ['beauty','clinic','architecture','fitness'].includes(sector.value)) return 'large';
-    if (has(n,['8','12','hizmet detay','ayrı sayfa'])) return 'large';
-    if (has(n,['4','7','kurumsal'])) return 'medium';
-    return 'medium';
+
+  function detectLocation(text) {
+    const known = ['Mersin','Mezitli','Niğde','Bor','İstanbul','Ankara','Adana','Konya','Kayseri','Aşağı Kayabaşı','İlhanlı','Selçuk','Yenişehir','Tarsus'];
+    const found = known.filter(k => tr(text).includes(tr(k)));
+    return { city: found[0] || '', district: found[1] || '' };
   }
 
-  function parseText(text){
-    state.lastText = text;
-    const sector = detectSector(text);
-    if (sector) state.sector = sector.value;
-    const style = detectStyle(text);
-    if (style) state.style = style.value;
-    const city = detectCity(text);
-    if (city) state.city = city;
-    const brand = detectBrand(text);
-    if (brand) state.business = brand;
-    state.goal = detectGoal(text);
-    state.features = unique([...state.features, ...detectFeatures(text)]);
-    state.pages = detectPages(text, sector || getSector(), state.features);
-    if (norm(text).includes('acil')) state.urgency = 'urgent';
-    if (norm(text).includes('bütçe') || norm(text).includes('fiyat')) state.leadTemperature = 'hot';
-    applySectorDefaults();
-    updateIntel();
+  function detectSector(text) {
+    const scored = sectors.map(s => ({
+      ...s,
+      score: s.keywords.reduce((acc, k) => acc + (tr(text).includes(tr(k)) ? 1 : 0), 0)
+    })).sort((a,b) => b.score - a.score || b.weight - a.weight);
+    return scored[0].score > 0 ? scored[0] : sectors.find(s => s.key === 'corporate');
   }
 
-  function getSector(){ return sectorDB.find(s => s.value === state.sector); }
-  function getStyle(){ return styleDB.find(s => s.value === state.style) || styleDB.find(s => s.value === 'luxury'); }
-  function goalLabel(){ return (goals.find(g=>g.value===state.goal)||goals[1]).label; }
-  function featureLabel(v){ return (featureDB.find(f=>f.value===v)||{}).label || v; }
-  function featurePrice(v){ return (featureDB.find(f=>f.value===v)||{}).price || 0; }
+  function detectStyle(text, sector) {
+    const style = styleProfiles
+      .map(s => ({...s, score: s.keywords.reduce((acc,k)=>acc + (tr(text).includes(tr(k)) ? 1 : 0), 0)}))
+      .sort((a,b)=>b.score-a.score)[0];
+    if (style.score) return style;
+    if (sector.key === 'beauty') return styleProfiles.find(s => s.key === 'luxury');
+    if (sector.key === 'realestate') return styleProfiles.find(s => s.key === 'corporate');
+    if (sector.key === 'architecture') return styleProfiles.find(s => s.key === 'minimal');
+    return styleProfiles.find(s => s.key === 'corporate');
+  }
 
-  function applySectorDefaults(){
-    const s = getSector();
-    if (!s) return;
-    const add = [];
-    if (s.value === 'beauty') add.push('appointment','reviews','gallery','seo');
-    if (s.value === 'realestate') add.push('catalog','admin','database','seo');
-    if (s.value === 'food') add.push('appointment','gallery','seo');
-    if (s.value === 'fitness') add.push('appointment','gallery','seo');
-    if (s.value === 'clinic') add.push('appointment','seo');
-    state.features = unique([...state.features, ...add]);
-    if (!state.style) {
-      if (s.value === 'beauty') state.style = 'luxury';
-      else if (s.value === 'realestate') state.style = 'corporate';
-      else if (s.value === 'architecture') state.style = 'minimal';
-      else state.style = 'corporate';
+  function detectFeatures(text, sector) {
+    let selected = features.filter(f => matchAny(text, f.keywords));
+    const ensure = (key) => { const f = features.find(x => x.key === key); if (f && !selected.some(x => x.key === key)) selected.push(f); };
+    if (sector.key === 'beauty') { ensure('appointment'); ensure('seo'); ensure('servicePages'); ensure('gallery'); }
+    if (sector.key === 'realestate') { ensure('listings'); ensure('filters'); ensure('seo'); }
+    if (sector.key === 'food') { ensure('appointment'); ensure('gallery'); }
+    if (sector.key === 'clinic') { ensure('appointment'); ensure('kvkk'); ensure('seo'); }
+    if (tr(text).includes('yorum panel')) ensure('reviews');
+    if (tr(text).includes('google')) ensure('seo');
+    if (tr(text).includes('whatsapp')) ensure('appointment');
+    return uniq(selected.map(f => f.key)).map(k => features.find(f => f.key === k));
+  }
+
+  function choosePackage(sector, feats) {
+    const keys = feats.map(f => f.key);
+    if (keys.includes('admin') || keys.includes('database') || keys.includes('membership') || keys.includes('listings') || keys.includes('payment')) {
+      if (sector.key === 'realestate') return { name:'Özel Dijital Sistem', base:84900, min:84900 };
+      return { name:'Özel Dijital Sistem', base:84900, min:84900 };
     }
+    if (sector.key === 'beauty' || sector.key === 'clinic' || sector.key === 'fitness' || sector.key === 'architecture') {
+      return { name:'Signature Web Experience', base:49900, min:sector.min || 49900 };
+    }
+    return { name:sector.package, base:sector.base, min:sector.min };
   }
 
-  function selectPackage(){
-    const s = getSector();
-    const f = state.features;
-    if (f.includes('catalog') || f.includes('membership') || f.includes('crm') || (f.includes('admin') && f.includes('database'))) return 'system';
-    if (s && ['beauty','clinic','fitness','architecture'].includes(s.value)) return 'signature';
-    if (state.pages === 'large' || state.pages === 'xlarge') return 'signature';
-    if (state.pages === 'small') return 'starter';
-    return 'brand';
+  function calcPrice(sector, style, feats, text) {
+    const pkg = choosePackage(sector, feats);
+    const included = new Set(['seo']);
+    if (pkg.name.includes('Signature')) included.add('servicePages');
+    let featureTotal = feats.reduce((sum, f) => sum + (included.has(f.key) ? 0 : f.price), 0);
+    let total = pkg.base + style.price + featureTotal;
+    const keys = feats.map(f => f.key);
+    let discount = 0;
+    if (keys.includes('admin') && keys.includes('database')) discount += 5000;
+    if (keys.includes('listings') && keys.includes('filters') && keys.includes('admin')) discount += 12000;
+    if (sector.key === 'beauty' && keys.includes('appointment') && keys.includes('reviews') && keys.includes('campaigns') && keys.includes('gallery')) discount += 5000;
+    if (matchAny(text, ['acil','hemen','çok hızlı','cok hizli','1 hafta'])) total *= 1.25;
+    total = Math.max(pkg.min || 0, total - discount);
+    return { total: Math.round(total / 100) * 100, pkg, discount, featureTotal };
   }
 
-  function packageName(key){
-    return ({starter:'Dijital Başlangıç',brand:'Marka Deneyimi',signature:'Signature Web Experience',system:'Özel Dijital Sistem',platform:'Premium Dijital Platform'})[key] || 'Marka Deneyimi';
-  }
-  function packageMin(key){
-    return ({starter:17900,brand:29900,signature:49900,system:84900,platform:119900})[key] || 29900;
-  }
-
-  function calculatePrice(){
-    const pkg = selectPackage();
-    let price = basePrices[pkg] || 29900;
-    const included = pkg === 'system' ? ['admin','database','seo'] : pkg === 'signature' ? ['seo','gallery'] : ['seo'];
-    state.features.forEach(v => { if (!included.includes(v)) price += featurePrice(v); });
-    price += (getStyle()?.price || 0);
-    if (state.urgency === 'urgent') price *= 1.25;
-    if (state.features.includes('admin') && state.features.includes('database')) price -= 3500;
-    if (state.features.includes('membership') && state.features.includes('admin')) price -= 4500;
-    if (state.features.includes('catalog') && state.features.includes('admin')) price -= 6000;
-    if (state.features.includes('reviews') && state.features.includes('admin')) price -= 2500;
-    if (state.features.length >= 8) price -= 5000;
-    price = Math.max(price, packageMin(pkg));
-    return {pkg, price: Math.round(price/100)*100};
+  function estimateTime(total, feats) {
+    const keys = feats.map(f => f.key);
+    if (total >= 100000 || keys.includes('admin') || keys.includes('database')) return '30–45 iş günü';
+    if (total >= 65000) return '22–32 iş günü';
+    if (total >= 45000) return '16–24 iş günü';
+    return '10–18 iş günü';
   }
 
-  function readinessScore(){
-    let score = 18;
-    if (state.sector) score += 17;
-    if (state.city) score += 10;
-    if (state.business) score += 10;
-    if (state.goal) score += 12;
-    if (state.style) score += 9;
-    if (state.features.length) score += Math.min(22, state.features.length * 4);
-    if (state.lastText.length > 120) score += 8;
-    return Math.min(100, score);
-  }
-  function opportunityScore(){
-    const s = getSector();
-    let score = s ? s.weight : 70;
-    if (state.features.includes('appointment')) score += 4;
-    if (state.features.includes('seo')) score += 4;
-    if (state.features.includes('admin')) score += 3;
-    if (state.leadTemperature === 'hot') score += 5;
-    return Math.min(100, score);
-  }
-  function riskScore(){
-    let risk = 18;
-    if (!state.business) risk += 10;
-    if (!state.city) risk += 7;
-    if (!state.features.includes('seo')) risk += 4;
-    if (state.sector === 'clinic' || state.sector === 'beauty') risk += 8;
-    if (state.features.includes('payment')) risk += 6;
-    return Math.min(100, risk);
-  }
-
-  function buildBrief(){
-    const s = getSector() || sectorDB[7];
-    const style = getStyle();
-    const calc = calculatePrice();
-    const name = state.business || 'işletme';
-    const city = state.city || 'yerel bölge';
-    const must = unique([...s.modules, ...state.features.map(featureLabel)]).slice(0,10);
+  function analyze(text) {
+    const sector = detectSector(text);
+    const style = detectStyle(text, sector);
+    const feats = detectFeatures(text, sector);
+    const location = detectLocation(text);
+    const business = detectBusinessName(text);
+    const price = calcPrice(sector, style, feats, text);
+    const keys = feats.map(f => f.key);
     const missing = [];
-    if (!state.business) missing.push('İşletme adı');
-    if (!state.city) missing.push('Şehir / ilçe');
-    missing.push('Logo', 'Gerçek fotoğraflar', 'Net telefon / WhatsApp', 'Adres', 'Çalışma saatleri');
+    if (!business) missing.push('Marka / işletme adı');
+    if (!location.city) missing.push('Şehir ve hizmet bölgesi');
+    if (!matchAny(text, ['telefon','whatsapp','numara'])) missing.push('WhatsApp / telefon');
+    if (!matchAny(text, ['fotoğraf','fotograf','logo','görsel','gorsel'])) missing.push('Logo ve gerçek işletme fotoğrafları');
+    if (!matchAny(text, ['bütçe','butce','fiyat','tl'])) missing.push('Bütçe beklentisi');
+    if (sector.key === 'beauty' && !keys.includes('reviews')) missing.push('Yorum paneli istenip istenmediği');
+    if (sector.key === 'realestate' && !keys.includes('admin')) missing.push('İlanları kimin yöneteceği');
+
+    const clarity = clamp(26 + (sector ? 18 : 0) + (business ? 10 : 0) + (location.city ? 10 : 0) + (style ? 8 : 0) + Math.min(28, feats.length * 4) + (text.length > 160 ? 8 : 0), 15, 99);
+    const opportunity = clamp(sector.weight + Math.min(12, feats.length * 2) + (keys.includes('seo') ? 5 : 0) - missing.length * 2, 40, 100);
+    const risk = clamp(18 + (keys.includes('payment') ? 14 : 0) + (keys.includes('admin') ? 10 : 0) + (keys.includes('database') ? 10 : 0) + ((sector.key === 'beauty' || sector.key === 'clinic') ? 12 : 0) + missing.length * 3, 10, 92);
+    const pages = uniq([...sector.pages, ...(keys.includes('blog') ? ['Blog / içerikler'] : []), ...(keys.includes('payment') ? ['Ödeme / satın alma'] : []), ...(keys.includes('membership') ? ['Üye paneli'] : []), ...(keys.includes('admin') ? ['Admin paneli'] : [])]);
+
     const brief = {
-      sector:s,
-      style,
-      packageKey:calc.pkg,
-      packageName:packageName(calc.pkg),
-      price:calc.price,
-      timeline: calc.pkg === 'system' ? '30–45 iş günü' : calc.pkg === 'signature' ? '20–30 iş günü' : '12–18 iş günü',
-      readiness: readinessScore(),
-      opportunity: opportunityScore(),
-      risk: riskScore(),
-      name, city, must, missing,
-      seo: s.seo,
-      pages: s.pages,
-      salesAngle:s.sales,
-      cautions:s.caution,
-      pains:s.pains
+      text, sector, style, feats, location, business,
+      packageName: price.pkg.name,
+      price: price.total,
+      discount: price.discount,
+      time: estimateTime(price.total, feats),
+      clarity, opportunity, risk, missing,
+      pages,
+      seo: sector.seo,
+      angle: sector.angle,
+      warnings: sector.warnings,
+      createdAt: new Date().toISOString()
     };
     state.lastBrief = brief;
-    updateIntel();
+    state.history.push({ business: business || sector.label, sector: sector.label, price: brief.price, time: brief.createdAt });
+    state.history = state.history.slice(-6);
+    localStorage.setItem(STORE, JSON.stringify(state.history));
     return brief;
   }
 
-  function updateIntel(){
-    const s = getSector();
-    const calc = calculatePrice();
-    const score = readinessScore();
-    intelScore.textContent = score + '%';
-    stateSector.textContent = s ? s.label.split('/')[0].trim().toUpperCase() : 'SEKTÖR';
-    statePackage.textContent = packageName(calc.pkg).toUpperCase();
-    statePrice.textContent = formatTL(calc.price);
-    const chips = [];
-    chips.push(`<p><b>Netlik:</b> ${score}%</p>`);
-    chips.push(`<p><b>Fırsat:</b> ${opportunityScore()} / 100</p>`);
-    chips.push(`<p><b>Risk:</b> ${riskScore()} / 100</p>`);
-    if (s) chips.push(`<p><b>Satış açısı:</b> ${esc(s.sales)}</p>`);
-    if (state.features.length) chips.push(`<p><b>Modüller:</b> ${state.features.slice(0,4).map(featureLabel).join(', ')}</p>`);
-    intelList.innerHTML = chips.join('');
+  function addMessage(role, html, opts = {}) {
+    const msg = document.createElement('div');
+    msg.className = `eb-ai-msg ${role}`;
+    msg.innerHTML = html;
+    messages.appendChild(msg);
+    if (!opts.noScroll) messages.scrollTop = messages.scrollHeight;
+    return msg;
   }
 
-  function typing(callback){
-    const node = document.createElement('div');
-    node.className = 'eb-ai-msg bot eb-ai-typing';
-    node.innerHTML = '<span></span><span></span><span></span><b>Strateji motoru çalışıyor...</b>';
-    messages.appendChild(node);
-    messages.scrollTop = messages.scrollHeight;
-    setTimeout(() => { node.remove(); callback(); }, 520);
+  function typing(label = 'Oracle analiz ediyor') {
+    const el = addMessage('bot', `<div class="eb-ai-typing"><span></span><span></span><span></span><b>${esc(label)}</b></div>`);
+    return () => el.remove();
   }
 
-  function premiumResult(){
-    const b = buildBrief();
+  function updateIntel(brief) {
+    stateSector.textContent = brief.sector.label.split('/')[0].trim().toUpperCase();
+    statePackage.textContent = brief.packageName.toUpperCase();
+    statePrice.textContent = money(brief.price);
+    intelScore.textContent = `${brief.clarity}%`;
+    intelList.innerHTML = `
+      <p><b>Fırsat:</b> ${brief.opportunity}/100</p>
+      <p><b>Risk:</b> ${brief.risk}/100</p>
+      <p><b>Tasarım:</b> ${esc(brief.style.label)}</p>
+      <p><b>Modül:</b> ${brief.feats.length} ana özellik</p>
+      <p><b>Teslim:</b> ${esc(brief.time)}</p>
+    `;
+  }
+
+  function moduleTags(brief) {
+    return brief.feats.map(f => `<span class="eb-ai-keyword">${esc(f.label)}</span>`).join('') || '<span class="eb-ai-keyword">Temel web site altyapısı</span>';
+  }
+
+  function mainReport(brief) {
+    const missing = brief.missing.slice(0, 5).map(x => `<li>${esc(x)}</li>`).join('') || '<li>Brief ana hatlarıyla yeterli.</li>';
     return `
-      <div class="ai-card eb-ai-elite-brief eb-ai-os-card">
-        <div class="ai-brief-top">
-          <span>EXECUTIVE STRATEGY BRIEF</span>
-          <strong>${esc(b.name)} · ${esc(b.city)}</strong>
+      <div class="eb-ai-oracle-card">
+        <div class="ai-brief-top"><span>PROJECT INTELLIGENCE REPORT</span><strong>${esc(brief.business || 'Yeni Proje')}</strong></div>
+        <div class="ai-price">${money(brief.price)}</div>
+        <p><b>Karar:</b> ${esc(brief.packageName)} önerilir. ${esc(brief.angle)}</p>
+        <div class="ai-metrics">
+          <span><b>${brief.clarity}%</b><small>Netlik</small></span>
+          <span><b>${brief.opportunity}</b><small>Fırsat</small></span>
+          <span><b>${brief.risk}</b><small>Risk</small></span>
         </div>
-        <h3>${esc(b.sector.label)} için önerilen yapı: ${esc(b.packageName)}</h3>
-        <p>${esc(b.sector.baseGoal)}</p>
-        <div class="ai-price">${formatTL(b.price)}</div>
-        <small>Ön teklif · kapsam netleşince kesinleştirilir · tahmini teslim ${esc(b.timeline)}</small>
-        <div class="ai-grid ai-metrics">
-          <span><b>${b.readiness}%</b><br>Proje netlik skoru</span>
-          <span><b>${b.opportunity}</b><br>Fırsat skoru</span>
-          <span><b>${b.risk}</b><br>Risk skoru</span>
-          <span><b>${esc(b.style.label)}</b><br>${esc(b.style.promise)}</span>
-        </div>
-        <div class="ai-note"><b>Stratejik karar:</b> ${esc(b.salesAngle)}</div>
       </div>
-      <div class="ai-card">
-        <h3>Olmazsa olmaz modüller</h3>
-        <ul>${b.must.slice(0,8).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
-      </div>
-      <div class="ai-card">
-        <h3>SEO hedefleri</h3>
-        <p>${b.seo.map(x=>`<span class="eb-ai-keyword">${esc(x)}</span>`).join('')}</p>
-      </div>
-      <div class="eb-ai-actions">
-        <a class="eb-ai-action-link" href="#lab" data-ai-scroll="#lab">DESIGN LAB</a>
-        <a class="eb-ai-action-link" href="#contact" data-ai-scroll="#contact">TEKLİF FORMU</a>
-        <a class="eb-ai-action-link" href="${whatsappLink()}" target="_blank" rel="noopener">WHATSAPP</a>
+      <div class="ai-card"><h3>Stratejik Konumlandırma</h3><p>${esc(brief.sector.goal)}</p><p><b>Tasarım dili:</b> ${esc(brief.style.description)}</p></div>
+      <div class="ai-card"><h3>Olmazsa Olmaz Modüller</h3>${moduleTags(brief)}</div>
+      <div class="ai-card"><h3>İlk Mimari</h3><ul>${brief.pages.slice(0, 9).map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>
+      <div class="ai-card"><h3>Eksik Bilgi Kontrolü</h3><ul>${missing}</ul></div>
+      <div class="ai-note">SEO veya satış sonucu garanti edilmez; sistem teknik altyapı, içerik ve güven akışı olarak profesyonel biçimde hazırlanır.</div>
+    `;
+  }
+
+  function setQuick(mode = 'analysis') {
+    const chips = [
+      ['strategy','Strateji briefi',true],
+      ['architecture','Site mimarisi'],
+      ['design','Design Director'],
+      ['proposal','Teklif metni'],
+      ['sales','Satış konuşması'],
+      ['objections','İtiraz cevapları'],
+      ['risk','Risk kontrol'],
+      ['whatsapp','WhatsApp özeti'],
+      ['fill','Formu doldur'],
+      ['copy','Kopyala']
+    ];
+    quick.innerHTML = chips.map(([action,label,primary]) => `<button class="eb-ai-chip ${primary ? 'primary' : ''}" type="button" data-ai-action="${action}">${label}</button>`).join('');
+  }
+
+  function boot() {
+    if (state.booted) return;
+    state.booted = true;
+    addMessage('bot', `
+      <b>EB Oracle AI hazır.</b><br>
+      Bana müşterinin işletmesini tek paragraf anlat. Ben bunu satış dosyasına çeviririm: paket, fiyat, site mimarisi, tasarım dili, SEO planı, itiraz cevapları ve WhatsApp teklifi.
+      <div class="ai-card"><h3>En iyi test</h3><p>“Mersin Mezitli’de Merve Yıldırım Beauty adında güzellik merkezim var. Krem-gold lüks tasarım, randevu, yorum paneli, kampanya, hizmet sayfaları, galeri, KVKK ve SEO istiyorum.”</p></div>
+    `);
+    quick.innerHTML = [
+      ['demoBeauty','Güzellik demo',true],
+      ['demoEstate','Emlak demo'],
+      ['demoFood','Kafe demo'],
+      ['how','Nasıl çalışır?']
+    ].map(([a,l,p]) => `<button class="eb-ai-chip ${p?'primary':''}" data-ai-action="${a}" type="button">${l}</button>`).join('');
+  }
+
+  function analyzeAndRender(text) {
+    state.lastText = text;
+    addMessage('user', esc(text));
+    const stop = typing('brief, fiyat, SEO ve satış planı çıkarılıyor');
+    setTimeout(() => {
+      stop();
+      const brief = analyze(text);
+      updateIntel(brief);
+      addMessage('bot', mainReport(brief));
+      setQuick('analysis');
+    }, 520);
+  }
+
+  function buildSummary(brief) {
+    if (!brief) return 'Henüz analiz yapılmadı.';
+    return `EB Digital Studio Proje Özeti\n\nMarka: ${brief.business || 'Belirtilmedi'}\nSektör: ${brief.sector.label}\nKonum: ${brief.location.city || 'Belirtilmedi'} ${brief.location.district || ''}\nPaket: ${brief.packageName}\nÖn fiyat: ${money(brief.price)}\nTeslim: ${brief.time}\nTasarım: ${brief.style.label}\nModüller: ${brief.feats.map(f=>f.label).join(', ') || 'Temel web sitesi'}\nSEO hedefleri: ${brief.seo.join(', ')}\nEksik bilgiler: ${brief.missing.join(', ') || 'Yok'}\n\nNot: Fiyat ön bilgilendirme niteliğindedir; kesin teklif kapsam netleşince hazırlanır.`;
+  }
+
+  function actionStrategy(brief) {
+    return `
+      <div class="ai-card"><h3>CEO Seviyesi Strateji Briefi</h3>
+      <p><b>Ana satış fikri:</b> ${esc(brief.angle)}</p>
+      <p><b>Müşteri psikolojisi:</b> Bu sektör müşterisi önce güven, sonra kolay iletişim, en son fiyat arar. Site bu sırayı bozmadan tasarlanmalı.</p>
+      <p><b>Dönüşüm zinciri:</b> Arama / Instagram → güven veren ana sayfa → hizmet veya portföy detayı → sosyal kanıt → WhatsApp/randevu → takip.</p>
+      <p><b>Sunum cümlesi:</b> “Bu çalışma yalnızca site değil, markanız için randevu ve talep toplayan dijital satış sistemi olacak.”</p></div>
+    `;
+  }
+
+  function actionArchitecture(brief) {
+    return `
+      <div class="ai-card"><h3>Site Mimarisi</h3><ul>${brief.pages.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>
+      <div class="ai-card"><h3>Dönüşüm Akışı</h3><ul>
+        <li>Hero alanında net değer vaadi ve hızlı WhatsApp CTA.</li>
+        <li>Hizmet / ilan / paket detaylarında karar için gerekli bilgiler.</li>
+        <li>Güven katmanı: yorumlar, süreç, KVKK, sık sorulan sorular.</li>
+        <li>Son adım: kısa form + WhatsApp mesajı + telefon bağlantısı.</li>
+      </ul></div>
+    `;
+  }
+
+  function actionDesign(brief) {
+    return `
+      <div class="ai-card"><h3>Design Director Kararı</h3>
+      <p><b>Yön:</b> ${esc(brief.style.label)}</p><p>${esc(brief.style.description)}</p>
+      <ul>
+        <li>İlk ekranda premium marka algısı; kalabalık değil, net ve güçlü.</li>
+        <li>Butonlar tek amaçlı: randevu, teklif veya WhatsApp.</li>
+        <li>Kartlar sektöre göre farklılaşır; beauty’de zarif, emlakta yatırım odaklı, klinikte güvenli.</li>
+        <li>Mobilde alt sabit iletişim butonu kullanılmalı.</li>
+      </ul></div>
+    `;
+  }
+
+  function actionProposal(brief) {
+    return `
+      <div class="ai-card"><h3>Müşteriye Gönderilecek Teklif Metni</h3>
+      <pre class="ai-copy">Merhaba, ${brief.business || 'markanız'} için yaptığım ön değerlendirmeye göre en doğru yapı ${brief.packageName} olacaktır.\n\nBu sistemde ${brief.feats.map(f=>f.label).join(', ') || 'kurumsal web site altyapısı'} yer alır. Amaç yalnızca şık bir site yapmak değil; markanızı daha güvenilir göstermek, müşterinin bilgiye hızlı ulaşmasını sağlamak ve WhatsApp / teklif akışını güçlendirmektir.\n\nÖn kapsam fiyatı: ${money(brief.price)}\nTahmini teslim: ${brief.time}\n\nKesin teklif; logo, fotoğraflar, içerikler ve teknik kapsam netleştikten sonra hazırlanır.</pre>
       </div>
     `;
   }
 
-  function blueprint(){
-    const b = buildBrief();
-    const funnel = [
-      'İlk ekran: marka güveni + tek ana vaat + hızlı CTA',
-      'Hizmet/portföy alanı: müşterinin aradığı şeyi 8 saniyede bulması',
-      'Kanıt alanı: yorum, proje, galeri veya uzmanlık bilgisi',
-      'Karar alanı: fiyat/teklif/randevu butonu',
-      'Kapanış alanı: WhatsApp, telefon, harita ve sık sorulan sorular'
-    ];
-    return `<div class="ai-card"><h3>Site mimarisi</h3><ul>${b.pages.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>
-      <div class="ai-card"><h3>Dönüşüm akışı</h3><ul>${funnel.map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>
-      <div class="ai-card"><h3>Eksik bilgi listesi</h3><p>${b.missing.slice(0,7).map(x=>`<span class="eb-ai-keyword">${esc(x)}</span>`).join('')}</p></div>`;
+  function actionSales(brief) {
+    return `
+      <div class="ai-card"><h3>Telefon Görüşmesi Senaryosu</h3>
+      <pre class="ai-copy">Merhaba, ben Efecan Berber. EB Digital Studio olarak işletmelere özel web siteleri ve dijital sistemler hazırlıyorum.\n\n${brief.business || 'İşletmenizi'} incelediğimde, ${brief.sector.label} alanında daha güçlü ve güven veren bir dijital sunumla müşteri taleplerinin daha düzenli toplanabileceğini düşündüm.\n\nBenim önerim sadece güzel görünen bir site değil; ${brief.feats.map(f=>f.label).join(', ') || 'iletişim ve teklif akışı'} olan, müşteriyi karar vermeye yaklaştıran bir yapı.\n\nSize özel kısa bir ön izleme hazırlayıp göstermek isterim. Beğenirseniz kapsamı ve fiyatı birlikte netleştiririz.</pre>
+      </div>
+    `;
   }
 
-  function designDirector(){
-    const b = buildBrief();
-    const styleNotes = {
-      luxury:['Krem / gold / rose-gold palet','Geniş beyaz alanlar','Zarif serif başlıklar','Yumuşak gölge ve premium kartlar','Randevu butonunda gold degrade'],
-      futuristic:['Neon grid arka plan','Cam efektli kartlar','3D enerji küreleri','Parallax hareket','Keskin teknik tipografi'],
-      minimal:['Beyaz ağırlıklı arayüz','Monokrom başlıklar','Boşluk kullanımı','Net siyah CTA','Sessiz animasyon'],
-      corporate:['Lacivert güven paleti','Dashboard kartları','İstatistik alanları','Düzenli grid','Resmi teklif dili']
+  function actionObjections(brief) {
+    return `
+      <div class="ai-card"><h3>İtiraz Cevapları</h3><ul>
+        <li><b>“Instagram yetiyor.”</b> Instagram görünürlük sağlar; web sitesi ise güven, Google araması ve düzenli bilgi merkezi sağlar.</li>
+        <li><b>“Fiyat yüksek.”</b> Kapsam; tasarım, mobil uyum, SEO altyapısı, ${esc(brief.feats.slice(0,3).map(f=>f.label).join(', '))} ve yayın desteğini içerir.</li>
+        <li><b>“Sonra düşünelim.”</b> Önce düşük riskli ana sayfa ön izlemesiyle başlayabiliriz; beğenilirse tam kapsam netleşir.</li>
+        <li><b>“Google’da çıkar mıyız?”</b> Teknik altyapı ve içerik SEO uyumlu kurulur; sıralama garanti edilmez ama doğru temel atılır.</li>
+      </ul></div>
+    `;
+  }
+
+  function actionRisk(brief) {
+    return `
+      <div class="ai-card"><h3>Risk ve Kalite Kontrol</h3><ul>
+        ${brief.warnings.map(w=>`<li>${esc(w)}</li>`).join('')}
+        <li>Fiyat, kesin teklif değil ön bilgilendirme olarak sunulmalı.</li>
+        <li>Alan adı, hosting, e-posta ve üçüncü taraf servisler ayrıca belirtilmeli.</li>
+        <li>Gerçek müşteri verisi kullanılacaksa KVKK / açık rıza akışı korunmalı.</li>
+        <li>Yayın öncesi mobil hız, form bağlantıları, WhatsApp mesajı ve Search Console kontrol edilmeli.</li>
+      </ul></div>
+    `;
+  }
+
+  function actionSeo(brief) {
+    return `
+      <div class="ai-card"><h3>SEO Hedefleri</h3>${brief.seo.map(k=>`<span class="eb-ai-keyword">${esc(k)}</span>`).join('')}</div>
+      <div class="ai-card"><h3>SEO Planı</h3><ul>
+        <li>Her ana hizmet / ilan / kategori için ayrı başlık ve açıklama.</li>
+        <li>Yerel aramalar için şehir + hizmet kombinasyonları.</li>
+        <li>Schema, sitemap, robots ve Search Console kurulumu.</li>
+        <li>Düzenli içerik veya yeni portföy girişiyle tazelik sinyali.</li>
+      </ul></div>
+    `;
+  }
+
+  function fillProposal(brief) {
+    const formEl = document.getElementById('proposalForm');
+    if (!formEl) return false;
+    const set = (name, value) => { const el = formEl.querySelector(`[name="${name}"]`); if (el) el.value = value; };
+    set('name', brief.business || 'Yeni proje');
+    set('type', brief.packageName.includes('Sistem') ? 'Admin paneli' : 'Kurumsal web sitesi');
+    set('pages', brief.pages.length > 7 ? '8+ sayfa' : '4–7 sayfa');
+    set('deadline', brief.time.includes('10') ? '2–4 hafta' : '1–2 ay');
+    const details = formEl.querySelector('[name="details"]');
+    if (details) details.value = buildSummary(brief);
+    formEl.querySelectorAll('[name="feature"]').forEach(c => {
+      c.checked = brief.feats.some(f => tr(f.label).includes(tr(c.value))) || (c.value === 'Mobil uyum');
+    });
+    location.hash = '#contact';
+    return true;
+  }
+
+  function handleAction(action) {
+    const brief = state.lastBrief;
+    if (action === 'demoBeauty') return analyzeAndRender('Mersin Mezitli’de Merve Yıldırım Beauty adında güzellik merkezim var. Lazer epilasyon, cilt bakımı, kalıcı makyaj, bölgesel incelme ve tırnak hizmetleri veriyoruz. Krem-gold lüks tasarım, WhatsApp randevu, yorum paneli, kampanya alanı, hizmet detay sayfaları, galeri, KVKK ve Google SEO istiyorum.');
+    if (action === 'demoEstate') return analyzeAndRender('Niğde’de Net Emlak adında emlak ofisim var. Satılık ve kiralık ilanlarımı göstermek, mahalle fiyat oda sayısı ve ilan türüne göre filtreleme yapmak, her ilan için detay sayfası ve WhatsApp bilgi al butonu eklemek istiyorum. İleride admin panelinden ilanları kendim eklemek istiyorum.');
+    if (action === 'demoFood') return analyzeAndRender('Niğde’de restoran ve kafe işletmem var. Dijital menü, rezervasyon, galeri, kampanya, müşteri yorumları, konum ve WhatsApp üzerinden masa talebi almak istiyorum. Sıcak, modern ve iştah açıcı bir tasarım olsun.');
+    if (action === 'how') return addMessage('bot', '<b>Çalışma mantığı:</b> Müşteri mesajını sektör, hedef, tasarım dili, modül, risk ve SEO açısından okur; sonra paket, fiyat, site mimarisi, satış metni ve WhatsApp özeti üretir. Bu sürüm API kullanmaz; güvenli ve maliyetsizdir.');
+    if (!brief) return addMessage('bot', 'Önce bir proje briefi yaz. Sonra bu butonlar aktif olarak satış dosyası üretir.');
+    const map = {
+      strategy: actionStrategy,
+      architecture: actionArchitecture,
+      design: actionDesign,
+      proposal: actionProposal,
+      sales: actionSales,
+      objections: actionObjections,
+      risk: actionRisk,
+      seo: actionSeo
     };
-    const notes = styleNotes[b.style.value] || styleNotes.luxury;
-    return `<div class="ai-card"><h3>Design Director kararı</h3><p><b>${esc(b.style.label)}</b> dili seçilmeli. ${esc(b.style.promise)}</p><ul>${notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>
-    <pre class="ai-copy">${esc(`${b.name} için ${b.style.label} tasarım: ${notes.join(', ')}. İlk ekranda güven veren güçlü başlık, hizmet/portföy kartları, kanıt alanı ve WhatsApp CTA kullan. Tasarım sıradan tema gibi değil, markaya özel premium dijital deneyim gibi görünmeli.`)}</pre>`;
+    if (map[action]) return addMessage('bot', map[action](brief));
+    if (action === 'copy' || action === 'export') {
+      navigator.clipboard?.writeText(buildSummary(brief));
+      return addMessage('bot', '<b>Özet kopyalandı.</b><br>Teklif görüşmesinde veya WhatsApp mesajında kullanabilirsin.');
+    }
+    if (action === 'fill') {
+      const ok = fillProposal(brief);
+      return addMessage('bot', ok ? '<b>Teklif formu dolduruldu.</b><br>Form alanına geçip WhatsApp teklifini gönderebilirsin.' : 'Teklif formu bu sayfada bulunamadı.');
+    }
+    if (action === 'whatsapp') {
+      const txt = encodeURIComponent(buildSummary(brief));
+      window.open(`https://wa.me/${PHONE}?text=${txt}`, '_blank', 'noopener');
+      return addMessage('bot', '<b>WhatsApp özeti hazırlandı.</b><br>Yeni pencerede gönderim ekranı açıldı.');
+    }
   }
 
-  function offer(){
-    const b = buildBrief();
-    const text = `${b.name} için önerim ${b.packageName}. Bu çalışma; ${b.must.slice(0,5).join(', ')} modüllerini kapsar. Amaç yalnızca güzel bir web sitesi yapmak değil; ${b.sector.baseGoal.toLocaleLowerCase('tr-TR')} Sitenin ön fiyatı ${formatTL(b.price)} seviyesindedir. Kapsam ve içerikler netleşince kesin teklif hazırlanır.`;
-    return `<div class="ai-card"><h3>Müşteriye söylenecek premium teklif cümlesi</h3><p>${esc(text)}</p></div><pre class="ai-copy">${esc(whatsappText())}</pre>`;
+  function answerSimple(text) {
+    const n = tr(text);
+    if (n.includes('fiyat') || n.includes('ne kadar') || n.includes('ucret')) {
+      return 'Fiyat proje kapsamına göre değişir. Basit kurumsal siteler daha düşük, admin paneli/veritabanı/üyelik/ilan sistemi olan projeler daha yüksek bütçelidir. En doğru sonuç için işletme türü, sayfa sayısı ve istenen özellikleri tek paragraf yaz; ben net bir ön fiyat çıkarayım.';
+    }
+    if (n.includes('seo') || n.includes('google')) {
+      return 'Google görünürlüğü için title, açıklama, hizmet sayfaları, yerel anahtar kelimeler, schema, sitemap ve Search Console kurulumu gerekir. Sıralama garanti edilmez; ama teknik ve içerik altyapısı doğru kurulursa marka aramalarında görünme ihtimali güçlenir.';
+    }
+    if (n.includes('admin')) {
+      return 'Admin paneli; işletmenin ilan, yorum, kampanya, hizmet veya öğrenci/müşteri verilerini kendi yönetebilmesini sağlar. Veritabanı ve giriş yetkisiyle birlikte düşünülmelidir.';
+    }
+    return '';
   }
 
-  function objections(){
-    const b = buildBrief();
-    const list = [
-      ['Fiyat yüksek geldi', `Haklısınız, burada sadece sayfa değil; ${b.must.slice(0,3).join(', ')} gibi satışa/randevuya etki eden sistemler kuruluyor. İsterseniz kapsamı iki aşamaya bölüp önce vitrin + teklif akışını yayına alabiliriz.`],
-      ['Zaten Instagram var', 'Instagram hızlı görünürlük sağlar ama içerikler akar gider. Web sitesi ise Google’da markanın kalıcı merkezi olur; hizmetleri, yorumları, iletişimi ve teklif akışını tek yerde toplar.'],
-      ['Google’da birinci olur muyuz?', 'Google sıralaması garanti edilmez. Ama teknik SEO, hızlı altyapı, doğru başlıklar, sitemap ve hizmet/bölge sayfalarıyla Google’ın siteyi doğru anlaması için güçlü temel kurulur.'],
-      ['Sonra yaptırırız', 'Olur, fakat ilk izlenim ve Google görünürlüğü ne kadar erken başlarsa o kadar iyi birikir. Önce küçük bir ana sayfa + teklif/randevu akışıyla başlayıp sonra büyütebiliriz.']
-    ];
-    return `<div class="ai-card"><h3>İtiraz cevap kalkanı</h3><ul>${list.map(([q,a])=>`<li><b>${esc(q)}:</b> ${esc(a)}</li>`).join('')}</ul></div>`;
+  function openAssistant() {
+    assistant.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    boot();
+    setTimeout(() => input?.focus(), 100);
+  }
+  function closeAssistant() {
+    assistant.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
   }
 
-  function salesScript(){
-    const b = buildBrief();
-    return `<pre class="ai-copy">${esc(`Merhaba, ben Efecan Berber. EB Digital Studio olarak işletmelere özel web siteleri ve dijital sistemler geliştiriyorum.
+  $$('[data-assistant-open]').forEach(btn => btn.addEventListener('click', openAssistant));
+  $$('[data-assistant-close]', assistant).forEach(btn => btn.addEventListener('click', closeAssistant));
 
-${b.name} için kısa bir analiz yaptım. İşletmenizin dijital tarafta en güçlü fırsatı: ${b.sector.baseGoal}
+  assistant.addEventListener('click', (e) => {
+    const actionBtn = e.target.closest('[data-ai-action]');
+    if (actionBtn) {
+      e.preventDefault();
+      handleAction(actionBtn.dataset.aiAction);
+    }
+  });
 
-Size sıradan bir web sitesi değil; ${b.must.slice(0,5).join(', ')} içeren, ${b.city} bölgesindeki müşterilerin daha kolay ulaşabileceği premium bir sistem önerebilirim.
-
-Kısa bir ön izleme hazırlayıp göstermek isterim. Beğenirseniz kapsamı ve net fiyatı birlikte belirleriz. Uygun olduğunuzda 5 dakikalık kısa bir görüşme yapabilir miyiz?`)}</pre>`;
-  }
-
-  function riskPanel(){
-    const b = buildBrief();
-    return `<div class="ai-card"><h3>Risk ve kalite kontrol</h3><ul>${b.cautions.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
-    <div class="ai-card"><h3>Profesyonel teslim kriterleri</h3><ul><li>Mobil görünüm ayrı test edilir.</li><li>Form ve WhatsApp akışı test edilir.</li><li>Search Console ve sitemap hazırlanır.</li><li>Gizlilik / hizmet koşulları sayfaları eklenir.</li><li>Gerçek içerik gelmeden sahte başarı iddiası kullanılmaz.</li></ul></div>`;
-  }
-
-  function whatsappText(){
-    const b = buildBrief();
-    return `Merhaba Efecan, EB Digital Studio sitesindeki asistandan proje ön analizi oluşturdum.
-
-İşletme: ${b.name}
-Sektör: ${b.sector.label}
-Bölge: ${b.city}
-Önerilen paket: ${b.packageName}
-Tasarım dili: ${b.style.label}
-Önerilen modüller: ${b.must.slice(0,8).join(', ')}
-Ön fiyat: ${formatTL(b.price)}
-Teslim süresi: ${b.timeline}
-
-Detayları görüşmek istiyorum.`;
-  }
-  function whatsappLink(){ return `https://wa.me/${phone}?text=${encodeURIComponent(whatsappText())}`; }
-
-  async function copy(text){
-    try { await navigator.clipboard.writeText(text); addMessage('bot','Kopyaladım kral. Artık direkt müşteriye gönderebilirsin.'); }
-    catch(e){ addMessage('bot','Tarayıcı kopyalamayı engelledi. Metni manuel seçip kopyalayabilirsin.'); }
-  }
-
-  function fillForm(){
-    const b = buildBrief();
-    const proposal = document.getElementById('proposalForm');
-    if (!proposal) return;
-    const name = proposal.querySelector('[name="name"]');
-    const details = proposal.querySelector('[name="details"]');
-    const type = proposal.querySelector('[name="type"]');
-    const pages = proposal.querySelector('[name="pages"]');
-    if (name) name.value = b.name === 'işletme' ? '' : b.name;
-    if (type) type.value = b.packageKey === 'system' ? 'Admin paneli' : 'Kurumsal web sitesi';
-    if (pages) pages.value = b.packageKey === 'signature' || b.packageKey === 'system' ? '8+ sayfa' : '4–7 sayfa';
-    if (details) details.value = `${b.sector.label} için ${b.packageName}. Modüller: ${b.must.join(', ')}. Ön fiyat: ${formatTL(b.price)}. SEO hedefleri: ${b.seo.join(', ')}.`;
-    close();
-    proposal.scrollIntoView({behavior:'smooth', block:'start'});
-  }
-
-  function answer(text){
-    const n = norm(text);
-    if (has(n,['fiyat','kaç tl','ücret','maliyet'])) return addMessage('bot', premiumResult());
-    if (has(n,['seo','google','arama'])) return addMessage('bot', `<div class="ai-card"><h3>SEO cevabı</h3><p>Google’da birinci sıra garanti edilmez. Profesyonel yaklaşım; hızlı site, doğru başlıklar, hizmet/bölge sayfaları, sitemap, Search Console ve düzenli içerikle görünürlüğü artırmaktır.</p></div>${buildBrief().seo.map(x=>`<span class="eb-ai-keyword">${esc(x)}</span>`).join('')}`);
-    if (has(n,['ödeme','taksit','kapora'])) return addMessage('bot','Ödeme için en sağlıklı yapı: <b>%40 başlangıç, %30 tasarım onayı, %30 yayın öncesi</b>. Büyük sistemlerde aşamalı ödeme planı yapılabilir.');
-    if (has(n,['süre','kaç gün','teslim'])) return addMessage('bot', `Bu kapsam için tahmini teslim: <b>${esc(buildBrief().timeline)}</b>. İçerik, fotoğraf ve onay süreci süreyi etkiler.`);
-    parseText(text);
-    typing(()=> addMessage('bot', premiumResult()));
-    setQuick(mainActions());
-  }
-
-  function mainActions(){
-    return [
-      {label:'Strateji briefi', action:'brief', primary:true},
-      {label:'Site mimarisi', action:'blueprint'},
-      {label:'Design Director', action:'design'},
-      {label:'Teklif metni', action:'offer'},
-      {label:'İtiraz cevapları', action:'objections'},
-      {label:'Satış konuşması', action:'sales'},
-      {label:'Risk kontrol', action:'risk'},
-      {label:'WhatsApp', action:'whatsapp', primary:true},
-      {label:'Formu doldur', action:'fill'}
-    ];
-  }
-
-  function boot(){
-    booted = true;
-    addMessage('bot', `<b>EB Strategist AI aktif.</b><br>Ben sadece paket önerici değilim; müşterinin mesajından proje fırsatını, fiyatı, satış açısını, SEO planını ve itiraz cevaplarını çıkaran <b>elite satış danışmanı</b> gibi çalışırım.<small>İşletme türünü ve isteğini tek paragraf anlat; sana müşteri önüne çıkacak strateji dosyası oluşturayım.</small>`);
-    setQuick([
-      {label:'Güzellik örneği', action:'sample', value:'beauty', primary:true},
-      {label:'Emlak örneği', action:'sample', value:'realestate'},
-      {label:'Restoran örneği', action:'sample', value:'food'},
-      {label:'Sektör seç', action:'sectors'},
-      {label:'Sıfırla', action:'reset', danger:true}
-    ]);
-    updateIntel();
-  }
-
-  function sample(type){
-    const samples = {
-      beauty:'Mersin Mezitli’de Merve Yıldırım Beauty adında güzellik merkezim var. Lazer epilasyon, cilt bakımı, kalıcı makyaj, bölgesel incelme ve tırnak hizmetleri veriyoruz. Krem-gold lüks tasarım istiyorum. WhatsApp randevu, yorum paneli, kampanya alanı, hizmet detay sayfaları, galeri, KVKK ve Google SEO olsun. Mersin güzellik merkezi ve Mezitli lazer epilasyon aramalarında zamanla görünmek istiyorum.',
-      realestate:'Niğde’de Net Emlak adında emlak ofisim var. Satılık daire, kiralık daire, arsa ve iş yeri ilanlarımı göstermek istiyorum. Müşteriler fiyat, mahalle, oda sayısı ve mülk türüne göre filtreleme yapabilsin. Her ilanın detay sayfası olsun, WhatsApp’tan bilgi alabilsin. İlanları kendim ekleyip kaldıracağım admin paneli de istiyorum.',
-      food:'Niğde’de bir kafe restoran işletmem var. Dijital menü, rezervasyon, galeri, kampanya alanı, organizasyon paketleri, Google harita ve WhatsApp rezervasyon istiyorum. Tasarım sıcak, şık ve mobilde hızlı olsun.'
-    };
-    input.value = samples[type] || samples.beauty;
-    input.focus();
-  }
-
-  function sectorChips(){
-    setQuick(sectorDB.map(s => ({label:s.label.split('/')[0].trim(), action:'sector', value:s.value, active:state.sector===s.value})).concat([{label:'Devam et', action:'brief', primary:true}]));
-  }
-
-  function handleAction(action, value, label){
-    if (action === 'sample') return sample(value);
-    if (action === 'sectors') return sectorChips();
-    if (action === 'sector') { state.sector = value; applySectorDefaults(); updateIntel(); addMessage('user', esc(label)); addMessage('bot','Sektörü aldım. Şimdi işletmenin hedefini veya istediği özellikleri tek cümleyle yazarsan strateji briefini çıkarırım.'); return setQuick(mainActions()); }
-    if (action === 'brief') return addMessage('bot', premiumResult());
-    if (action === 'blueprint') return addMessage('bot', blueprint());
-    if (action === 'design') return addMessage('bot', designDirector());
-    if (action === 'offer') return addMessage('bot', offer());
-    if (action === 'objections') return addMessage('bot', objections());
-    if (action === 'sales') return addMessage('bot', salesScript());
-    if (action === 'risk') return addMessage('bot', riskPanel());
-    if (action === 'whatsapp') return window.open(whatsappLink(), '_blank', 'noopener');
-    if (action === 'fill') return fillForm();
-    if (action === 'export') return copy(summaryText());
-    if (action === 'reset') { Object.keys(state).forEach(k => { if(Array.isArray(state[k])) state[k]=[]; else if(k!=='history') state[k]=''; }); state.urgency='normal'; state.mode='strategist'; state.history=[]; messages.innerHTML=''; booted=false; return boot(); }
-  }
-
-  function summaryText(){
-    const b = buildBrief();
-    return `EB Strategist AI Özeti\n\nİşletme: ${b.name}\nSektör: ${b.sector.label}\nBölge: ${b.city}\nPaket: ${b.packageName}\nÖn fiyat: ${formatTL(b.price)}\nTeslim: ${b.timeline}\nModüller: ${b.must.join(', ')}\nSEO: ${b.seo.join(', ')}\nSatış açısı: ${b.salesAngle}`;
-  }
-
-  form?.addEventListener('submit', e => {
+  form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const text = input.value.trim();
     if (!text) return;
-    addMessage('user', esc(text));
     input.value = '';
-    answer(text);
+    const simple = answerSimple(text);
+    if (simple && text.length < 80) {
+      addMessage('user', esc(text));
+      addMessage('bot', esc(simple));
+      return;
+    }
+    analyzeAndRender(text);
   });
-  quick?.addEventListener('click', e => {
-    const btn = e.target.closest('[data-ai-action]');
-    if (!btn) return;
-    handleAction(btn.dataset.aiAction, btn.dataset.value, btn.textContent.trim());
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && assistant.classList.contains('is-open')) closeAssistant();
   });
-  assistant.querySelectorAll('[data-assistant-open]').forEach(b => b.addEventListener('click', open));
-  assistant.querySelectorAll('[data-assistant-close]').forEach(b => b.addEventListener('click', close));
-  assistant.addEventListener('click', e => {
-    const scroll = e.target.closest('[data-ai-scroll]');
-    if(scroll){ e.preventDefault(); close(); document.querySelector(scroll.dataset.aiScroll)?.scrollIntoView({behavior:'smooth', block:'start'}); }
-  });
-  document.addEventListener('keydown', e => { if(e.key === 'Escape' && assistant.classList.contains('is-open')) close(); });
+
+  assistant.dataset.aiVersion = VERSION;
 })();
