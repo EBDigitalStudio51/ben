@@ -240,3 +240,9 @@ html.custom-cursor-ready .eb-select-popover *{cursor:none!important}
 .expertise-grid small{display:block;color:var(--accent3);font:700 9px "Space Grotesk";letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px}.expertise-grid h3{margin:0 0 11px;font:800 20px/1.15 "Manrope";letter-spacing:-.03em}.expertise-grid p{margin:0 0 15px;color:var(--muted);font-size:13px}.expertise-grid ul{margin:0;padding-left:18px;color:#d9e5f6;font-size:12px}.expertise-grid li{margin:7px 0}
 @media(max-width:1100px){.expertise-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.case-proof-grid{grid-template-columns:1fr}}
 @media(max-width:640px){.expertise-shell{padding:28px 17px;border-radius:25px}.expertise-grid{grid-template-columns:1fr}.expertise-grid article{min-height:auto}}
+
+
+/* V6.6 Portfolio project expansion */
+.featured-project + .featured-project{margin-top:24px}
+.project-case-002{background:linear-gradient(145deg,rgba(184,111,124,.12),rgba(255,255,255,.018) 38%,rgba(214,183,120,.08))}
+.project-case-002 .device-scene{background:radial-gradient(circle at 60% 48%,rgba(184,111,124,.22),transparent 38%),radial-gradient(circle at 80% 70%,rgba(214,183,120,.16),transparent 30%)}
